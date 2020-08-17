@@ -34,6 +34,26 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime', 
     ];
+
+    public function details()
+    {
+        return $this->hasOne('App\Models\UserDetail', 'user_id', 'id');
+    }
+
+    public function adresses()
+    {
+        return $this->hasMany('App\Models\UserAdresse', 'user_id', 'id');
+    }
+
+    public function stockLog()
+    {
+        return $this->hasMany('App\Models\StockLog', 'user_id', 'id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany('App\Models\Orders', 'user_id', 'id');
+    }
 }
