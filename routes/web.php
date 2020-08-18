@@ -17,4 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+Route::prefix('/painel')->group(function(){
+    // ROTA DA HOME
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    // ROTA DOS MODULOS
+    Route::get('/module', 'Painel\ModulesController@view')->middleware('auth');
+    Route::resource('/modules', 'Painel\ModulesController');
+});

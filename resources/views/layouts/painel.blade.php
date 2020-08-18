@@ -37,9 +37,15 @@
                 <ul class="nav">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('home') }}">
+                        <a class="nav-link" href="{{ url('/painel/home') }}">
                             <i class="fas fa-home"></i>
                             <p> Home </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/painel/module') }}">
+                            <i class="fas fa-users-cog"></i>
+                            <p> Módulos </p>
                         </a>
                     </li>
                 </ul>

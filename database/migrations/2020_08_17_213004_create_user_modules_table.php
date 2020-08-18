@@ -15,11 +15,11 @@ class CreateUserModulesTable extends Migration
     {
         Schema::create('user_modules', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_type_id');
             $table->unsignedBigInteger('module_id');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_type_id')->references('id')->on('user_types')->onDelete('cascade');
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
         });
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'user_type_id'
     ];
 
     /**
@@ -55,5 +55,10 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany('App\Models\Orders', 'user_id', 'id');
+    }
+
+    public function user_type()
+    {
+        return $this->belongsTo('App\Models\UserType', 'user_id', 'id');
     }
 }
