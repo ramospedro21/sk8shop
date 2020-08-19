@@ -17,12 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// ROTA DA HOME
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('/painel')->group(function(){
-    // ROTA DA HOME
-    Route::get('/home', 'HomeController@index')->name('home');
 
     // ROTA DOS MODULOS
-    Route::get('/module', 'Painel\ModulesController@view')->middleware('auth');
-    Route::resource('/modules', 'Painel\ModulesController');
+    Route::get('/user_types', 'Painel\UserTypeController@view')->middleware('auth');
+    Route::resource('/user_type', 'Painel\UserTypeController');
 });

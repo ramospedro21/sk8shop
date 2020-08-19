@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Painel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ModulesController extends Controller
+class UserTypeController extends Controller
 {   
     public function view(){
-        return view('module.index');
+        return view('user_type.index');
     }
 
     /**

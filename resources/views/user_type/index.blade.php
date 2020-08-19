@@ -1,5 +1,5 @@
 @extends('layouts.painel')
 
 @section('content')
-  cu
+  <user-type-index-component></user-type-index-component>
 @endsection

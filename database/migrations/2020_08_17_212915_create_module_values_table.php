@@ -16,6 +16,7 @@ class CreateModuleValuesTable extends Migration
         Schema::create('module_values', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('module_id');
+            $table->string('name');
             $table->string('icon');
             $table->string('link');
             $table->timestamps();

@@ -17,7 +17,6 @@ class CreateModulesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('icon');
-            $table->string('link');
             $table->timestamps();
         });
     }

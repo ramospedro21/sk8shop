@@ -19,4 +19,9 @@ class Module extends Model
         'icon',
         'link',
     ];
+
+    public function values()
+    {
+        return $this->hasMany('App\Models\ModuleValue', 'module_id', 'id');
+    }
 }
