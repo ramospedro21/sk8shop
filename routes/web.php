@@ -22,7 +22,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('/painel')->group(function(){
 
+    // ROTA DE ESTOQUES
+    Route::get('/stocks', 'Painel\StocksController@view')->middleware('auth');
+
     // ROTA DOS MODULOS
-    Route::get('/user_types', 'Painel\UserTypeController@view')->middleware('auth');
-    Route::resource('/user_type', 'Painel\UserTypeController');
+    Route::get('/user_type', 'Painel\UserTypeController@view')->middleware('auth');
+    Route::resource('/user_types', 'Painel\UserTypeController');
+    Route::get('/modules/all', 'Painel\UserTypeController@all');
+
+
 });

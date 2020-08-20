@@ -24,4 +24,10 @@ class ModuleValue extends Model
     {
         return $this->belongsTo('App\Models\Module', 'module_id', 'id');
     }
+
+    public function userType()
+    {
+        return $this->hasMany('App\Models\UserModule', 'module_value_id', 'id');
+    }
+
 }

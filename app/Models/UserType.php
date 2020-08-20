@@ -5,19 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class UserType extends Model
-{
+{   
+    
     /**
      * @property int $id
-     * @property string $name
-    */
-
+     * @property string $TITLE
+     */
+    
+     public const PER_PAGE = 16;
+    
     protected $fillable = [ 
         'id',
-        'name'
+        'title'
     ];
 
-    public function modulos()
+    public function modules()
     {
-        return $this->belongsToMany('App\Models\Modules', 'user_module', 'user_id', 'module_id');
+        return $this->belongsToMany('App\Models\ModuleValue', 'user_modules', 'user_type_id', 'module_value_id');
     }
 }

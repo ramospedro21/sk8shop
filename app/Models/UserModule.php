@@ -15,7 +15,7 @@ class UserModule extends Model
     protected $fillable = [
         'id',
         'user_type_id',
-        'module_id',
+        'module_value_id',
     ];
 
     public function user()

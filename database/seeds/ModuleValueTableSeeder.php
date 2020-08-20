@@ -30,10 +30,7 @@ class ModuleValueTableSeeder extends Seeder
            
             //MÓDULO DE VENDAS
             [ 'id' => 11, 'module_id' => 3, 'name' => 'Clientes', 'icon' => 'fas fa-users', 'link' => '/painel/clients', 'created_at' => Carbon\Carbon::now() ],
-            [ 'id' => 12, 'module_id' => 3, 'name' => 'Orçamentos', 'icon' => 'fas fa-clipboard-list', 'link' => '/painel/budgets', 'created_at' => Carbon\Carbon::now() ],
-            [ 'id' => 13, 'module_id' => 3, 'name' => 'Pedidos', 'icon' => 'fas fa-wallet', 'link' => '/painel/orders', 'created_at' => Carbon\Carbon::now() ],
-            [ 'id' => 14, 'module_id' => 3, 'name' => 'Lojas', 'icon' => 'fas fa-user-check', 'link' => '/painel/resellers', 'created_at' => Carbon\Carbon::now() ],
-        
+            [ 'id' => 12, 'module_id' => 3, 'name' => 'Pedidos', 'icon' => 'fas fa-wallet', 'link' => '/painel/orders', 'created_at' => Carbon\Carbon::now() ],
         ]);
     }
 }
