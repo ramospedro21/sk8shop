@@ -216,7 +216,7 @@ class UserTypeController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Não foi possivel editar o tipo de usuário.',
+                'message' => 'Não foi possivel excluir o tipo de usuário.',
                 'errors' => [
                     'message' => $e->getMessage(),
                     'line' => $e->getLine(),

@@ -5,7 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
-{
+{   
+    public const PER_PAGE = 16;
+    public const ACTIVE = 0;
+    public const NOT_ACTIVE = 1; 
+
     /**
      * @property int $id
      * @property string $title

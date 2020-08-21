@@ -159,7 +159,7 @@ export default {
     methods: {
         index: async function(page){
 
-                let url = '/painel/user_types?';
+                let url = '/painel/user_type?';
                 url += '&page=' + ((page) ? page : this.user_types.current_page);
                 if (this.filters.per_page !== 16) url += '&per_page=' + this.filters.per_page;
 
@@ -204,7 +204,7 @@ export default {
 
             try{
 
-                const {data} = await axios.post('/painel/user_types', {user_type: this.user_type});
+                const {data} = await axios.post('/painel/user_type', {user_type: this.user_type});
 
                 this.index();
 
@@ -242,7 +242,7 @@ export default {
 
             try{
 
-                const { data } = await axios.patch(`/painel/user_types/${this.user_type.id}`, {user_type: this.user_type});
+                const { data } = await axios.patch(`/painel/user_type/${this.user_type.id}`, {user_type: this.user_type});
 
                 this.index();
 
@@ -276,7 +276,7 @@ export default {
 
                 this.loading.deleteButtonUserType = true;
 
-                await axios.delete(`/painel/user_types/${this.user_type.id}`);
+                await axios.delete(`/painel/user_type/${this.user_type.id}`);
 
                 this.index();
 

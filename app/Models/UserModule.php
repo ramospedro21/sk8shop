@@ -23,9 +23,9 @@ class UserModule extends Model
         return $this->belongsTo('App\Models\User', 'foreign_key', 'other_key');
     }
 
-    public function module()
+    public function values()
     {
-        return $this->belongsTo('App\Models\Modules', 'module_id', 'id');
+        return $this->belongsTo('App\Models\ModuleValues', 'module_value_id', 'id');
     }
 
 }   

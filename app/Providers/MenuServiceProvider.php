@@ -20,20 +20,24 @@ class MenuServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             try {
                 
-                $modules = Module::with(['values' => function($children) {
-                            $children->whereHas('userType', function($query){
+                if(Auth::user()){
+
+                    $modules = Module::with(['values' => function($children) {
+                                $children->whereHas('userType', function($query){
+                                    $query->where('user_type_id', Auth::user()->user_type_id);
+                                });
+                            }
+                        ])
+                        ->whereHas('values', function($query){
+                            $query->whereHas('userType', function($query){
                                 $query->where('user_type_id', Auth::user()->user_type_id);
                             });
-                        }
-                    ])
-                    ->whereHas('values', function($query){
-                        $query->whereHas('userType', function($query){
-                            $query->where('user_type_id', Auth::user()->user_type_id);
-                        });
-                    })
-                    ->get();
+                        })
+                        ->get();
+                        
+                        View::share('modules', $modules);
+                }
 
-                View::share('modules', $modules);
 
             } catch (\Exception $e) {
             dd($e);
