@@ -1,5 +1,5 @@
 @extends('layouts.painel')
 
 @section('content')
-	<stocks-index-component> </stocks-index-component>
+	<providers-index-component> </providers-index-component>
 @endsection

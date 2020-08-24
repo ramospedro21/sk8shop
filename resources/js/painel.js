@@ -30,6 +30,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 //COMPONENT DE STOCKS
 Vue.component('stocks-index-component', require('./components/painel/stocks/StocksComponent.vue').default);
 
+//COMPONENT DE FORNECEDORES
+Vue.component('providers-index-component', require('./components/painel/providers/ProvidersComponent.vue').default); 
+
 //COMPONENT DE TIPO DE USUÁRIOS
 Vue.component('user-type-index-component', require('./components/painel/user_types/UserTypeComponent.vue').default);
 

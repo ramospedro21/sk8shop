@@ -26,6 +26,10 @@ Route::prefix('/painel')->group(function(){
     Route::get('/stocks', 'Painel\StocksController@view')->middleware('auth');
     Route::resource('/stock', 'Painel\StocksController');
 
+    // ROTA DE FORNECEDORES
+    Route::get('/providers', 'Painel\ProvidersController@view')->middleware('auth');
+    Route::resource('/provider', 'Painel\ProvidersController');
+
     // ROTA DOS MODULOS
     Route::get('/user_types', 'Painel\UserTypeController@view')->middleware('auth');
     Route::resource('/user_type', 'Painel\UserTypeController');

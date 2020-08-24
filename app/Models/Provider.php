@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Providers extends Model
+class Provider extends Model
 {
     /**
      * @property int $id
@@ -22,6 +22,10 @@ class Providers extends Model
      * @property string $state
      * @property string $country
     */
+
+    public const CPF = 0;
+    public const CNPJ = 1;
+    public const PER_PAGE = 16;
 
     protected $fillable = [
         'id',
@@ -42,6 +46,6 @@ class Providers extends Model
 
     public function purchases()
     {
-        return $this->hasMany('App\Models\Purchases', 'provider_id', 'id');
+        return $this->hasMany('App\Models\Purchase', 'provider_id', 'id');
     }
 }

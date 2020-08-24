@@ -129,7 +129,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12">
-                                <p class="text-primary h4">Deseja realmente excluir o estoque: "{{ stock.title }}" ?</p>
+                                <p class="text-primary h4">Deseja realmente excluir o estoque: "{{ this.stock.title }}" ?</p>
                             </div>
                         </div>
                     </div>
@@ -305,6 +305,7 @@ export default {
             this.loading.buttonDeleteStock = true;
 
             try{
+
                 await axios.delete(`/painel/stock/${this.stock.id}`);
                 
                 this.loading.buttonDeleteStock = false;
