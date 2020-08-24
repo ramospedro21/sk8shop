@@ -30,6 +30,14 @@ Route::prefix('/painel')->group(function(){
     Route::get('/providers', 'Painel\ProvidersController@view')->middleware('auth');
     Route::resource('/provider', 'Painel\ProvidersController');
 
+    // ROTA DE COMPRAS
+    Route::get('/purchases', 'Painel\PurchasesController@view')->middleware('auth');
+    Route::resource('/purchase', 'Painel\PurchasesController@view');
+
+    // ROTA DE USUÁRIOS
+    Route::get('/users', 'Painel\UsersController@view')->middleware('auth');
+    Route::resource('/user', 'Painel\UsersController@view');
+
     // ROTA DOS MODULOS
     Route::get('/user_types', 'Painel\UserTypeController@view')->middleware('auth');
     Route::resource('/user_type', 'Painel\UserTypeController');

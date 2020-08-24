@@ -31,7 +31,13 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('stocks-index-component', require('./components/painel/stocks/StocksComponent.vue').default);
 
 //COMPONENT DE FORNECEDORES
-Vue.component('providers-index-component', require('./components/painel/providers/ProvidersComponent.vue').default); 
+Vue.component('providers-index-component', require('./components/painel/providers/ProvidersComponent.vue').default);
+
+//COMPONENT DE COMPRAS
+Vue.component('purchases-index-component', require('./components/painel/purchases/PurchasesComponent.vue').default); 
+
+//COMPONENT DE USUARIOS
+Vue.component('users-index-component', require('./components/painel/users/UsersComponent.vue').default); 
 
 //COMPONENT DE TIPO DE USUÁRIOS
 Vue.component('user-type-index-component', require('./components/painel/user_types/UserTypeComponent.vue').default);
