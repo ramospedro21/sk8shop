@@ -21,7 +21,7 @@ class MenuServiceProvider extends ServiceProvider
             try {
                 
                 if(Auth::user()){
-
+                    
                     $modules = Module::with(['values' => function($children) {
                                 $children->whereHas('userType', function($query){
                                     $query->where('user_type_id', Auth::user()->user_type_id);

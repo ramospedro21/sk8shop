@@ -38,6 +38,7 @@ Vue.component('purchases-index-component', require('./components/painel/purchase
 
 //COMPONENT DE USUARIOS
 Vue.component('users-index-component', require('./components/painel/users/UsersComponent.vue').default); 
+Vue.component('users-show-component', require('./components/painel/users/ShowUserComponent.vue').default); 
 
 //COMPONENT DE TIPO DE USUÁRIOS
 Vue.component('user-type-index-component', require('./components/painel/user_types/UserTypeComponent.vue').default);

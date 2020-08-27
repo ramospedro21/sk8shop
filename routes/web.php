@@ -36,12 +36,13 @@ Route::prefix('/painel')->group(function(){
 
     // ROTA DE USUÁRIOS
     Route::get('/users', 'Painel\UsersController@view')->middleware('auth');
-    Route::resource('/user', 'Painel\UsersController@view');
+    Route::resource('/user', 'Painel\UsersController');
 
     // ROTA DOS MODULOS
     Route::get('/user_types', 'Painel\UserTypeController@view')->middleware('auth');
     Route::resource('/user_type', 'Painel\UserTypeController');
-    Route::get('/modules/all', 'Painel\UserTypeController@all');
+    Route::get('/type/all', 'Painel\UserTypeController@all');
+    Route::get('/modules/all', 'Painel\UserTypeController@allModules');
 
 
 });

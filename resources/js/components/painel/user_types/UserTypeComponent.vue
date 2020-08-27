@@ -103,7 +103,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12">
-                                <p class="text-primary h4">Deseja realmente excluir o tipo de usário: "{{ user_type.title }}" ?</p>
+                                <p class="text-primary h4">Deseja realmente excluir o tipo de usuário: "{{ user_type.title }}" ?</p>
                             </div>
                         </div>
                     </div>

@@ -25,8 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $modules = Module::with(['values'])->get();
-
-        return view('home', ['modules' => $modules]);
+        return view('home');
     }
 }

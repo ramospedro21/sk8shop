@@ -13,19 +13,8 @@ class UserModule extends Model
     */
 
     protected $fillable = [
-        'id',
         'user_type_id',
         'module_value_id',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User', 'foreign_key', 'other_key');
-    }
-
-    public function values()
-    {
-        return $this->belongsTo('App\Models\ModuleValues', 'module_value_id', 'id');
-    }
 
 }   

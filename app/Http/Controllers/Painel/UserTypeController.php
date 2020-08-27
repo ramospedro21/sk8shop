@@ -226,6 +226,30 @@ class UserTypeController extends Controller
     }
 
     public function all(){
+        
+        try{
+
+            $user_types = UserType::get();
+
+            return response()->json($user_types, 200);
+
+        }catch(\Exception $e){
+
+            $errorLog = ErrorsLog::create([
+                'description' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'message' => 'Não foi possivel listar todos os módulos.',
+                'errors' => [ 
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                ]
+            ], 500);
+        }
+    }
+
+    public function allModules(){
         try{
 
             $modules = Module::with(['values'])->get();

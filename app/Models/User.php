@@ -10,6 +10,8 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public const PER_PAGE = 16;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -42,9 +44,9 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\UserDetail', 'user_id', 'id');
     }
 
-    public function adresses()
+    public function address()
     {
-        return $this->hasMany('App\Models\UserAdresse', 'user_id', 'id');
+        return $this->hasMany('App\Models\UserAddress', 'user_id', 'id');
     }
 
     public function stockLog()
@@ -59,6 +61,6 @@ class User extends Authenticatable
 
     public function user_type()
     {
-        return $this->belongsTo('App\Models\UserType', 'user_id', 'id');
+        return $this->belongsTo('App\Models\UserType', 'user_type_id', 'id');
     }
 }
