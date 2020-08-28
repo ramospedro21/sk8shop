@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\UserAccessHelper;
 
 use App\Models\ErrorsLog;
 use App\Models\User;
@@ -15,7 +16,16 @@ use App\Models\UserDetail;
 class UsersController extends Controller
 {   
     public function view(){
-        return view('users.index');
+
+        $access = UserAccessHelper::getAccess();
+        
+        if($access == true) 
+
+            return view('users.index');
+
+        else
+        
+            abort('404');
     }
     
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Painel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\UserAccessHelper;
 
 use App\Models\Stock;
 use App\Models\ErrorsLog;
@@ -12,8 +13,17 @@ use App\Models\ErrorsLog;
 class StocksController extends Controller
 {   
 
-    public function view(){
-        return view('stocks.index');
+    public function view(){ 
+        
+        $access = UserAccessHelper::getAccess();
+        
+        if($access == true) 
+
+            return view('stocks.index');
+
+        else
+        
+            abort('404');
     }
 
     /**

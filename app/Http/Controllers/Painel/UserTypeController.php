@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Painel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\UserAccessHelper;
 
 use App\Models\ErrorsLog;
 use App\Models\Module;
@@ -13,8 +14,20 @@ use App\Models\UserModule;
 
 class UserTypeController extends Controller
 {   
+    
     public function view(){
-        return view('user_type.index');
+        
+
+        $access = UserAccessHelper::getAccess();
+        
+        if($access == true) 
+
+            return view('user_type.index');
+
+        else
+        
+            abort('404');
+            
     }
 
     /**

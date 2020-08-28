@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Painel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
+use App\Helpers\UserAccessHelper;
 
 use App\Models\Provider;
 use App\Models\ErrorsLog;
@@ -12,8 +14,17 @@ use App\Models\ErrorsLog;
 class ProvidersController extends Controller
 {   
 
-    public function view(){
-        return view('factories.index');
+    public function view(Request $request){
+
+        $access = UserAccessHelper::getAccess();
+        
+        if($access == true) 
+
+            return view('factories.index');
+
+        else
+
+            abort('404');
     }
     /**
      * Display a listing of the resource.
