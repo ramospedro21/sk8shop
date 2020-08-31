@@ -32,7 +32,7 @@ Route::prefix('/painel')->group(function(){
 
     // ROTA DE COMPRAS
     Route::get('/purchases', 'Painel\PurchasesController@view')->middleware('auth');
-    Route::resource('/purchase', 'Painel\PurchasesController@view');
+    Route::resource('/purchase', 'Painel\PurchasesController');
 
     // ROTA DE USUÁRIOS
     Route::get('/users', 'Painel\UsersController@view')->middleware('auth');
@@ -43,6 +43,11 @@ Route::prefix('/painel')->group(function(){
     Route::resource('/user_type', 'Painel\UserTypeController');
     Route::get('/type/all', 'Painel\UserTypeController@all');
     Route::get('/modules/all', 'Painel\UserTypeController@allModules');
+
+    // ROTA DE CENTRAL DE OPÇÕES
+    Route::get('/options', 'Painel\OptionsController@view')->middleware('auth');
+    Route::delete('/option/{id}/{type}', 'Painel\OptionsController@destroy');
+    Route::resource('/option', 'Painel\OptionsController');
 
 
 });
