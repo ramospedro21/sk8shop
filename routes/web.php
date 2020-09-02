@@ -49,5 +49,9 @@ Route::prefix('/painel')->group(function(){
     Route::delete('/option/{id}/{type}', 'Painel\OptionsController@destroy');
     Route::resource('/option', 'Painel\OptionsController');
 
+    // ROTA DE CATEGORIAS
+    Route::get('/categories', 'Painel\CategoriesController@view')->middleware('auth');
+    Route::resource('/category', 'Painel\CategoriesController');
+
 
 });

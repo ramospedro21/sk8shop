@@ -43,10 +43,10 @@ Vue.component('users-show-component', require('./components/painel/users/ShowUse
 //COMPONENT DE TIPO DE USUÁRIOS
 Vue.component('user-type-index-component', require('./components/painel/user_types/UserTypeComponent.vue').default);
 
-
 //COMPONENT DE OPÇÕES
 Vue.component('options-index-component', require('./components/painel/options/OptionsComponent.vue').default);
 
+Vue.component('categories-index-component', require('./components/painel/categories/CategoriesComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -1,10 +1,9 @@
 @extends('layouts.painel')
 
 @section('titulo')
-  Usuários
+  Categorias
 @endsection
 
-
 @section('content')
-    <users-index-component> </users-index-component>
+	<categories-index-component> </categories-index-component>
 @endsection
