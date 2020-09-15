@@ -36,7 +36,7 @@ Vue.component('providers-index-component', require('./components/painel/provider
 //COMPONENT DE COMPRAS
 Vue.component('purchases-index-component', require('./components/painel/purchases/PurchasesComponent.vue').default); 
 
-//COMPONENT DE USUARIOS
+//COMPONENTS DE USUARIOS
 Vue.component('users-index-component', require('./components/painel/users/UsersComponent.vue').default); 
 Vue.component('users-show-component', require('./components/painel/users/ShowUserComponent.vue').default); 
 
@@ -46,7 +46,13 @@ Vue.component('user-type-index-component', require('./components/painel/user_typ
 //COMPONENT DE OPÇÕES
 Vue.component('options-index-component', require('./components/painel/options/OptionsComponent.vue').default);
 
+//COMPONENT DE CATEGORIAS
 Vue.component('categories-index-component', require('./components/painel/categories/CategoriesComponent.vue').default);
+
+//COMPONENTS DE PRODUTOS
+Vue.component('products-index-component', require('./components/painel/products/ProductsComponent.vue').default);
+Vue.component('product-component', require('./components/painel/products/ProductComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

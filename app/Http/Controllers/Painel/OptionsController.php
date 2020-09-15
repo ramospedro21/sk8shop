@@ -229,4 +229,27 @@ class OptionsController extends Controller
             ], 500);
         }
     }
+
+    public function all(){
+        try{
+
+            $options = Option::with(['values'])->get();
+            
+            return response()->json($options, 200);
+
+        }catch(\Exception $e){
+            
+            $errorLog = ErrorsLog::create([
+                'description' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'message' => 'Não foi possivel listar as opções',
+                'errors' => [
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine()
+                ]
+            ], 500);
+        }
+    }
 }

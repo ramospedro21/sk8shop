@@ -229,4 +229,27 @@ class StocksController extends Controller
             ], 500);
         }
     }
+
+    public function all(){
+        try{
+
+            $stocks = Stock::get();
+            
+            return response()->json($stocks, 200);
+
+        }catch(\Exception $e){
+            
+            $errorLog = ErrorsLog::create([
+                'description' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'message' => 'Não foi possivel listar os stocks',
+                'errors' => [
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine()
+                ]
+            ], 500);
+        }
+    }
 }

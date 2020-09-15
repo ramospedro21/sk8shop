@@ -31,7 +31,7 @@
                                     <div class="col mt-1">
                                         <div class="form-group">
                                             <label for="input-title" class="form-control-label">Email: </label>
-                                            <input type="text" class="form-control" v-model="user.name" required>
+                                            <input type="text" class="form-control" v-model="user.email" required>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -53,9 +53,9 @@
                                         <h4 class="mb-0">Endereços</h4>
                                     </div>
                                     <div class="col-md-3 text-right">
-                                        <button class="btn btn-outline-secondary btn-sm btn-round" @click="openAddressModal()">
+                                        <a class="btn btn-outline-secondary btn-sm btn-round" @click="openAddressModal()">
                                             <i class="fas fa-plus"></i>
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -70,15 +70,15 @@
                                             <th>Cidade</th>
                                             <th></th>
                                         </tr>
-                                        <tr v-for="address in user.address" :key="address.id">
+                                        <tr v-for="(address, i) in user.address" :key="address.id">
                                             <td>{{ address.street }}</td>
                                             <td>{{ address.district }}</td>
                                             <td>{{ address.street_number }}</td>
                                             <td>{{ address.zipcode }}</td>
                                             <td>{{ address.city }}</td>
                                             <td>
-                                                <i class="fas fa-edit"></i>
-                                                <i class="fas fa-trash ml-2"></i>
+                                                <i class="fas fa-edit" @click="editAddress(address, i)"></i>
+                                                <i class="fas fa-trash ml-2" @click="confirmDeleteAddress(address, i)"></i>
                                             </td>
                                         </tr>
                                     </table>
@@ -214,12 +214,40 @@
             </div>
         </div>
     </div>
+    
+    <!-- MODAL DE EXCLUSÃO DE ENDEREÇO -->
+    <div class="modal fade bd-example-modal-sm" id="deleteAddressModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userTypeModalLabel">Exclusão de Endereço</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form @submit.prevent="deleteAddress()">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="text-primary h4">Deseja realmente excluir o Endereço: "{{ address.street }}"?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-success" :disabled="loading.buttonDeleteAddress == true">Sim, apagar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
 <script>
 
 import { showSuccessToast, showErrorToast, showInfoToast } from '../../../helpers/animations';
+import moment from 'moment';
 
 export default {
     props: ['_user'],
@@ -249,6 +277,7 @@ export default {
                 street: '',
                 street_number: '',
                 zipcode: '',
+                index: null
             },
 
             loading: {
@@ -263,6 +292,7 @@ export default {
     methods: {
         update: async function(){
             
+
             this.loading.buttonUser = true;
 
             try{
@@ -302,6 +332,7 @@ export default {
         },
 
         openAddressModal: function(){
+
             this.address = {
                 city: '',
                 complement: '',
@@ -312,6 +343,16 @@ export default {
                 street: '',
                 street_number: '',
                 zipcode: '',
+            }
+
+            $("#addressModal").modal('show');
+        },
+
+        editAddress: function(address, i){
+
+            this.address = {
+                ...address,
+                index: i
             }
 
             $("#addressModal").modal('show');
@@ -341,6 +382,8 @@ export default {
 
         pushAddress: function(){
 
+            if(this.address.index != null) this.user.address.splice(this.address.splice, 1)
+
             this.user.address.push({
                 city: this.address.city,
                 complement: this.address.complement,
@@ -355,6 +398,37 @@ export default {
 
             $("#addressModal").modal('hide');
         },
+
+        confirmDeleteAddress: function(address, index){
+            this.address = {
+                ...address,
+                index: index
+            }
+
+            $("#deleteAddressModal").modal('show');
+        },
+
+        deleteAddress: function(){
+
+            this.loading.buttonDeleteAddress = true;
+
+            try{
+
+                this.user.address.splice(this.address.index, 1);
+
+                showSuccessToast('Endereço apagado com sucesso.');
+
+                this.loading.buttonDeleteAddress = false;
+                
+                $("#deleteAddressModal").modal('hide');
+
+            }catch(e){
+                this.loading.buttonDeleteAddress = false;
+
+                showErrorToast('Não foi possivel apagar o endereço');
+            }
+        }
+
     },
 
     mounted(){
@@ -371,6 +445,8 @@ export default {
                 phone: '',
                 gender: null,
             }
+        }else{
+            this.user.details.birthdate = moment(this.user.details.birthdate).format('DD-MM-YYYY');
         }
         this.getUserTypes();
     }

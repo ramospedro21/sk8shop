@@ -25,6 +25,7 @@ Route::prefix('/painel')->group(function(){
     // ROTA DE ESTOQUES
     Route::get('/stocks', 'Painel\StocksController@view')->middleware('auth');
     Route::resource('/stock', 'Painel\StocksController');
+    Route::get('/stocks/all', 'Painel\StocksController@all');
 
     // ROTA DE FORNECEDORES
     Route::get('/providers', 'Painel\ProvidersController@view')->middleware('auth');
@@ -48,10 +49,15 @@ Route::prefix('/painel')->group(function(){
     Route::get('/options', 'Painel\OptionsController@view')->middleware('auth');
     Route::delete('/option/{id}/{type}', 'Painel\OptionsController@destroy');
     Route::resource('/option', 'Painel\OptionsController');
+    Route::get('/options/all', 'Painel\OptionsController@all');
 
     // ROTA DE CATEGORIAS
     Route::get('/categories', 'Painel\CategoriesController@view')->middleware('auth');
     Route::resource('/category', 'Painel\CategoriesController');
 
+    // ROTA DE PRODUTOS
+    Route::get('/products', 'Painel\ProductsController@view')->middleware('auth');
+    Route::get('/product/new', 'Painel\ProductsController@create');
+    Route::resource('/product', 'Painel\ProductsController');
 
 });

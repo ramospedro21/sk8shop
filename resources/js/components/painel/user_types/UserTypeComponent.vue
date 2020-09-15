@@ -27,8 +27,8 @@
                                 <th scope="row">{{ ut.id }}</th>
                                 <td>{{ ut.title }}</td>
                                 <td>
-                                    <i class="fas fa-edit" @click="edit(ut)"></i>
-                                    <i class="fas fa-trash ml-4" @click="deleteUserType(ut)"></i>
+                                    <i class="pointer fas fa-edit" @click="edit(ut)"></i>
+                                    <i class="pointer fas fa-trash ml-4" @click="deleteUserType(ut)"></i>
                                 </td>
                             </tr>
                         </table>
@@ -39,7 +39,6 @@
     </div>
 
     <!-- MODAL DE CADASTRO E ATUALIZAÇÃO -->
-  
     <div class="modal fade" id="userTypeModal" tabindex="-1" role="dialog" aria-labelledby="userTypeModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -319,5 +318,7 @@ export default {
 </script>
 
 <style>
-
+    .pointer{
+        cursor: pointer;
+    }
 </style>

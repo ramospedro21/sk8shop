@@ -31,7 +31,7 @@
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.user_type.title }}</td>
                                 <td>
-                                    <i class="fas fa-trash" @click="openDeleteModal(user)"></i>
+                                    <i class="pointer fas fa-trash" @click="openDeleteModal(user)"></i>
                                 </td>
                             </tr>
                         </table>
@@ -40,6 +40,7 @@
             </div>
         </div>
     </div>
+    
     <!-- MODAL DE CADASTRO DE USUÁRIO -->
     <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">

@@ -18,17 +18,13 @@ class Product extends Model
      * @property boolean $enabled
      */
 
-    protected $fillable = [
-        'title',
-        'slug',
-        'short_description',
-        'description',
-        'installments',
-        'width',
-        'depth',
-        'heigth',
-        'enabled',
-    ];
+    public const PER_PAGE = 16;
+
+    public const ENABLED = 0;
+    public const NOT_ENABLED = 1;
+
+    protected $fillable = [ 'title', 'slug', 'short_description', 'description', 'installments', 'width', 'depth',
+                            'heigth', 'enabled'];
 
     public function images()
     {
@@ -48,5 +44,10 @@ class Product extends Model
     public function purchases()
     {
         return $this->hasMany('App\Models\ProductPurchase', 'product_id', 'id');
+    }
+
+    public function stocks()
+    {
+        return $this->hasMany('App\Models\ProductStock', 'product_id', 'id');
     }
 }
