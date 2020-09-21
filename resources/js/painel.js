@@ -12,7 +12,16 @@ require('./helpers/cep');
 
 
 const VueInputMask = require('vue-inputmask').default
-Vue.use(VueInputMask)
+Vue.use(VueInputMask);
+
+Vue.filter('money', function (value) {
+
+    if(value == 'Erro') return value;
+
+    let val = (value/1).toFixed(2).replace('.', ',');
+    return 'R$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+});
 
 /**
  * The following block of code may be used to automatically register your
