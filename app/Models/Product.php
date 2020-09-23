@@ -24,7 +24,7 @@ class Product extends Model
     public const NOT_ENABLED = 1;
 
     protected $fillable = [ 'title', 'slug', 'short_description', 'description', 'installments', 'width', 'depth',
-                            'heigth', 'enabled'];
+                            'heigth', 'enabled', 'self_delivery'];
 
     public function images()
     {

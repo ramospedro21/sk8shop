@@ -12,6 +12,11 @@ class VariantValue extends Model
      * @property int $option_value_id
     */
 
+    protected $fillable = [
+        'variant_id',
+        'option_value_id',
+    ];
+
     public function variant()
     {
         return $this->belongsTo('App\Models\Variant', 'variant_id', 'id');

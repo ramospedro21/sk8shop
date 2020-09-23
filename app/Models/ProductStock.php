@@ -13,9 +13,14 @@ class ProductStock extends Model
     */
 
     protected $fillable = [
-        'id',
-        'product_id',
         'stock_id',
+        'product_id',
+        'variant_id',
+        'quantity',
+        'price',
+        'promote_price',
+        'factory_price',
+        'reserved',
     ];
 
     public function product()

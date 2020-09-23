@@ -9,6 +9,15 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
+    "dependencies": {
+        "increase-memory-limit": "^1.0.7",
+        "material-dashboard": "^2.1.0",
+        "moment": "^2.27.0",
+        "v-money": "^0.8.1",
+        "vue-advanced-cropper": "^0.17.3",
+        "vue-inputmask": "^0.2.1",
+        "vue-toasted": "^1.1.28"
+    },
     "devDependencies": {
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
@@ -22,12 +31,5 @@
         "sass-loader": "7.*",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.10"
-    },
-    "dependencies": {
-        "material-dashboard": "^2.1.0",
-        "moment": "^2.27.0",
-        "v-money": "^0.8.1",
-        "vue-inputmask": "^0.2.1",
-        "vue-toasted": "^1.1.28"
     }
 }

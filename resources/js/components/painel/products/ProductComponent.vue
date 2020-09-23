@@ -2,7 +2,7 @@
 <div class="container mt-5 pt-5">
     <div class="row justify-content-center">
         <div class="container-fluid mt-5">
-            <!-- <form @submit.prevent="update()"> -->
+            <form @submit.prevent="product.id ? update() : store()">
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card shadow">
@@ -155,29 +155,48 @@
                         <div class="card shadow">
                             <div class="card-header border-0">
                                 <div class="row align-items-center">
-                                    <div class="col-8">
+                                    <div class="col-7">
                                         <h4 class="mb-0">Imagens</h4>
                                     </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn btn-success btn-sm btn-round">
-                                            <i class="fas fa-plus mr-2"></i>Novo
-                                        </button>
+                                    <div class="col-3 text-right">
+                                        <div class="button-wrapper">
+                                            <span class="btn btn-sm btn-success button" @click="$refs.file.click()">
+                                                <input type="file" ref="file" @change="uploadImage($event)" accept="image/*">
+                                                <i class="fas fa-plus mr-2" /> Adicionar
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                            <div class="carousel-inner">
+                                                <div :class="[i == 0 ? 'active' : '', 'carousel-item', 'text-center']" v-for="(image, i) in product.images" :key="image.id">
+                                                    <img class="d-block w-100 img-fluid" :src="image.url" alt="First slide">
+                                                    <button class="btn btn-outline-danger excluir"  @click="product.images.splice(i, 1)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-success btn-lg btn-block">Salvar</button>
+                        <button type="submit" class="btn btn-success btn-lg btn-block">Salvar</button>
                     </div>
                 </div>
-            <!-- </form> -->
+            </form>
         </div>
     </div>
     
@@ -199,7 +218,7 @@
                                     <div class="card-header">
                                         <div class="row align-items-center">
                                             <div class="col">
-                                                <h4 class="mb-0">Variações</h4>
+                                                <h4 class="mb-0 font-weight-bold">Variações</h4>
                                             </div>
                                             <div class="col text-right">
                                                 <button type="button" class="btn btn-sm btn-success" @click="newOption()">
@@ -249,14 +268,13 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
                         <div class="row">
                             <div class="col">
                                 <div class="card-shadow">
                                     <div class="card-header">
                                         <div class="row align-items-center">
                                             <div class="col">
-                                                <h4 class="mb-0">Estoques</h4>
+                                                <h4 class="mb-0 font-weight-bold">Estoques</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -271,6 +289,7 @@
                                                             <th v-if="variant.id">Reservado</th>
                                                             <th>Compra</th>
                                                             <th>Venda</th>
+                                                            <th>Preço Promocional</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -292,6 +311,9 @@
                                                             <td>
                                                                 <money v-bind="money" class="form-control" v-model="stock.price"/>
                                                             </td>
+                                                            <td>
+                                                                <money v-bind="money" class="form-control" v-model="stock.promote_price"/>
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -307,7 +329,7 @@
                                     <div class="card-header">
                                         <div class="row align-items-center">
                                             <div class="col">
-                                                <h4 class="mb-0">Especificações</h4>
+                                                <h4 class="mb-0 font-weight-bold">Especificações</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -339,26 +361,67 @@
             </div>
         </div>
     </div>
+    <!-- MODAL PARA ADICIONAR IMAGENS -->
+    <div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="addImageLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addImageLabel">Adicionar Imagem</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div v-if="errorImage" class="alert alert-warning" role="alert">
+                        {{ errorImage }}
+                    </div>
+                    <Cropper
+                        classname="upload-example-cropper"
+                        :restrictions="pixelsRestriction"
+                        :minHeight="200"
+                        :minWidth="200"
+                        :src="image"
+                        ref="cropper"
+                    />
+                        <!-- :stencil-props="{
+                            aspectRatio: 10/12
+                        }" -->
+                </div>
+                <div class="modal-footer bg-white">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" @click="crop()" class="btn btn-success">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
 <script>
 
 import { showSuccessToast, showErrorToast, showInfoToast } from '../../../helpers/animations';
+import Vue from 'vue';
 import { Money } from 'v-money';
+import { Cropper } from 'vue-advanced-cropper';
 
 export default {
+    components: {
+        Cropper
+    },
 
     data(){
         return{
             product: {
                 enabled: null,
                 self_delivery: null,
-                variants: []
+                variants: [],
+                images: []
             },
+
             variant:{
                 options: [],
-                stocks: []
+                stocks: [],
             },
 
             options: [],
@@ -372,6 +435,8 @@ export default {
                 precision: 2,
                 masked: false /* doesn't work with directive */
             },
+            errorImage: null,
+            image: null,
         }
     },
 
@@ -380,6 +445,7 @@ export default {
         openVariantModal: async function(){
 
             try{
+                
                 $("#variantModal").modal('show');
 
                 await this.getOptions();
@@ -392,8 +458,8 @@ export default {
                         factory_price: stock.factory_price,
                         price: stock.price,
                         quantity: stock.quantity ? stock.quantity : 0,
-                        saleprice: stock.saleprice,
-                        reserved: stock.reserved,
+                        promote_price: stock.promote_price  ? stock.promote_price : 0,
+                        reserved: stock.reserved  ? stock.reserved : 0,
                     })
                 });
 
@@ -419,7 +485,9 @@ export default {
 
         getStocks: async function(){
             try{
-                
+
+                this.stocks = [];
+
                 const {data} = await axios.get('/painel/stocks/all');
 
                 this.stocks = data;
@@ -466,17 +534,106 @@ export default {
                 stocks: []
             };
 
-        }
+        },
+
+        uploadImage(event) {
+			// Reference to the DOM input element
+            var input = event.target;
+            
+			// Ensure that you have a file before attempting to read it
+			if (input.files && input.files[0]) {
+
+					// create a new FileReader to read this image and convert to base64 format
+                    var reader = new FileReader();
+                    
+					// Define a callback function to run, when FileReader finishes its job
+					reader.onload = (e) => {
+
+							// Read image as base64 and set to imageData
+							this.image = e.target.result;
+                    }
+                    
+					// Start the reader job - read file as a data url (base64 format)
+					reader.readAsDataURL(input.files[0]);
+            }
+            $("#addImage").modal({ backdrop: 'static', keyboard: false });
+        },
+
+		pixelsRestriction({minWidth, minHeight, maxWidth, maxHeight, imageWidth, imageHeight}) {
+            
+            this.errorImage = null;
+            
+            // se a imagem for menor que 200px
+            if(imageHeight < 200 || imageWidth < 200){
+                this.errorImage = "Essa imagem é muito pequena. Para melhor visualização do produto, opte por imagens com dimensões superiores a 600x600 px";
+                return false;
+            } 
+
+            // se a imagem for maior que 200px e menor que 600px
+            else if(imageHeight < 600 || imageWidth < 600) this.errorImage = "Dica: Para melhor visualização do produto, opte por imagens com dimensões superiores a 600px x 600px";
+            
+            return {
+				minWidth: minWidth,
+				minHeight: minHeight,
+				maxWidth: Math.min(imageWidth, maxWidth),
+				maxHeight: Math.min(imageHeight, maxHeight),
+            }
+            
+        },
+
+		crop() {
+
+			const {coordinates, canvas} = this.$refs.cropper.getResult()
+            this.coordinates = coordinates
+            
+            this.product.images.push({
+                id: Date.now(),
+                url: canvas.toDataURL()
+            });
+
+            $("#addImage").modal("hide");
+
+            this.image = null
+
+		},
+
+        store: async function(){
+            try{
+
+                const {data} = await axios.post('/painel/product', {
+                    product: this.product
+                });
+
+            }catch(e){
+                console.log(e);
+            }
+        },
+        
 
     },
 
     mounted() {
 
-    }
+    },
 
 }
 </script>
 
 <style>
+    .button input {
+        display: none;
+    }
+
+    .img-wrap {
+        position: relative;
+    }
+
+    .img-wrap .close {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        z-index: 100;
+    }
 
 </style>
+
