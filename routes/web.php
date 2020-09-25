@@ -54,7 +54,7 @@ Route::prefix('/painel')->group(function(){
     // ROTA DE CATEGORIAS
     Route::get('/categories', 'Painel\CategoriesController@view')->middleware('auth');
     Route::resource('/category', 'Painel\CategoriesController');
-
+    
     // ROTA DE PRODUTOS
     Route::get('/products', 'Painel\ProductsController@view')->middleware('auth');
     Route::get('/product/new', 'Painel\ProductsController@create');

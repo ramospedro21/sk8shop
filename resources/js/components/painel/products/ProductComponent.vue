@@ -45,10 +45,36 @@
                             <div class="card-header border-0">
                                 <div class="row align-items-center">
                                     <div class="col-md-9">
+                                        <h4 class="mb-0">Categorias</h4>
+                                    </div>
+                                    <div class="col-md-3 text-right">
+                                        <button type="button" class="btn btn-success btn-sm btn-round" @click="openCategoriesModal()">
+                                            <i class="fas fa-plus mr-2"></i>Novo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tr v-for="(category, i) in product.categories" :key="'category' + category.id">
+                                            <td>{{ category.title }}</td>
+                                            <td>
+                                                <i class="fas fa-trash" @click="product.categories.splice(i, 1)"></i>
+                                            </td>
+                                        </tr>   
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow mt-1">
+                            <div class="card-header border-0">
+                                <div class="row align-items-center">
+                                    <div class="col-md-9">
                                         <h4 class="mb-0">Variações</h4>
                                     </div>
                                     <div class="col-md-3 text-right">
-                                        <button class="btn btn-success btn-sm btn-round" @click="openVariantModal()">
+                                        <button type="button" class="btn btn-success btn-sm btn-round" @click="openVariantModal()">
                                             <i class="fas fa-plus mr-2"></i>Novo
                                         </button>
                                     </div>
@@ -175,7 +201,7 @@
                                             <div class="carousel-inner">
                                                 <div :class="[i == 0 ? 'active' : '', 'carousel-item', 'text-center']" v-for="(image, i) in product.images" :key="image.id">
                                                     <img class="d-block w-100 img-fluid" :src="image.url" alt="First slide">
-                                                    <button class="btn btn-outline-danger excluir"  @click="product.images.splice(i, 1)">
+                                                    <button type="button" class="btn btn-outline-danger excluir"  @click="product.images.splice(i, 1)">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </div>
@@ -395,6 +421,57 @@
             </div>
         </div>
     </div>
+    
+    <div class="modal fade" id="categoriesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Categorias</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form @submit.prevent="newCategory()">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <select class="form-control" v-model="category.category_father">
+                                        <option :value="{children:[]}">- Selecione -</option>
+                                        <option v-for="category in categories" :key="category.id" :value="category">{{ category.title }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" v-if="category.category_father.children.length > 0">
+                            <div class="col">
+                                <div class="form-group focused">
+                                    <select class="form-control form-control-alternative" v-model="category.category_son">
+                                        <option :value="{children:[]}">- Selecione -</option>
+                                        <option v-for="category in category.category_father.children" :key="category.id" :value="category">{{ category.title }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" v-if="category.category_son.children.length > 0">
+                            <div class="col">
+                                <div class="form-group focused">
+                                    <select class="form-control form-control-alternative" v-model="category.category_grandchild">
+                                        <option :value="{}">- Selecione -</option>
+                                        <option v-for="category in category.category_son.children" :key="category.id" :value="category">{{ category.title }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -416,7 +493,8 @@ export default {
                 enabled: null,
                 self_delivery: null,
                 variants: [],
-                images: []
+                images: [],
+                categories: [],
             },
 
             variant:{
@@ -424,8 +502,19 @@ export default {
                 stocks: [],
             },
 
+            category: {
+                category_father: {
+                    children: []
+                },
+                category_son: {
+                    children: []
+                },
+                category_grandchild: { }
+            },
+
             options: [],
             stocks: [],
+            categories: [],
             
             money: {
                 decimal: ',',
@@ -468,6 +557,28 @@ export default {
                 console.log(e);
                 
             }
+        },
+
+        openCategoriesModal: async function(){
+
+            await this.getCategories();
+
+            $("#categoriesModal").modal('show');
+
+        },
+
+        getCategories: async function(){
+
+            try{
+
+                const {data} = await axios.get('/painel/category');
+
+                this.categories = data;
+
+            }catch(e){
+                console.log(e)
+            }
+
         },
 
         getOptions: async function(){
@@ -533,6 +644,40 @@ export default {
                 options: [],
                 stocks: []
             };
+
+        },
+
+        newCategory: function(){
+
+            var title = this.category.category_father.title;
+            var id = this.category.category_father.id;
+
+            if(this.category.category_son.id){
+                title = title + ' / ' + this.category.category_son.title;
+                id = this.category.category_son.id;
+            }
+
+            if(this.category.category_grandchild.id){
+                title = title + ' / ' + this.category.category_grandchild.title;
+                id = this.category.category_grandchild.id;
+            }
+
+            this.product.categories.push({
+                id: id,
+                title: title
+            });
+
+            $("#categoriesModal").modal("hide");
+
+            this.category = {
+                category_father: {
+                    children: []
+                },
+                category_son: {
+                    children: []
+                },
+                category_grandchild: { }
+            };  
 
         },
 

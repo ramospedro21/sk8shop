@@ -233,7 +233,7 @@ export default {
 
                 showSuccessToast('Categoria cadastrada com sucesso.');
 
-                $("#addCategory").modal('hide');
+                $("#categoryModal").modal('hide');
 
 
             }catch(e){

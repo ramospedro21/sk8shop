@@ -19,7 +19,10 @@ class CreateVariantsTable extends Migration
             $table->decimal('weight', 13, 9);
             $table->string('sku');
             $table->timestamps();
+            
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
+
     }
 
     /**

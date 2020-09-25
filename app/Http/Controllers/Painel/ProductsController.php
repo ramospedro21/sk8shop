@@ -14,6 +14,7 @@ use App\Models\Variant;
 use App\Models\VariantValue;
 use App\Models\ProductStock;
 use App\Models\ProductImage;
+use App\Models\ProductCategory;
 
 use File;
 
@@ -196,8 +197,18 @@ class ProductsController extends Controller
                             'product_id' => $product->id,
                             'url' => url('images/produtos/'.$product->id.'/'.$name),
                         ]);
+                    }
+                }
 
-                        dd($productImage);
+                if($request->input('product.categories')){
+                    
+                    foreach($request->input('product.categories') as $category){
+
+                        $category = ProductCategory::create([
+                            'product_id' => $product->id,
+                            'category_id' => $category['id']
+                        ]);
+
                     }
                 }
 
