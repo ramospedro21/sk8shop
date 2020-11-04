@@ -13,6 +13,8 @@ class Variant extends Model
      * @property string $sku
      */
 
+    public const PER_PAGE = 16;
+
     protected $fillable = [
         'id',
         'product_id',
@@ -28,5 +30,20 @@ class Variant extends Model
     public function purchases()
     {
         return $this->hasMany('App\Models\ProductPurchase', 'variant_id', 'id');
+    }
+    
+    public function values()
+    {
+        return $this->belongsToMany('App\Models\OptionValue', 'variant_values', 'variant_id', 'option_value_id');
+    }
+
+    public function stocks()
+    {
+        return $this->hasMany('App\Models\ProductStock', 'variant_id', 'id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany('App\Models\VariantImage', 'variant_id', 'id');
     }
 }

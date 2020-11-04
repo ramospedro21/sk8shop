@@ -26,7 +26,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="name" class="form-control-label">Descrição Curta: *</label>
-                                            <input type="text" class="form-control" v-model="product.short_desc">
+                                            <input type="text" class="form-control" v-model="product.short_description">
                                         </div>
                                     </div>
                                 </div>
@@ -34,36 +34,10 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="name" class="form-control-label">Descrição: *</label>
-                                            <textarea cols="30" rows="10" v-model="product.desc" class="form-control">
+                                            <textarea cols="30" rows="10" v-model="product.description" class="form-control">
                                             </textarea>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card shadow">
-                            <div class="card-header border-0">
-                                <div class="row align-items-center">
-                                    <div class="col-md-9">
-                                        <h4 class="mb-0">Categorias</h4>
-                                    </div>
-                                    <div class="col-md-3 text-right">
-                                        <button type="button" class="btn btn-success btn-sm btn-round" @click="openCategoriesModal()">
-                                            <i class="fas fa-plus mr-2"></i>Novo
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tr v-for="(category, i) in product.categories" :key="'category' + category.id">
-                                            <td>{{ category.title }}</td>
-                                            <td>
-                                                <i class="fas fa-trash" @click="product.categories.splice(i, 1)"></i>
-                                            </td>
-                                        </tr>   
-                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -93,15 +67,29 @@
                                         <tr v-for="(variant, i) in product.variants" :key="'variant' + variant.id">
                                             <td>{{ variant.sku }}</td>
                                             <td>
-                                                <span v-for="option in variant.options_values" :key="option.id">
+                                                <span v-for="option in variant.values" :key="option.id">
                                                     {{ option.title }}; 
                                                 </span>
                                             </td>
-                                            <td>{{ variant.stocks[0].quantity }}</td>
-                                            <td>{{ variant.stocks[0].price }}</td>
                                             <td>
-                                                <i class="fas fa-edit" @click="openEditVariant(variant, i)"></i>
-                                                <i class="fas fa-trash" @click="openDeleteVariant(variant, i)"></i>
+                                                <span v-if="variant.stocks.length > 0">
+                                                    {{ variant.stocks[0].quantity }}
+                                                </span>
+                                                <span v-else>
+                                                    0
+                                                </span> 
+                                            </td>
+                                            <td>
+                                                <span v-if="variant.stocks.length > 0">
+                                                    {{ variant.stocks[0].price }}
+                                                </span>
+                                                <span v-else>
+                                                    0
+                                                </span> 
+                                            </td>
+                                            <td>
+                                                <i class="fas fa-edit pointer" @click="openEditVariant(variant, i)"></i>
+                                                <i class="fas fa-trash pointer" @click="openDeleteVariant(variant, i)"></i>
                                             </td>
                                         </tr>   
                                     </table>
@@ -181,41 +169,52 @@
                         <div class="card shadow">
                             <div class="card-header border-0">
                                 <div class="row align-items-center">
-                                    <div class="col-7">
-                                        <h4 class="mb-0">Imagens</h4>
+                                    <div class="col-md-8">
+                                        <h4 class="mb-0">Categorias</h4>
                                     </div>
-                                    <div class="col-3 text-right">
-                                        <div class="button-wrapper">
-                                            <span class="btn btn-sm btn-success button" @click="$refs.file.click()">
-                                                <input type="file" ref="file" @change="uploadImage($event)" accept="image/*">
-                                                <i class="fas fa-plus mr-2" /> Adicionar
-                                            </span>
-                                        </div>
+                                    <div class="col-md-4 text-right">
+                                        <button type="button" class="btn btn-success btn-sm btn-round" @click="openCategoriesModal()">
+                                            <i class="fas fa-plus mr-2"></i>Novo
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                                            <div class="carousel-inner">
-                                                <div :class="[i == 0 ? 'active' : '', 'carousel-item', 'text-center']" v-for="(image, i) in product.images" :key="image.id">
-                                                    <img class="d-block w-100 img-fluid" :src="image.url" alt="First slide">
-                                                    <button type="button" class="btn btn-outline-danger excluir"  @click="product.images.splice(i, 1)">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Previous</span>
-                                            </a>
-                                            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Next</span>
-                                            </a>
-                                        </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tr v-for="(category, i) in product.categories" :key="'category' + category.id">
+                                            <td>{{ !category.title ? category.category.title : category.title }}</td>
+                                            <td>
+                                                <i class="fas fa-trash pointer" @click="product.categories.splice(i, 1)"></i>
+                                            </td>
+                                        </tr>   
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow">
+                            <div class="card-header border-0">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h4 class="mb-0">Cupons de desconto</h4>
                                     </div>
+                                    <div class="col-md-4 text-right">
+                                        <button type="button" class="btn btn-success btn-sm btn-round" @click="openCouponsModal()">
+                                            <i class="fas fa-plus mr-2"></i>Novo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <!-- <tr v-for="(category, i) in product.categories" :key="'category' + category.id">
+                                            <td>{{ !category.title ? category.category.title : category.title }}</td>
+                                            <td>
+                                                <i class="fas fa-trash pointer" @click="product.categories.splice(i, 1)"></i>
+                                            </td>
+                                        </tr>    -->
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -228,7 +227,7 @@
     
     <!-- Modal -->
     <div class="modal fade" id="variantModal" tabindex="-1" role="dialog" aria-labelledby="variantModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-image modal-lg">
             <div class="modal-content">
                 <div class="modal-header ">
                     <h5 class="modal-title" id="variantModalLabel">{{ variant.id ? 'Editar' : 'Adicionar' }} Variação</h5>
@@ -237,7 +236,7 @@
                     </button>
                 </div>
                 <form @submit.prevent="variant.id ? editVariant(variant.index) : addVariant()">
-                    <div class="modal-body">
+                    <div class="modal-body-image">
                         <div class="row">
                             <div class="col">
                                 <div class="card-shadow">
@@ -378,6 +377,53 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="card-shadow">
+                                    <div class="card-header">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <h4 class="mb-0 font-weight-bold">Imagens</h4>
+                                            </div>
+                                            <div class="col text-right">
+                                                <div class="button-wrapper">
+                                                    <span class="btn btn-sm btn-success button" @click="$refs.file.click()">
+                                                        <input type="file" ref="file" @change="uploadImage($event)" accept="image/*">
+                                                        <i class="fas fa-plus mr-2" /> Adicionar
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4 div-images"></div>
+                                            <div class="col-md-4 div-images">
+                                                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                                    <div class="carousel-inner">
+                                                        <div :class="[i == 0 ? 'active' : '', 'carousel-item', 'text-center']" v-for="(image, i) in variant.images" :key="image.id">
+                                                            <img class="d-block img-variant" :src="image.url" alt="First slide">
+                                                            <button type="button" class="btn btn-outline-danger excluir"  @click="variant.images.splice(i, 1)">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 div-images"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer ">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -410,9 +456,6 @@
                         :src="image"
                         ref="cropper"
                     />
-                        <!-- :stencil-props="{
-                            aspectRatio: 10/12
-                        }" -->
                 </div>
                 <div class="modal-footer bg-white">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -487,19 +530,21 @@ export default {
         Cropper
     },
 
+    props: ['_product'],
+
     data(){
         return{
             product: {
                 enabled: null,
                 self_delivery: null,
                 variants: [],
-                images: [],
                 categories: [],
             },
 
             variant:{
                 options: [],
                 stocks: [],
+                images: [],
             },
 
             category: {
@@ -551,6 +596,72 @@ export default {
                         reserved: stock.reserved  ? stock.reserved : 0,
                     })
                 });
+
+            }catch(e){
+
+                console.log(e);
+                
+            }
+        },
+
+        openEditVariant: async function(variant, i){
+            try{
+                
+                await this.getOptions();
+                await this.getStocks();
+
+                this.variant = {
+                    ...variant,
+                    options: [],
+                    index: i,
+                }
+
+                $("#variantModal").modal('show');
+
+                
+                let self = this;
+                
+                variant.values.forEach(value => {
+
+                    let id = value.option ? value.option.id : value.option_father.id;
+
+                    let option = self.options.find(option => option.id === id)
+                    
+                    if(option){
+
+                        let value = option.values.find(value => value.id === value.id)
+                        
+                        self.variant.options.push({
+                            id: Date.now() + value.id,
+                            option_father: option,
+                            value: value
+                        });
+                        
+                    } else {
+
+                        console.log("erro", variant.id)
+
+                    }
+                    
+                });
+
+                this.stocks.map(stock => {
+                    
+                    let s = self.variant.stocks.find(stockProduct => stockProduct.stock.id === stock.id);
+                    
+                    if(!s){
+                        self.variant.stocks.push({
+                            id: stock.id,
+                            title: stock.title,
+                            factory_price: stock.factory_price,
+                            price: stock.price,
+                            quantity: stock.quantity ? stock.quantity : 0,
+                            saleprice: stock.saleprice,
+                            reserved: stock.reserved,
+                        })
+                    }
+                });
+
 
             }catch(e){
 
@@ -631,18 +742,49 @@ export default {
             });
 
             this.product.variants.push({
-                id: Date.now(),
                 sku: this.variant.sku,
                 weight: this.variant.weight > 0 ? this.variant.weight : parseFloat(0.5),
-                options_values: this.variant.options,
+                values: this.variant.options,
                 stocks: this.variant.stocks,
+                images: this.variant.images,
             });
 
             $("#variantModal").modal("hide");
 
             this.variant = {
                 options: [],
-                stocks: []
+                stocks: [],
+                images: [],
+            };
+
+        },
+
+        editVariant: function(){
+            
+            this.product.variants.splice(this.variant.index, 0);
+
+            this.variant.options.map(option => {
+                option.id = option.option_father.id;
+                option.title = option.option_father.title;
+                option.value_id = option.value.id;
+                delete option.option_father.values;
+                return option;
+            });
+
+            this.product.variants.push({
+                sku: this.variant.sku,
+                weight: this.variant.weight > 0 ? this.variant.weight : parseFloat(0.5),
+                values: this.variant.options,
+                stocks: this.variant.stocks,
+                images: this.variant.images,
+            });
+
+            $("#variantModal").modal("hide");
+            
+            this.variant = {
+                options: [],
+                stocks: [],
+                images: [],
             };
 
         },
@@ -731,7 +873,7 @@ export default {
 			const {coordinates, canvas} = this.$refs.cropper.getResult()
             this.coordinates = coordinates
             
-            this.product.images.push({
+            this.variant.images.push({
                 id: Date.now(),
                 url: canvas.toDataURL()
             });
@@ -753,11 +895,26 @@ export default {
                 console.log(e);
             }
         },
+
+        update: async function(){
+            try{
+                
+                const {data} = await axios.patch(`/painel/product/${this.product.id}`, {
+                    product: this.product
+                });
+
+
+            }catch(e){
+                console.log(e);
+            }
+        }
         
 
     },
 
     mounted() {
+        
+        if(this._product != null) this.product = this._product;
 
     },
 
@@ -779,6 +936,15 @@ export default {
         left: 3px;
         z-index: 100;
     }
-
+    .div-images .img-variant{
+        max-height: 200px;
+    }
+    /* .modal-image{
+        overflow-y: scroll !important
+    }
+    .modal-body-image{
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+    } */
 </style>
 

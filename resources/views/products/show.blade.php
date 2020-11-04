@@ -5,5 +5,7 @@
 @endsection
 
 @section('content')
-	<product-component> </product-component>
+    <product-component 
+        :_product="{{ json_encode($product) }}">
+    </product-component>
 @endsection

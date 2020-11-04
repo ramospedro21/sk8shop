@@ -9974,3 +9974,7 @@ h3 {
 #login {
   background-image: url("../images/login-background.jpg") !important;
 }
+
+.card-header-login {
+  background: #151515;
+}

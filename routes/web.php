@@ -60,4 +60,12 @@ Route::prefix('/painel')->group(function(){
     Route::get('/product/new', 'Painel\ProductsController@create');
     Route::resource('/product', 'Painel\ProductsController');
 
+    // ROTA DE EMBALAGENS
+    Route::get('/boxes', 'Painel\BoxesController@view')->middleware('auth');
+    Route::resource('/box', 'Painel\BoxesController');
+
+    // ROTA DE CUPONS DE DESCONTO
+    Route::get('/coupons', 'Painel\CouponsController@view')->middleware('auth');
+    Route::resource('/coupon', 'Painel\CouponsController');
+
 });

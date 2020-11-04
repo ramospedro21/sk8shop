@@ -26,14 +26,9 @@ class Product extends Model
     protected $fillable = [ 'title', 'slug', 'short_description', 'description', 'installments', 'width', 'depth',
                             'heigth', 'enabled', 'self_delivery'];
 
-    public function images()
-    {
-        return $this->hasMany('App\Models\ProductImage', 'product_id', 'id');
-    }
-
     public function categories()
     {
-        return $this->hasMany('App\Models\Category', 'product_id', 'id');
+        return $this->hasMany('App\Models\ProductCategory', 'product_id', 'id');
     }
     
     public function coupons()
@@ -49,5 +44,10 @@ class Product extends Model
     public function stocks()
     {
         return $this->hasMany('App\Models\ProductStock', 'product_id', 'id');
+    }
+
+    public function variants()
+    {
+        return $this->hasMany('App\Models\Variant', 'product_id', 'id');
     }
 }

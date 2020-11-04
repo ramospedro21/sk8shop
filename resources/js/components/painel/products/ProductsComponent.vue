@@ -20,15 +20,22 @@
                         	<table class="table">
                                 <tr>
                                     <th>Nome</th>
-                                    <th>Variação</th>
                                     <th>QTD. Disp.</th>
                                     <th>Mostrando no site?</th>
                                     <th></th>
                                 </tr>
                                 <tr v-for="product in products.data" :key="product.id">
-                                    <td>{{ product.title }}</td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>
+                                        <a :href="`/painel/product/${product.id}`">
+                                            {{ product.title }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ product.quantity }}
+                                    </td>
+                                    <td>
+                                        {{ product.enabled }}
+                                    </td>
                                     <td></td>
                                 </tr>
                             </table>

@@ -6,7 +6,11 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+// @import '~material-dashboard/assets/scss/material-dashboard';
 
 #login{
     background-image: url('../images/login-background.jpg') !important;
+}
+.card-header-login{
+    background: #151515;
 }

@@ -62,6 +62,11 @@ Vue.component('categories-index-component', require('./components/painel/categor
 Vue.component('products-index-component', require('./components/painel/products/ProductsComponent.vue').default);
 Vue.component('product-component', require('./components/painel/products/ProductComponent.vue').default);
 
+//COMPONENT DE EMBALAGENS
+Vue.component('boxes-index-component', require('./components/painel/boxes/BoxesComponent.vue').default);
+
+Vue.component('coupons-index-component', require('./components/painel/coupons/CouponsComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
