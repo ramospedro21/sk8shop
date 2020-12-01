@@ -20,11 +20,26 @@
                             <table class="table">
                                 <tr>
                                     <th>#</th>
-                                    <th>Nome</th>
-                                    <th>Limite por usuário</th>
-                                    <th>Quantidade minima de produtos</th>
+                                    <th>Descrição</th>
+                                    <th>Tipo</th>
                                     <th>Alvo</th>
+                                    <th>De</th>
+                                    <th>Até</th>
+                                    <th>Status</th>
                                     <th></th>
+                                </tr>
+                                <tr v-for="coupon in coupons.data" :key="coupon.id">
+                                    <td>{{ coupon.id }}</td>
+                                    <td>{{ coupon.description }}</td>
+                                    <td>{{ coupon.translated_type }}</td>
+                                    <td>{{ coupon.translated_target }}</td>
+                                    <td>{{ coupon.start_date | date }}</td>
+                                    <td>{{ coupon.end_date | date }}</td>
+                                    <td>{{ coupon.translated_status }}</td>
+                                    <td>
+                                        <i class="fas fa-edit pointer" @click="edit(coupon)"></i>
+                                        <i class="fas fa-trash pointer" @click="openDeleteModal(coupon)"></i>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -207,7 +222,27 @@ export default {
 
     methods:{
 
-        index: async function(){
+        index: async function(page){
+
+            let url = '/painel/coupon?';
+            url += '&page=' + ((page) ? page : this.coupons.current_page);
+            if (this.filters.per_page !== 16) url += '&per_page=' + this.filters.per_page;
+            
+            try{
+
+                const {data} = await axios.get(url);
+
+                this.coupons = data;
+
+                this.loading.page = false;
+
+            }catch(e){
+
+                this.loading.page = false;
+
+                showErrorToast('Ocorreu um erro ao atualizar a lista de estoques');
+
+            }
 
         },
 
@@ -243,13 +278,13 @@ export default {
                     coupon: this.coupon
                 });
 
-                // this.index();
+                this.index();
 
                 this.loading.buttonCoupon = false;
 
-                // showSuccessToast('Cupom cadastrado com sucesso.');
+                showSuccessToast('Cupom cadastrado com sucesso.');
 
-                // $("#couponsModal").modal('hide');
+                $("#couponsModal").modal('hide');
 
             }catch(e){
 
@@ -259,8 +294,13 @@ export default {
 
         },
 
-        edit: function(){
+        edit: function(coupon){
+            
+            this.coupon = {
+                ...coupon
+            }
 
+            $("#couponsModal").modal('show');
         },
 
         update: async function(){
@@ -277,12 +317,14 @@ export default {
     },
 
     mounted(){
-
+        this.index();
     }
 
 }
 </script>
 
 <style>
-
+    .pointer{
+        cursor: pointer;
+    }
 </style>

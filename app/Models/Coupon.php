@@ -23,6 +23,28 @@ class Coupon extends Model
      * @property boolean $status
      */
     
+    public const PER_PAGE = 16;
+    
+    public const TYPE = [
+        'PERCENT' => 0,
+        'MONEY' => 1
+    ];
+
+    public const TARGET = [
+        'PRICE' => 0,
+        'FREIGHT' => 1
+    ];
+
+    public const STATUS = [
+        'INACTIVE' => 0,
+        'ACTIVE' => 1
+    ];
+
+    public const FIRST_BUY_ONLY = [
+        'FALSE' => 0,
+        'TRUE' => 1
+    ];
+
     protected $fillable = [
         'id',
         'title',

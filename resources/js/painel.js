@@ -9,10 +9,12 @@ window.Vue = require('vue');
 require('./bootstrap');
 
 require('./helpers/cep');
-
+import moment from 'moment';
 
 const VueInputMask = require('vue-inputmask').default
+
 Vue.use(VueInputMask);
+Vue.use(moment);
 
 Vue.filter('money', function (value) {
 
@@ -21,6 +23,23 @@ Vue.filter('money', function (value) {
     let val = (value/1).toFixed(2).replace('.', ',');
     return 'R$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
+});
+
+Vue.filter('percentage', function (value) {
+
+    if(value == 'Erro') return value;
+
+    let val = (value/1).toFixed(2).replace('.', ',');
+    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '% ';
+
+});
+
+Vue.filter('date', function (value) {
+    return moment(value).format("DD/MM/YYYY");
+});
+
+Vue.filter('datetime', function (value) {
+    return moment(value).format("DD/MM/YYYY - HH:mm");
 });
 
 /**

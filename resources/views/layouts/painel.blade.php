@@ -45,7 +45,7 @@
                             <p> Home </p>
                         </a>
                     </li>
-                    @foreach ($modules ?? '' as $module)
+                    @foreach ($modules as $module)
                         <li class="nav-item">
                             <a class="nav-link text-white" data-toggle="collapse" href="#module{{ $module['id'] }}" 
                             role="button" 

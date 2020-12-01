@@ -2743,10 +2743,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var v_money__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(v_money__WEBPACK_IMPORTED_MODULE_2__);
 
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2946,19 +2967,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     index: function () {
-      var _index = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var _index = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(page) {
+        var url, _yield$axios$get, data;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                url = '/painel/coupon?';
+                url += '&page=' + (page ? page : this.coupons.current_page);
+                if (this.filters.per_page !== 16) url += '&per_page=' + this.filters.per_page;
+                _context.prev = 3;
+                _context.next = 6;
+                return axios.get(url);
+
+              case 6:
+                _yield$axios$get = _context.sent;
+                data = _yield$axios$get.data;
+                this.coupons = data;
+                this.loading.page = false;
+                _context.next = 16;
+                break;
+
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](3);
+                this.loading.page = false;
+                Object(_helpers_animations__WEBPACK_IMPORTED_MODULE_1__["showErrorToast"])('Ocorreu um erro ao atualizar a lista de estoques');
+
+              case 16:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, this, [[3, 12]]);
       }));
 
-      function index() {
+      function index(_x) {
         return _index.apply(this, arguments);
       }
 
@@ -3000,24 +3045,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 4:
                 _yield$axios$post = _context2.sent;
                 data = _yield$axios$post.data;
-                // this.index();
-                this.loading.buttonCoupon = false; // showSuccessToast('Cupom cadastrado com sucesso.');
-                // $("#couponsModal").modal('hide');
-
-                _context2.next = 12;
+                this.index();
+                this.loading.buttonCoupon = false;
+                Object(_helpers_animations__WEBPACK_IMPORTED_MODULE_1__["showSuccessToast"])('Cupom cadastrado com sucesso.');
+                $("#couponsModal").modal('hide');
+                _context2.next = 15;
                 break;
 
-              case 9:
-                _context2.prev = 9;
+              case 12:
+                _context2.prev = 12;
                 _context2.t0 = _context2["catch"](1);
                 console.log(_context2.t0);
 
-              case 12:
+              case 15:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[1, 9]]);
+        }, _callee2, this, [[1, 12]]);
       }));
 
       function store() {
@@ -3026,7 +3071,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return store;
     }(),
-    edit: function edit() {},
+    edit: function edit(coupon) {
+      this.coupon = _objectSpread({}, coupon);
+      $("#couponsModal").modal('show');
+    },
     update: function () {
       var _update = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
@@ -3067,7 +3115,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return _delete;
     }()
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.index();
+  }
 });
 
 /***/ }),
@@ -11373,6 +11423,25 @@ exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n", ""]);
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--7-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/painel/categories/CategoriesComponent.vue?vue&type=style&index=0&lang=css& ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--7-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -64653,6 +64722,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--7-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../../node_modules/css-loader??ref--7-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--7-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./CouponsComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/painel/options/OptionsComponent.vue?vue&type=style&index=0&lang=css&":
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--7-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/painel/options/OptionsComponent.vue?vue&type=style&index=0&lang=css& ***!
@@ -66807,7 +66906,60 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(1)
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "table-responsive" }, [
+              _c(
+                "table",
+                { staticClass: "table" },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _vm._l(_vm.coupons.data, function(coupon) {
+                    return _c("tr", { key: coupon.id }, [
+                      _c("td", [_vm._v(_vm._s(coupon.id))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(coupon.description))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(coupon.translated_type))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(coupon.translated_target))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(_vm._s(_vm._f("date")(coupon.start_date)))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(_vm._s(_vm._f("date")(coupon.end_date)))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(coupon.translated_status))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("i", {
+                          staticClass: "fas fa-edit pointer",
+                          on: {
+                            click: function($event) {
+                              return _vm.edit(coupon)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("i", {
+                          staticClass: "fas fa-trash pointer",
+                          on: {
+                            click: function($event) {
+                              return _vm.openDeleteModal(coupon)
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  })
+                ],
+                2
+              )
+            ])
+          ])
         ])
       ])
     ]),
@@ -67480,24 +67632,22 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c("div", { staticClass: "table-responsive" }, [
-        _c("table", { staticClass: "table" }, [
-          _c("tr", [
-            _c("th", [_vm._v("#")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Nome")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Limite por usuário")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Quantidade minima de produtos")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Alvo")]),
-            _vm._v(" "),
-            _c("th")
-          ])
-        ])
-      ])
+    return _c("tr", [
+      _c("th", [_vm._v("#")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Descrição")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Tipo")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Alvo")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("De")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Até")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th")
     ])
   },
   function() {
@@ -86498,7 +86648,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CouponsComponent_vue_vue_type_template_id_410758ae___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CouponsComponent.vue?vue&type=template&id=410758ae& */ "./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=template&id=410758ae&");
 /* harmony import */ var _CouponsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CouponsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _CouponsComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CouponsComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -86506,7 +86658,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _CouponsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _CouponsComponent_vue_vue_type_template_id_410758ae___WEBPACK_IMPORTED_MODULE_0__["render"],
   _CouponsComponent_vue_vue_type_template_id_410758ae___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -86535,6 +86687,22 @@ component.options.__file = "resources/js/components/painel/coupons/CouponsCompon
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CouponsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./CouponsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CouponsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=style&index=0&lang=css&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_7_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CouponsComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader!../../../../../node_modules/css-loader??ref--7-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--7-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./CouponsComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/painel/coupons/CouponsComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_7_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CouponsComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_7_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CouponsComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_7_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CouponsComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_7_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CouponsComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_7_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CouponsComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -87382,9 +87550,13 @@ window.pesquisacep = function (valor) {
 /*!********************************!*\
   !*** ./resources/js/painel.js ***!
   \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -87396,13 +87568,27 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! ./helpers/cep */ "./resources/js/helpers/cep.js");
 
+
+
 var VueInputMask = __webpack_require__(/*! vue-inputmask */ "./node_modules/vue-inputmask/dist/vue-inputmask.js")["default"];
 
 Vue.use(VueInputMask);
+Vue.use(moment__WEBPACK_IMPORTED_MODULE_0___default.a);
 Vue.filter('money', function (value) {
   if (value == 'Erro') return value;
   var val = (value / 1).toFixed(2).replace('.', ',');
   return 'R$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+});
+Vue.filter('percentage', function (value) {
+  if (value == 'Erro') return value;
+  var val = (value / 1).toFixed(2).replace('.', ',');
+  return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '% ';
+});
+Vue.filter('date', function (value) {
+  return moment__WEBPACK_IMPORTED_MODULE_0___default()(value).format("DD/MM/YYYY");
+});
+Vue.filter('datetime', function (value) {
+  return moment__WEBPACK_IMPORTED_MODULE_0___default()(value).format("DD/MM/YYYY - HH:mm");
 });
 /**
  * The following block of code may be used to automatically register your
