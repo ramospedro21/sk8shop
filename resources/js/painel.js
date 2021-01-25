@@ -84,7 +84,12 @@ Vue.component('product-component', require('./components/painel/products/Product
 //COMPONENT DE EMBALAGENS
 Vue.component('boxes-index-component', require('./components/painel/boxes/BoxesComponent.vue').default);
 
+// COMPONENT DE CUPONS
 Vue.component('coupons-index-component', require('./components/painel/coupons/CouponsComponent.vue').default);
+
+// COMPONENT DE CLIENTS
+Vue.component('clients-index-component', require('./components/painel/clients/ClientsComponent.vue').default);
+Vue.component('client-show-component', require('./components/painel/clients/ClientComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

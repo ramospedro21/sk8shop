@@ -68,4 +68,8 @@ Route::prefix('/painel')->group(function(){
     Route::get('/coupons', 'Painel\CouponsController@view')->middleware('auth');
     Route::resource('/coupon', 'Painel\CouponsController');
 
+    // ROTA DE CLIENTES
+    Route::get('/clients', 'Painel\ClientsController@view')->middleware('auth');
+    Route::resource('/client', 'Painel\ClientsController');
+
 });
