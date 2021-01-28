@@ -17,5 +17,7 @@ mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/painel.scss', 'public/css')
    .options({
       processCssUrls: false
-   });
+   })
+   .copy('node_modules/font-awesome/fonts', 'public/fonts');
+   
 mix.version();

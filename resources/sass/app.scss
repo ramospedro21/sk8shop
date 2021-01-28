@@ -1,16 +1,44 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
+
+@import "node_modules/font-awesome/scss/font-awesome";
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-// @import '~material-dashboard/assets/scss/material-dashboard';
+
+body{
+    background-color: #fff;
+}
 
 #login{
     background-image: url('../images/login-background.jpg') !important;
 }
 .card-header-login{
     background: #151515;
+}
+
+#menu{
+
+    a {
+        color: $brand-primary !important;
+    }
+
+    .dropdown {
+        position: inherit !important;
+    }
+    .custom-dropdown-menu{
+        width: 100%;
+        border-radius: 0 !important;
+        border: 0 !important;
+        background: #f0f0f0 !important;
+    }
+
+}
+
+a.text-category{
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 600;
 }

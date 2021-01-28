@@ -10,6 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "dependencies": {
+        "font-awesome": "^4.7.0",
         "increase-memory-limit": "^1.0.7",
         "material-dashboard": "^2.1.0",
         "moment": "^2.27.0",
@@ -19,6 +20,7 @@
         "vue-toasted": "^1.1.28"
     },
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.2",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "cross-env": "^7.0",

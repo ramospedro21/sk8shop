@@ -176,7 +176,10 @@ return [
         App\Providers\RouteServiceProvider::class,
         
         //PROVIDER PARA CHAMAR OS MENUS
-        App\Providers\MenuServiceProvider::class
+        App\Providers\MenuServiceProvider::class,
+
+        //PROVIDER PARA CHAMAR AS CATEGORIAS
+        App\Providers\SiteMenuServiceProvider::class,
     ],
 
     /*

@@ -12,8 +12,9 @@ class CategoryHelper {
     {
         try{
 
-            $categories = Category::where('parent_id',$parent_id)
-                                    ->get();
+            $categories = Category::where('parent_id', $parent_id)
+                                  ->withCount(['products', 'category'])
+                                  ->get();
 
             return $categories;    
 
