@@ -4908,20 +4908,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 3:
                 _yield$axios$patch = _context8.sent;
                 data = _yield$axios$patch.data;
-                _context8.next = 10;
+                Object(_helpers_animations__WEBPACK_IMPORTED_MODULE_1__["showSuccessToast"])('Produto salvo com sucesso.');
+                _context8.next = 11;
                 break;
 
-              case 7:
-                _context8.prev = 7;
+              case 8:
+                _context8.prev = 8;
                 _context8.t0 = _context8["catch"](0);
-                console.log(_context8.t0);
+                Object(_helpers_animations__WEBPACK_IMPORTED_MODULE_1__["showErrorToast"])('Não foi possivel salvar o produto.');
 
-              case 10:
+              case 11:
               case "end":
                 return _context8.stop();
             }
           }
-        }, _callee8, this, [[0, 7]]);
+        }, _callee8, this, [[0, 8]]);
       }));
 
       function update() {
@@ -11827,7 +11828,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.button input {\n    display: none;\n}\n.img-wrap {\n    position: relative;\n}\n.img-wrap .close {\n    position: absolute;\n    top: 3px;\n    left: 3px;\n    z-index: 100;\n}\n.div-images .img-variant{\n    max-height: 200px;\n}\n/* .modal-image{\n    overflow-y: scroll !important\n}\n.modal-body-image{\n    max-height: calc(100vh - 200px);\n    overflow-y: auto;\n} */\n", ""]);
+exports.push([module.i, "\n.button input {\n    display: none;\n}\n.img-wrap {\n    position: relative;\n}\n.img-wrap .close {\n    position: absolute;\n    top: 3px;\n    left: 3px;\n    z-index: 100;\n}\n.div-images .img-variant{\n    max-height: 200px;\n}\n.modal-image{\n    overflow-y: scroll !important\n}\n.modal-body-image{\n    max-height: calc(100vh - 200px);\n    overflow-y: auto;\n}\n", ""]);
 
 // exports
 

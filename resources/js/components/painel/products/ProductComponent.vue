@@ -903,9 +903,11 @@ export default {
                     product: this.product
                 });
 
+                showSuccessToast('Produto salvo com sucesso.');
+
 
             }catch(e){
-                console.log(e);
+                showErrorToast('Não foi possivel salvar o produto.');
             }
         }
         
@@ -939,12 +941,12 @@ export default {
     .div-images .img-variant{
         max-height: 200px;
     }
-    /* .modal-image{
+    .modal-image{
         overflow-y: scroll !important
     }
     .modal-body-image{
         max-height: calc(100vh - 200px);
         overflow-y: auto;
-    } */
+    }
 </style>
 

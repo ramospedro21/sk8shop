@@ -79,5 +79,14 @@
         </div>
     </div>
 </div>
+<div class="container">
+    <div class="row">
+        @foreach ($products as $product)
+            
+            @include('components.product', ['product' => $product, 'cols' => 4])
+
+        @endforeach
+    </div>
+</div>
 
 @endsection

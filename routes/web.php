@@ -11,15 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'Site\HomeController@index');
 
 Auth::routes();
 
 // ROTA DA HOME
 Route::get('/home', 'HomeController@index')->name('home');
 
+// ROTAS DO PAINEL
 Route::prefix('/painel')->group(function(){
 
     // ROTA DE ESTOQUES
@@ -73,3 +72,6 @@ Route::prefix('/painel')->group(function(){
     Route::resource('/client', 'Painel\ClientsController');
 
 });
+
+// ROTAS DA LOJA
+Route::get('/p/{slug}', 'Site\ProductsController@show');
