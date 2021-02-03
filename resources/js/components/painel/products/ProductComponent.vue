@@ -68,7 +68,7 @@
                                             <td>{{ variant.sku }}</td>
                                             <td>
                                                 <span v-for="option in variant.values" :key="option.id">
-                                                    {{ option.title }}; 
+                                                    {{ option.title }};
                                                 </span>
                                             </td>
                                             <td>
@@ -77,7 +77,7 @@
                                                 </span>
                                                 <span v-else>
                                                     0
-                                                </span> 
+                                                </span>
                                             </td>
                                             <td>
                                                 <span v-if="variant.stocks.length > 0">
@@ -85,13 +85,13 @@
                                                 </span>
                                                 <span v-else>
                                                     0
-                                                </span> 
+                                                </span>
                                             </td>
                                             <td>
                                                 <i class="fas fa-edit pointer" @click="openEditVariant(variant, i)"></i>
                                                 <i class="fas fa-trash pointer" @click="openDeleteVariant(variant, i)"></i>
                                             </td>
-                                        </tr>   
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -122,8 +122,8 @@
                                             <label for="" class="form-control-label">Exibir no site: *</label>
                                             <select class="form-control" v-model="product.enabled">
                                                 <option :value="null">-Selecione-</option>
-                                                <option :value="0">Sim</option>
-                                                <option :value="1">Não</option>
+                                                <option :value="0">Não</option>
+                                                <option :value="1">Sim</option>
                                             </select>
                                         </div>
                                     </div>
@@ -187,7 +187,7 @@
                                             <td>
                                                 <i class="fas fa-trash pointer" @click="product.categories.splice(i, 1)"></i>
                                             </td>
-                                        </tr>   
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -224,7 +224,7 @@
             </form>
         </div>
     </div>
-    
+
     <!-- Modal -->
     <div class="modal fade" id="variantModal" tabindex="-1" role="dialog" aria-labelledby="variantModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-image modal-lg">
@@ -280,10 +280,10 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <a class="btn btn-sm btn-icon-only" role="button" 
+                                                            <a class="btn btn-sm btn-icon-only" role="button"
                                                                 v-on:click="deleteVariantOption(i)">
                                                                 <i class="fas fa-trash" ></i>
-                                                            </a> 
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -329,7 +329,7 @@
                                                                 {{ stock.reserved }}
                                                             </td>
                                                             <td>
-                                                                <money v-bind="money" class="form-control" 
+                                                                <money v-bind="money" class="form-control"
                                                                     v-model="stock.factory_price">
                                                                 </money>
                                                             </td>
@@ -444,7 +444,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <div v-if="errorImage" class="alert alert-warning" role="alert">
                         {{ errorImage }}
                     </div>
@@ -464,7 +464,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="categoriesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -560,7 +560,7 @@ export default {
             options: [],
             stocks: [],
             categories: [],
-            
+
             money: {
                 decimal: ',',
                 thousands: '.',
@@ -579,7 +579,7 @@ export default {
         openVariantModal: async function(){
 
             try{
-                
+
                 $("#variantModal").modal('show');
 
                 await this.getOptions();
@@ -600,13 +600,13 @@ export default {
             }catch(e){
 
                 console.log(e);
-                
+
             }
         },
 
         openEditVariant: async function(variant, i){
             try{
-                
+
                 await this.getOptions();
                 await this.getStocks();
 
@@ -618,37 +618,37 @@ export default {
 
                 $("#variantModal").modal('show');
 
-                
+
                 let self = this;
-                
+
                 variant.values.forEach(value => {
 
                     let id = value.option ? value.option.id : value.option_father.id;
 
                     let option = self.options.find(option => option.id === id)
-                    
+
                     if(option){
 
                         let value = option.values.find(value => value.id === value.id)
-                        
+
                         self.variant.options.push({
                             id: Date.now() + value.id,
                             option_father: option,
                             value: value
                         });
-                        
+
                     } else {
 
                         console.log("erro", variant.id)
 
                     }
-                    
+
                 });
 
                 this.stocks.map(stock => {
-                    
+
                     let s = self.variant.stocks.find(stockProduct => stockProduct.stock.id === stock.id);
-                    
+
                     if(!s){
                         self.variant.stocks.push({
                             id: stock.id,
@@ -666,7 +666,7 @@ export default {
             }catch(e){
 
                 console.log(e);
-                
+
             }
         },
 
@@ -760,7 +760,7 @@ export default {
         },
 
         editVariant: function(){
-            
+
             this.product.variants.splice(this.variant.index, 0);
 
             this.variant.options.map(option => {
@@ -780,7 +780,7 @@ export default {
             });
 
             $("#variantModal").modal("hide");
-            
+
             this.variant = {
                 options: [],
                 stocks: [],
@@ -819,27 +819,27 @@ export default {
                     children: []
                 },
                 category_grandchild: { }
-            };  
+            };
 
         },
 
         uploadImage(event) {
 			// Reference to the DOM input element
             var input = event.target;
-            
+
 			// Ensure that you have a file before attempting to read it
 			if (input.files && input.files[0]) {
 
 					// create a new FileReader to read this image and convert to base64 format
                     var reader = new FileReader();
-                    
+
 					// Define a callback function to run, when FileReader finishes its job
 					reader.onload = (e) => {
 
 							// Read image as base64 and set to imageData
 							this.image = e.target.result;
                     }
-                    
+
 					// Start the reader job - read file as a data url (base64 format)
 					reader.readAsDataURL(input.files[0]);
             }
@@ -847,32 +847,32 @@ export default {
         },
 
 		pixelsRestriction({minWidth, minHeight, maxWidth, maxHeight, imageWidth, imageHeight}) {
-            
+
             this.errorImage = null;
-            
+
             // se a imagem for menor que 200px
             if(imageHeight < 200 || imageWidth < 200){
                 this.errorImage = "Essa imagem é muito pequena. Para melhor visualização do produto, opte por imagens com dimensões superiores a 600x600 px";
                 return false;
-            } 
+            }
 
             // se a imagem for maior que 200px e menor que 600px
             else if(imageHeight < 600 || imageWidth < 600) this.errorImage = "Dica: Para melhor visualização do produto, opte por imagens com dimensões superiores a 600px x 600px";
-            
+
             return {
 				minWidth: minWidth,
 				minHeight: minHeight,
 				maxWidth: Math.min(imageWidth, maxWidth),
 				maxHeight: Math.min(imageHeight, maxHeight),
             }
-            
+
         },
 
 		crop() {
 
 			const {coordinates, canvas} = this.$refs.cropper.getResult()
             this.coordinates = coordinates
-            
+
             this.variant.images.push({
                 id: Date.now(),
                 url: canvas.toDataURL()
@@ -898,7 +898,7 @@ export default {
 
         update: async function(){
             try{
-                
+
                 const {data} = await axios.patch(`/painel/product/${this.product.id}`, {
                     product: this.product
                 });
@@ -910,12 +910,12 @@ export default {
                 showErrorToast('Não foi possivel salvar o produto.');
             }
         }
-        
+
 
     },
 
     mounted() {
-        
+
         if(this._product != null) this.product = this._product;
 
     },

@@ -35,7 +35,7 @@ class ProductsController extends Controller
         else
 
             abort('404');
-        
+
     }
 
     /**
@@ -51,7 +51,7 @@ class ProductsController extends Controller
                 $query->where('title', 'like' . '%Ecommerce%');
             }])->paginate(Product::PER_PAGE);
 
-            
+
             foreach($products as $product){
 
                 $product->quantity = 0;
@@ -69,7 +69,7 @@ class ProductsController extends Controller
             return response()->json($products, 200);
 
         }catch(\Exception $e){
-            
+
             $errorLog = ErrorsLog::create([
                 'description' => $e->getMessage(),
             ]);
@@ -96,7 +96,7 @@ class ProductsController extends Controller
             return view('products.create');
 
         }catch(\Exception $e){
-            
+
             $errorLog = ErrorsLog::create([
                 'description' => $e->getMessage(),
             ]);
@@ -118,17 +118,17 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         try{
-            
+
             DB::beginTransaction();
 
                 $slug = Str::slug($request->input('product.title'), '-');
-                
+
                 $hasSlug = Product::where('slug', $slug)->first();
 
                 if($hasSlug) $slug = $slug . Str::random(3);
-                
+
                 $product = Product::create([
                     'title' => $request->input('product.title'),
                     'slug' => $slug,
@@ -149,11 +149,11 @@ class ProductsController extends Controller
                         $v = Variant::create([
                             'product_id' => $product->id,
                             "sku" => $variant['sku'],
-                            "weight" => $variant['weight'], 
+                            "weight" => $variant['weight'],
                         ]);
-                        
+
                         foreach($variant['values'] as $variantValue){
-                            
+
                             $value = VariantValue::create([
                                 'variant_id' => $v->id,
                                 'option_value_id' => $variantValue['value_id']
@@ -164,7 +164,7 @@ class ProductsController extends Controller
                         foreach($variant['stocks'] as $stock){
 
                             if($stock['quantity'] > 0){
-                                
+
                                 $variantStock = ProductStock::create([
                                     'stock_id' => $stock['id'],
                                     'product_id' => $product->id,
@@ -182,7 +182,7 @@ class ProductsController extends Controller
                         if($variant['images']){
 
                             foreach($variant['images'] as $image){
-                                
+
                                 $name = $slug;
 
                                 $path = public_path('images/variants/'.$v->id.'/');
@@ -190,9 +190,9 @@ class ProductsController extends Controller
                                 if(!File::exists($path)) {
                                     File::makeDirectory($path, $mode = 0777, true, true);
                                 }
-                        
+
                                 Image::make($image['url'])->save($path.$name);
-                        
+
                                 $variantImage = VariantImage::create([
                                     'variant_id' => $v->id,
                                     'product_id' => $product->id,
@@ -204,7 +204,7 @@ class ProductsController extends Controller
                 }
 
                 if($request->input('product.categories')){
-                    
+
                     foreach($request->input('product.categories') as $category){
 
                         $category = ProductCategory::create([
@@ -222,7 +222,7 @@ class ProductsController extends Controller
             ], 200);
 
         }catch(\Exception $e){
-            
+
             $errorLog = ErrorsLog::create([
                 'description' => $e->getMessage(),
             ]);
@@ -255,7 +255,7 @@ class ProductsController extends Controller
                                     ])->find($id);
 
             $product->variants->map(function($variant){
-                
+
                 $variant->stocks->map(function($stock){
                     $stock->title = $stock->stock->title;
                     return $stock;
@@ -267,7 +267,7 @@ class ProductsController extends Controller
             return view('products.show', ['product' => $product]);
 
         }catch(\Exception $e){
-            
+
             $errorLog = ErrorsLog::create([
                 'description' => $e->getMessage(),
             ]);
@@ -327,9 +327,9 @@ class ProductsController extends Controller
                         $v = Variant::create([
                             'product_id' => $id,
                             "sku" => $variant['sku'],
-                            "weight" => $variant['weight'], 
+                            "weight" => $variant['weight'],
                         ]);
-                        
+
                         foreach($variant['values'] as $variantValue){
                             $value = VariantValue::create([
                                 'variant_id' => $v->id,
@@ -337,13 +337,13 @@ class ProductsController extends Controller
                             ]);
 
                         }
-                        
+
                         foreach($variant['stocks'] as $stock){
 
                             ProductStock::where('product_id', $id)->delete();
 
                             if($stock['quantity'] > 0){
-                                
+
                                 $variantStock = ProductStock::create([
                                     'stock_id' => isset($stock['stock_id']) ? $stock['stock_id'] : $stock['id'],
                                     'product_id' => $id,
@@ -359,9 +359,9 @@ class ProductsController extends Controller
                         }
 
                         if(isset($variant['images'])){
-        
+
                             $variantImages = VariantImage::where('product_id', $id)->get();
-                            
+
                             foreach($variant['images'] as $image){
 
                                 if (isset($image['product_id'])) {
@@ -371,14 +371,14 @@ class ProductsController extends Controller
                                     $variantIndex = $variantImages->search(function ($variantImage) use ($image_id) {
                                         return $variantImage->id === $image_id;
                                     });
-                                    
+
                                     if ($variantIndex !== false) $variantImages->splice($variantIndex, 1);
-            
+
                                     continue;
                                 }
 
                                 $name = $request->input('product.slug');
-        
+
                                 $path = public_path('images/products/'.$id.'/');
 
                                 if(!File::exists($path)) File::makeDirectory($path, $mode = 0777, true, true);
@@ -394,13 +394,13 @@ class ProductsController extends Controller
                         }
                     }
                 }
-                
+
                 ProductCategory::where('product_id', $id)->delete();
 
                 if($request->input('product.categories')){
-                    
+
                     foreach($request->input('product.categories') as $category){
-                        
+
                         $category = ProductCategory::create([
                             'product_id' => $id,
                             'category_id' => isset($category['category_id']) ? $category['category_id'] : $category['id'],
@@ -417,7 +417,7 @@ class ProductsController extends Controller
             ], 200);
 
         }catch(\Exception $e){
-            
+
             $errorLog = ErrorsLog::create([
                 'description' => $e->getMessage(),
             ]);

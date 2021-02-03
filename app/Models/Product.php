@@ -20,8 +20,8 @@ class Product extends Model
 
     public const PER_PAGE = 16;
 
-    public const ENABLED = 0;
-    public const NOT_ENABLED = 1;
+    public const NOT_ENABLED = 0;
+    public const ENABLED = 1;
 
     protected $fillable = [ 'title', 'slug', 'short_description', 'description', 'installments', 'width', 'depth',
                             'heigth', 'enabled', 'self_delivery'];
@@ -30,7 +30,7 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\ProductCategory', 'product_id', 'id');
     }
-    
+
     public function coupons()
     {
         return $this->hasMany('App\Models\ProductCoupon', 'product_id', 'id');
@@ -49,5 +49,10 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany('App\Models\Variant', 'product_id', 'id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany('App\Models\VariantImage', 'product_id', 'id');
     }
 }

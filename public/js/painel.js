@@ -69278,7 +69278,7 @@ var render = function() {
                           [
                             _c("i", { staticClass: "fas fa-plus mr-2" }),
                             _vm._v(
-                              "Novo\r\n                                        "
+                              "Novo\n                                        "
                             )
                           ]
                         )
@@ -69303,9 +69303,9 @@ var render = function() {
                                 _vm._l(variant.values, function(option) {
                                   return _c("span", { key: option.id }, [
                                     _vm._v(
-                                      "\r\n                                                    " +
+                                      "\n                                                    " +
                                         _vm._s(option.title) +
-                                        "; \r\n                                                "
+                                        ";\n                                                "
                                     )
                                   ])
                                 }),
@@ -69316,14 +69316,14 @@ var render = function() {
                                 variant.stocks.length > 0
                                   ? _c("span", [
                                       _vm._v(
-                                        "\r\n                                                    " +
+                                        "\n                                                    " +
                                           _vm._s(variant.stocks[0].quantity) +
-                                          "\r\n                                                "
+                                          "\n                                                "
                                       )
                                     ])
                                   : _c("span", [
                                       _vm._v(
-                                        "\r\n                                                    0\r\n                                                "
+                                        "\n                                                    0\n                                                "
                                       )
                                     ])
                               ]),
@@ -69332,14 +69332,14 @@ var render = function() {
                                 variant.stocks.length > 0
                                   ? _c("span", [
                                       _vm._v(
-                                        "\r\n                                                    " +
+                                        "\n                                                    " +
                                           _vm._s(variant.stocks[0].price) +
-                                          "\r\n                                                "
+                                          "\n                                                "
                                       )
                                     ])
                                   : _c("span", [
                                       _vm._v(
-                                        "\r\n                                                    0\r\n                                                "
+                                        "\n                                                    0\n                                                "
                                       )
                                     ])
                               ]),
@@ -69470,11 +69470,11 @@ var render = function() {
                               ]),
                               _vm._v(" "),
                               _c("option", { domProps: { value: 0 } }, [
-                                _vm._v("Sim")
+                                _vm._v("Não")
                               ]),
                               _vm._v(" "),
                               _c("option", { domProps: { value: 1 } }, [
-                                _vm._v("Não")
+                                _vm._v("Sim")
                               ])
                             ]
                           )
@@ -69690,7 +69690,7 @@ var render = function() {
                           [
                             _c("i", { staticClass: "fas fa-plus mr-2" }),
                             _vm._v(
-                              "Novo\r\n                                        "
+                              "Novo\n                                        "
                             )
                           ]
                         )
@@ -69753,7 +69753,7 @@ var render = function() {
                           [
                             _c("i", { staticClass: "fas fa-plus mr-2" }),
                             _vm._v(
-                              "Novo\r\n                                        "
+                              "Novo\n                                        "
                             )
                           ]
                         )
@@ -69848,7 +69848,7 @@ var render = function() {
                                 [
                                   _c("i", { staticClass: "fas fa-plus mr-2" }),
                                   _vm._v(
-                                    " Adicionar\r\n                                                "
+                                    " Adicionar\n                                                "
                                   )
                                 ]
                               )
@@ -69928,9 +69928,9 @@ var render = function() {
                                               },
                                               [
                                                 _vm._v(
-                                                  "\r\n                                                                    " +
+                                                  "\n                                                                    " +
                                                     _vm._s(option.title) +
-                                                    "\r\n                                                                "
+                                                    "\n                                                                "
                                                 )
                                               ]
                                             )
@@ -69998,9 +69998,9 @@ var render = function() {
                                                 },
                                                 [
                                                   _vm._v(
-                                                    "\r\n                                                                    " +
+                                                    "\n                                                                    " +
                                                       _vm._s(value.title) +
-                                                      "\r\n                                                                "
+                                                      "\n                                                                "
                                                   )
                                                 ]
                                               )
@@ -70078,14 +70078,14 @@ var render = function() {
                                       return _c("tr", { key: stock.id }, [
                                         _c("th", [
                                           _vm._v(
-                                            "\r\n                                                                " +
+                                            "\n                                                                " +
                                               _vm._s(
                                                 stock.title.length > 5
                                                   ? stock.title.slice(0, 5) +
                                                       "..."
                                                   : stock.title
                                               ) +
-                                              "\r\n                                                            "
+                                              "\n                                                            "
                                           )
                                         ]),
                                         _vm._v(" "),
@@ -70120,9 +70120,9 @@ var render = function() {
                                         _vm.variant.id
                                           ? _c("td", [
                                               _vm._v(
-                                                "\r\n                                                                " +
+                                                "\n                                                                " +
                                                   _vm._s(stock.reserved) +
-                                                  "\r\n                                                            "
+                                                  "\n                                                            "
                                               )
                                             ])
                                           : _vm._e(),
@@ -70350,7 +70350,7 @@ var render = function() {
                                       staticClass: "fas fa-plus mr-2"
                                     }),
                                     _vm._v(
-                                      " Adicionar\r\n                                                    "
+                                      " Adicionar\n                                                    "
                                     )
                                   ]
                                 )
@@ -70483,9 +70483,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                        " +
+                            "\n                        " +
                               _vm._s(_vm.errorImage) +
-                              "\r\n                    "
+                              "\n                    "
                           )
                         ]
                       )
@@ -88752,7 +88752,7 @@ var app = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\pedro\Documents\projetosPedro\sk8shop\resources\js\painel.js */"./resources/js/painel.js");
+module.exports = __webpack_require__(/*! C:\Users\Pedro\Documents\projetosPedro\sk8shop\resources\js\painel.js */"./resources/js/painel.js");
 
 
 /***/ })

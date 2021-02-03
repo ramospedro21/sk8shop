@@ -14,11 +14,11 @@ class UserAccessHelper {
         try{
 
             $currentURL = URL::current();
-            
+
             $url = explode("/", $currentURL);
-            
+
             $moduleValue = ModuleValue::where('link', 'like', '%' . end($url) . '%')->first();
-    
+
             $userAccess = UserModule::where('module_value_id', $moduleValue->id)
                                     ->where('user_type_id', Auth::user()->user_type_id)
                                     ->first();

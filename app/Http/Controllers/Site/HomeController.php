@@ -18,7 +18,20 @@ class HomeController extends Controller
     {
         try{
 
-            $products = Variant::with(['images', 'product', 'stocks'])->get();
+            $products = Variant::with(['images',
+                                       'product',
+                                       'stocks' => function ($query){
+                                            $query->where(function($query) {
+                                                $query->where('price', '>', 0);
+                                                $query->orWhere('promote_price', '>', 0);
+                                            });
+                                        }])
+                               ->whereHas('stocks', function($query){
+                                   $query->where(function($query){
+                                       $query->where('price', '>', 0);
+                                       $query->orWhere('promote_price', '>', 0);
+                                   });
+                               })->get();
 
             return view('welcome', [
                 'products' => $products,

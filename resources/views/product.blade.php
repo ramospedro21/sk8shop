@@ -13,15 +13,15 @@
     <meta name="twitter:site" content = "@boteco_do_vinho" />
     <meta name="twitter:creator" content = "@boteco_do_vinho - {{ $product['title'] }}" />
     <meta name="twitter:description" content = "{{ $product['short_description'] }}" />
-    <meta name="twitter:image" content="{{ $product['variants']['images'][0]['url'] }}"/> --}}
+    <meta name="twitter:image" content="{{ $product['images'][0]['url'] }}"/> --}}
 
     <!-- OPEN GRAPH FACEBOOK E WHATSAPP -->
     <meta property="og:locale" content="pt_BR">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="SK8Shop - {{ $product['title'] }}">
     <meta property="og:description" content="{{ $product['short_description'] }}">
-    @if ($product['variants']['images'])
-        <meta property="og:image" content="{{ $product['variants']['images'][0]['url'] }}">
+    @if ($product['images']->count() > 0)
+        <meta property="og:image" content="{{ $product['images'][0]['url'] }}">
     @else
         <meta property="og:image" content="{{ url('images/logo_opengraph.png') }}">
     @endif
@@ -37,10 +37,10 @@
 @endphp --}}
     <div class="container pt-5">
         <div class="row mt-5 mt-md-0 mb-5 align-items-center">
-            @if ($product['variants']['images'])
+            @if ($product['images'])
                 <div class="col-md-1 d-none d-md-block">
-                    @if($product['variants']['images'])
-                        @foreach ($product['variants']['images'] as $key=>$image)
+                    @if($product['images']->count() > 0)
+                        @foreach ($product['images'] as $key=>$image)
                             <a data-target="#productCarousel" data-slide-to="{{ $key }}" class="my-3 {{ $key == 0 ? 'active' : '' }}">
                                 <img src="{{ $image['url'] }}" class="d-block w-100" alt="{{ $product['title'] }}" title="{{ $product['title'] }}">
                             </a>
@@ -50,8 +50,8 @@
                 <div class="col-md-6">
                     <div id="productCarousel" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
-                            @if (count($product['variants']['images']) > 0)
-                                @foreach ($product['variants']['images'] as $key=>$image)
+                            @if (count($product['images']) > 0)
+                                @foreach ($product['images'] as $key=>$image)
                                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                         <img src="{{ $image['url'] }}" class="d-block w-100" alt="{{ $product['title'] }}" title="{{ $product['title'] }}">
                                     </div>
@@ -101,7 +101,7 @@
                 <h2 class="h6">{{ $product['short_description'] }}</h2>
 
                 <p class="h2 text-wine mb-0 mt-4" id="productPrice">
-                    @if($product['stocks'][0]['saleprice'] === '0.00')
+                    @if($product['stocks'][0]['promote_price'] === '0.00')
                         R$ {{ number_format($product['stocks'][0]['price'], 2, ',', '.') }}
                         <p class="h6 mb-0">
                             <small class="text-info">até {{ $product['installments'] }} x <span id="productInstallmentPrice">R$ {{ number_format( ($product['stocks'][0]['price'] / $product['installments']), 2, ',', '.') }}</span></small>
@@ -109,9 +109,9 @@
                     @else
                         De <strike>R$ {{ number_format($product['stocks'][0]['price'], 2, ',', '.') }}</strike>
                         <br>
-                        <span class="text-success">Por R$ {{ number_format($product['stocks'][0]['saleprice'], 2, ',', '.') }}</span>
+                        <span class="text-success">Por R$ {{ number_format($product['stocks'][0]['promote_price'], 2, ',', '.') }}</span>
                         <p class="h6 mb-0">
-                            <small class="text-info">até {{ $product['installments'] }} x <span id="productInstallmentPrice">R$ {{ number_format( ($product['stocks'][0]['saleprice'] / $product['installments']), 2, ',', '.') }}</span></small>
+                            <small class="text-info">até {{ $product['installments'] }} x <span id="productInstallmentPrice">R$ {{ number_format( ($product['stocks'][0]['promote_price'] / $product['installments']), 2, ',', '.') }}</span></small>
                         </p>
                     @endif
                 </p>
@@ -140,7 +140,7 @@
                     <hr>
                 @endforeach
             </div>
-        </div>
+        </div> --}}
         <div class="row justify-content-center">
             <div class="col-12 mt-5 mt-md-0">
                 <h2 class="text-uppercase h5 font-weight-bold">
@@ -153,7 +153,7 @@
             @foreach ($similars as $product)
                 @include('components.product', ['product' => $product, 'cols' => 4])
             @endforeach
-        </div> --}}
+        </div>
 
     </div>
 
