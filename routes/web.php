@@ -53,7 +53,7 @@ Route::prefix('/painel')->group(function(){
     // ROTA DE CATEGORIAS
     Route::get('/categories', 'Painel\CategoriesController@view')->middleware('auth');
     Route::resource('/category', 'Painel\CategoriesController');
-    
+
     // ROTA DE PRODUTOS
     Route::get('/products', 'Painel\ProductsController@view')->middleware('auth');
     Route::get('/product/new', 'Painel\ProductsController@create');
@@ -74,4 +74,12 @@ Route::prefix('/painel')->group(function(){
 });
 
 // ROTAS DA LOJA
+Route::post('/register', 'Site\RegisterController@create');
 Route::get('/p/{slug}', 'Site\ProductsController@show');
+Route::post('/carrinho', 'Site\CartController@store');
+Route::get('/carrinho', 'Site\CartController@index');
+Route::get('/carrinho/details', 'Site\CartController@details');
+Route::patch('/carrinho/details', 'Site\CartController@update');
+Route::get('/checkout', 'Site\PaymentController@index');
+Route::post('/calculo-frete', 'Site\ShippingsController@calculate');
+

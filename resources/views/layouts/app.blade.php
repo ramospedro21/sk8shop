@@ -10,7 +10,7 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}" />
-        
+
     </head>
     <body>
         <div id="app">
@@ -154,8 +154,8 @@
                 </div>
             </div>
 
-       {{-- @include('components.account-modal')
-            @include('components.search-modal')
+            @include('components.account-modal')
+            {{-- @include('components.search-modal')
             @include('components.menu-modal')
             @include('components.cupom-modal') --}}
 

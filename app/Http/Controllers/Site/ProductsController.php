@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Option;
 
+use Session;
+
 class ProductsController extends Controller
 {
     /**
@@ -229,10 +231,11 @@ class ProductsController extends Controller
                     $variants->push([
                         "id" => $variant->id,
                         "price" => $variantStocks[0]->price,
-                        "saleprice" => $variantStocks[0]->saleprice,
+                        "promote_price" => $variantStocks[0]->promote_price,
                         "weight" => $variant->weight,
                         "quantity" => $quantity,
-                        "options" => $values
+                        "options" => $values,
+                        "images" => $variant->images,
                     ]);
                 }
 

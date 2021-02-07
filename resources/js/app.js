@@ -21,6 +21,10 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+Vue.component('buy-product-component', require('./components/site/ButtonBuyProduct.vue').default);
+Vue.component('my-cart', require('./components/site/MyCart.vue').default);
+Vue.component('checkout-component', require('./components/site/CheckoutComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -31,5 +35,9 @@ const app = new Vue({
     el: '#app',
 });
 
+Vue.filter('money', function (value) {
+    let val = (value/1).toFixed(2).replace('.', ',')
+    return 'R$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+})
 
 require('./helpers/menu');

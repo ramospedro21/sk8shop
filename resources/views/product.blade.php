@@ -32,9 +32,6 @@
 @endsection
 
 @section('content')
-{{-- @php
-    dd($product);
-@endphp --}}
     <div class="container pt-5">
         <div class="row mt-5 mt-md-0 mb-5 align-items-center">
             @if ($product['images'])
@@ -115,32 +112,16 @@
                         </p>
                     @endif
                 </p>
-                {{-- <btn-buy-product :variant_id="{{ $variants[0]['id'] }}" :slug="'{{ $product['slug'] }}'"></btn-buy-product> --}}
+
+                <buy-product-component :product="{{ $product }}"
+                                       :variants="{{ $variants }}"
+                                       :options="{{ $options }}"
+                                       :slug="'{{ $product['slug'] }}'">
+                </btn-buy-product>
 
             </div>
         </div>
 
-        {{-- <div class="row my-0 my-md-5">
-            <div class="col-md-7 px-5 px-md-0">
-                <h3 class="h6 font-weight-bold">Saiba mais sobre {{ $product['title'] }}</h3>
-                <p class="">{!! nl2br($product['description']) !!}</p>
-            </div>
-            <div class="col-md-5 px-5 mt-4 mt-md-0">
-                <h4 class="h6 font-weight-bold mb-3">Características</h4>
-                <hr>
-                @foreach ($product['propities'] as $propity)
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <p class="my-0"><small class="font-weight-bold">{{ $propity['title'] }}</small></p>
-                        </div>
-                        <div class="col">
-                            <p class="my-0 "><small>{{ $propity['description'] }}</small></p>
-                        </div>
-                    </div>
-                    <hr>
-                @endforeach
-            </div>
-        </div> --}}
         <div class="row justify-content-center">
             <div class="col-12 mt-5 mt-md-0">
                 <h2 class="text-uppercase h5 font-weight-bold">
