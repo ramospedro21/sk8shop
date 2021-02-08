@@ -4,9 +4,16 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+window.Vue = require('vue');
+
 require('./bootstrap');
 
-window.Vue = require('vue');
+import moment from 'moment';
+
+const VueInputMask = require('vue-inputmask').default;
+
+Vue.use(VueInputMask);
+Vue.use(moment);
 
 /**
  * The following block of code may be used to automatically register your

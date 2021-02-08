@@ -82,4 +82,4 @@ Route::get('/carrinho/details', 'Site\CartController@details');
 Route::patch('/carrinho/details', 'Site\CartController@update');
 Route::get('/checkout', 'Site\PaymentController@index');
 Route::post('/calculo-frete', 'Site\ShippingsController@calculate');
-
+Route::post('/payments', 'Site\PaymentController@store');

@@ -174,7 +174,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        
+
         //PROVIDER PARA CHAMAR OS MENUS
         App\Providers\MenuServiceProvider::class,
 
@@ -232,5 +232,11 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+
+    'moip' => [
+        'access_token' => env('MOIP_ACCESS_TOKEN'),
+        'homologated' => env('MOIP_HOMOLOGATED'),
+        'pub_key' => env('MOIP_PUB_KEY'),
+    ]
 
 ];

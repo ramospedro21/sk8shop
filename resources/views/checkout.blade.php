@@ -2,6 +2,6 @@
 
 @section('content')
 
-<checkout-component :user="{{ $user }}"></checkout-component>
+<checkout-component :user="{{ $user }}" :moip_pub_key="{{ json_encode(env('MOIP_PUBLIC_KEY')) }}"></checkout-component>
 
 @endsection

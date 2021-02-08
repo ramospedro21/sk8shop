@@ -14,6 +14,7 @@
         "intervention/image": "^2.5",
         "laravel/framework": "^6.18.35",
         "laravel/tinker": "^2.0",
+        "moip/moip-sdk-php": "^3.1",
         "rosell-dk/webp-convert": "^2.3"
     },
     "require-dev": {

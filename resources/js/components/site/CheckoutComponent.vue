@@ -38,7 +38,7 @@
 
         <div class="row" v-if="success == 0 && error == 0">
             <div class="col-8 mt-5">
-                <h2 class="font-weight-bolder h5">Meus Dados</h2>
+                <h2 class="font-weight-bolder h5">Informações para entrega</h2>
                 <div class="card pt-4 pb-3 px-4 my-4">
                     <div class="row">
                         <div class="col-md-8">
@@ -67,7 +67,7 @@
                         <div class="col-md-4">
                             <div class="form-group mt-3">
                                 <label for="" class="control-label">Celular:</label>
-                                <input type="text" class="form-control py-4" placeholder="Digite seu celular.." v-model="userDetails.cellphone" v-mask="'(99) 9999-9999[9]'">
+                                <input type="text" class="form-control py-4" placeholder="Digite seu celular.." v-model="userDetails.cellphone" v-mask="'(99) [9]9999-9999'">
                                 <small class="text-danger" v-if="errors.cellphone">{{ errors.cellphone }}</small>
                             </div>
                         </div>
@@ -83,15 +83,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <h2 class="font-weight-bolder h5">Meu Endereço</h2>
-                <div class="card pt-4 pb-3 px-4 my-4">
                     <div class="row align-items-center">
                         <div class="col-8 col-md-4">
                             <div class="form-group mt-3">
                                 <label for="" class="control-label">CEP:</label>
-                                <input type="text" class="form-control py-4" placeholder="Digite seu CEP.." v-model="userAddress.zipcode" v-mask="'99999-999'">
+                                <input type="text" class="form-control py-4" placeholder="Digite seu CEP.." v-model="userAddress.zipcode" v-mask="'99999-999'" @change="getAddress(userAddress.zipcode)">
                                 <small class="text-danger" v-if="errors.zipcode">{{ errors.zipcode }}</small>
                             </div>
                         </div>
@@ -146,89 +142,11 @@
                         </div>
                     </div>
                 </div>
-                <h2 class="font-weight-bolder h5">Cumpom de desconto</h2>
-                <div class="card pt-4 pb-3 px-4 my-4">
-                    <div v-if="!cart.couponDescription && !cart.couponBenefit" class="row align-items-center">
-                        <div class="col-8 col-md-4">
-                            <div class="form-group mt-3">
-                                <label for="" class="control-label">Informe o cupom de desconto:</label>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-8 pt-6">
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <input type="text" class="form-control py-4" placeholder="Digite seu Cupom de Desconto.." v-model="userCoupon.title">
-                                </div>
-                                <div class="col-md-5">
-                                    <button class="btn btn-secondary text-white btn-block btn-lg" @click="getCoupon()">
-                                        <i></i>Adicionar a compra
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row align-items-center" v-else>
-                        <div class="col-12 col-md-12">
-                            <div class="form-group mt-3">
-                                <label class="control-label">Cupom utilizado: <b>{{cart.couponDescription}}: <span class="text-success">{{cart.couponBenefit}}</span></b></label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div>
-                    <h2 class="font-weight-bolder h5">Resumo da Compra</h2>
-                    <div class="card py-5 px-4 my-4 bg-light">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <p class="mb-0">Subtotal: ({{ cart.cartCount }} itens)</p>
-                                <a href="" class="text-info">
-                                    <small>
-                                        Ver produtos
-                                    </small>
-                                </a>
-                            </div>
-                            <div class="col text-right">
-                                <p class="mb-0 font-weight-bold">{{ cart.cartSubtotal | money }}</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <p class="mb-0">Frete:</p>
-                            </div>
-                            <div class="col text-right">
-                                <p class="mb-0 font-weight-bold">{{ cart.cartShipping | money}}</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col">
-                                <p class="mb-0">Desconto:</p>
-                            </div>
-                            <div class="col text-right">
-                                <p class="mb-0 font-weight-bold text-success">{{ cart.cartDiscount | money}}</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col">
-                                <p class="mb-0">Valor Total:</p>
-                            </div>
-                            <div class="col text-right">
-                                <p class="mb-0 font-weight-bold">{{ cart.cartAmount | money }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h2 class="font-weight-bolder h5">Pagamento</h2>
-                <div class="card py-5 px-4 my-4 bg-light">
-                    <p>Como deseja realizar o pagamento?</p>
-                    <div class="row mt-3">
+                <h2 class="font-weight-bolder h">Pagamento</h2>
+                <div class="card pt-4 pb-3 px-4 my">
+                    <div class="row align-items-center">
                         <div class="col">
-                            <button class="btn btn-secondary text-white btn-block btn-lg" @click="setPayment('barcode')">
+                            <button class="btn btn-primary text-white btn-block btn-lg" @click="setPayment('barcode')">
                                 <i class="fas fa-barcode mr-3"></i>Boleto
                             </button>
                         </div>
@@ -280,14 +198,14 @@
                                     </div>
                                 </div>
                                 <button class="btn btn-success btn-block btn-lg botao_boleto" @click="toPay()">
-                                    Gerar Boleto
+                                    Finalizar pedido
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col">
-                            <button class="btn btn-secondary text-white btn-block btn-lg" @click="setPayment('credit-card')">
+                            <button class="btn btn-primary text-white btn-block btn-lg" @click="setPayment('credit-card')">
                                 <i class="fas fa-credit-card mr-3"></i>Cartão de Crédito
                             </button>
                         </div>
@@ -341,8 +259,76 @@
                                 </div>
 
                                 <button class="btn btn-success btn-block btn-lg botao_cartao" @click="toPay()">
-                                    Realizar Pagamento
+                                    Finalizar pedido
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <h2 class="font-weight-bolder h5">Resumo da Compra</h2>
+                    <div class="card py-5 px-4 my-4 bg-light">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <p class="mb-0">Subtotal: ({{ cart.cartCount }} itens)</p>
+                                <a href="" class="text-info">
+                                    <small>
+                                        Ver produtos
+                                    </small>
+                                </a>
+                            </div>
+                            <div class="col text-right">
+                                <p class="mb-0 font-weight-bold">{{ cart.cartSubtotal | money }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <p class="mb-0">Frete:</p>
+                            </div>
+                            <div class="col text-right">
+                                <p class="mb-0 font-weight-bold">{{ cart.cartShipping | money}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <p class="mb-0">Desconto:</p>
+                            </div>
+                            <div class="col text-right">
+                                <p class="mb-0 font-weight-bold text-success">{{ cart.cartDiscount | money}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <p class="mb-0">Valor Total:</p>
+                            </div>
+                            <div class="col text-right">
+                                <p class="mb-0 font-weight-bold">{{ cart.cartAmount | money }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="font-weight-bolder h5">Cumpom de desconto</h2>
+                    <div class="card pt-4 pb-3 px-4 my-4">
+                        <div v-if="!cart.couponDescription && !cart.couponBenefit" class="row align-items-center">
+                            <div class="col-8">
+                                <input type="text" class="form-control py-4" placeholder="Digite seu Cupom.." v-model="userCoupon.title">
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-primary text-white btn-sn" @click="getCoupon()">
+                                    <i></i>Adicionar a compra
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center" v-else>
+                            <div class="col-12 col-md-12">
+                                <div class="form-group mt-3">
+                                    <label class="control-label">Cupom utilizado: <b>{{cart.couponDescription}}: <span class="text-success">{{cart.couponBenefit}}</span></b></label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -354,6 +340,8 @@
                 </div>
             </div>
         </div>
+
+
 <!--
         <div class="row" v-if="success != 0 && error == 0">
             <div class="col-md-8">
@@ -432,12 +420,12 @@
 
     import moment from 'moment';
 
-    // import { MoipCreditCard, MoipValidator } from 'moip-sdk-js'
+    import { MoipCreditCard, MoipValidator } from 'moip-sdk-js'
     // import jsencrypt from 'jsencrypt';
 
     export default {
 
-        props: ["user"],
+        props: ["user", "moip_pub_key"],
 
         data() {
             return {
@@ -483,7 +471,8 @@
                     validate_month: null,
                     validate_year: null,
                     cvc: null
-                }
+                },
+                loading: false,
 
             }
         },
@@ -723,7 +712,7 @@
 
                         MoipCreditCard
                             .setEncrypter(jsencrypt, 'ionic')
-                            .setPubKey(env.PUBLIC_KEY_WIRECARD)
+                            .setPubKey(this.moip_pub_key)
                             .setCreditCard({
                                 number  : this.userPayment.card_number,
                                 cvc     : this.userPayment.cvc,
@@ -733,7 +722,7 @@
                             .hash()
                             .then(hash => {
 
-                                Http
+                                axios
                                     .post('/payments', {
                                         cart: this.cart,
                                         details: this.userDetails,
@@ -744,8 +733,6 @@
                                             hash: hash,
                                         },
                                         stock: null
-                                    },{
-                                        headers: {'Authorization': "Bearer " + this.token}
                                     })
                                     .then(response => {
                                         this.success = response.data.payment;
@@ -763,9 +750,9 @@
 
 
                         // $(".botao_boleto").prop("disabled", true);
-                        $(".botao_boleto").text("Gerando boleto...");
+                        // $(".botao_boleto").text("Gerando boleto...");
 
-                        Http
+                        axios
                             .post('/payments', {
                                 cart: this.cart,
                                 details: this.userDetails,
@@ -773,9 +760,6 @@
                                 payment: {
                                     type: this.userPayment.type,
                                 },
-                                stock: null
-                            },{
-                                headers: {'Authorization': "Bearer " + this.token}
                             })
                             .then(response => {
                                 this.success = response.data.payment;
@@ -784,8 +768,8 @@
 
                                 this.error = 1;
 
-                                $(".botao_boleto").prop("disabled", false);
-                                $(".botao_boleto").text("Gerar Boleto");
+                                // $(".botao_boleto").prop("disabled", false);
+                                // $(".botao_boleto").text("Gerar Boleto");
 
                             });
 
@@ -822,9 +806,9 @@
 
             validations: function() {
 
-                if(!this.user.user.name){
+                if(!this.user.name){
                     this.errors.name = 'Por favor informe seu nome';
-                    console.log(this.errors);
+
                     return false;
                 } else {this.errors.name = null}
 
@@ -940,6 +924,8 @@
                     })
                 });
 
+                this.getAddress(this.cart.zipcodeTo);
+
                 axios
                     .post('/calculo-frete',{ products: productsToCalculate, zipcode_to: this.cart.zipcodeTo })
                     .then(response => {
@@ -953,6 +939,26 @@
                     })
 
             },
+
+            getCep: function(cep){
+
+                self = this;
+
+                $.getJSON("https://viacep.com.br/ws/" + cep + "/json/", function(address){
+
+                    if(address.erro){
+                        $("#inputLogradouro").focus();
+                        return;
+                    }
+
+                    self.userAddress.zipcode = cep;
+                    self.userAddress.street = address.logradouro;
+                    self.userAddress.district = address.bairro;
+                    self.userAddress.city = address.localidade;
+                    self.userAddress.state = address.uf;
+
+                });
+            }
 
         },
 
@@ -974,7 +980,7 @@
                         this.getAddress(this.userAddress.zipcode);
 
                         self = this;
-                        this.user.user.addresses.forEach(address => {
+                        this.user.addresses.forEach(address => {
                             if(address.zipcode == this.cart.zipcodeTo){
                                 self.userAddress.street_number = address.street_number;
                                 self.userAddress.complement = address.complement;
