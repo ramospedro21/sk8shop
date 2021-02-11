@@ -163,10 +163,12 @@ class PaymentController extends Controller
 
                 if ($request['payment']['type'] == "credit-card") {
 
+                    $user = User::with(['details'])->find(Auth::user()->id);
+
                     $holder = $moip->holders()
-                        ->setFullname(Auth::user()->user->name)
-                        ->setTaxDocument(Auth::user()->user->details->tax_document_number, 'CPF')
-                        ->setPhone(Auth::user()->user->details->phone_area_code, Auth::user()->user->details->phone_number, 55);
+                        ->setFullname($user->name)
+                        ->setTaxDocument($user->details->tax_document_number, 'CPF')
+                        ->setPhone($user->details->phone_area_code, $user->details->phone_number, 55);
 
                     $payment = $orderMoip->payments()
                         ->setCreditCardHash($request['payment']['hash'], $holder)

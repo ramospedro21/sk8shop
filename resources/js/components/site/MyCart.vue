@@ -52,6 +52,12 @@
                         </div>
                     </div>
                 </div>
+                <a class="btn btn-primary btn-lg mb-1" v-if="user" href="/checkout">
+                    Continuar
+                </a>
+                <button class="btn btn-primary btn-lg mb-1" v-if="!user" data-target="#accountModal" data-toggle="modal">
+                    Continuar
+                </button>
             </div>
             <div class="col-md-4">
                 <a class="btn btn-primary btn-block btn-lg mb-1" v-if="user" href="/checkout">
@@ -71,37 +77,6 @@
                         </div>
                     </div>
                     <hr>
-                     <!-- <div class="row align-items-center">
-                        <div class="col">
-                            <p class="mb-0">Frete:</p>
-                            <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="text-gray"  v-if="cart.shippings.shippings && cart.shippings.shippings.length > 0">
-                            <small>Ver opções de frete</small>
-                            </a>
-                            <a data-toggle="collapse" v-else-if="this.cart.cartShipping">
-                            <small>O frete foi ajustado de acordo com o seu endereço</small>
-                            </a>
-                        </div>
-                        <div class="col text-right">
-                            <p class="mb-0 font-weight-bold" v-if="this.cart.cartShipping != '0.00'">{{ cart.cartShipping | money }}</p>
-                            <p class="mb-0 font-weight-bold text-success" v-else-if="this.userAddress.city != null">GRÁTIS</p>
-                        </div>
-                    </div>
-                    <div class="collapse" id="collapseExample">
-                        <div class="row">
-                            <div class="form-check form-check-radio mt-4 col-md-12 pl-5" v-for="shipping in cart.shippings.shippings" :key="shipping.code">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" v-model="cart.shipping" :id="'exampleRadios' + shipping.code" :value="shipping" v-on:change="selectShipping()">
-                                    <p class="mb-0 pb-0">{{ shipping.title }}</p>
-                                    <input v-model.lazy="shipping.price" readonly type="hidden"/>
-                                    <p class="mb-0 pb-0">{{ shipping.price | money}} - {{ shipping.deadline }}</p>
-                                    <span class="circle">
-                                        <span class="check"></span>
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-                    </div> -->
-                    <hr>
                     <div class="row">
                         <div class="col">
                             <p class="mb-0">Desconto:</p>
@@ -119,26 +94,9 @@
                             <p class="mb-0 font-weight-bold">{{ cart.cartAmount | money }}</p>
                         </div>
                     </div>
-                    <div class="row mt-5">
-                        <div class="col">
-                            <a :href="'/pagamento'" class="btn btn-success btn-block btn-lg" v-bind:disabled="cart.cartStatus == false" v-if="user">
-                                Finalizar Compra
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center px-5">
-                    <p class="h6 text-success">
-                        <i class="fas fa-lock mr-2"></i> Compra Segura
-                    </p>
                 </div>
             </div>
         </div>
-
-        <!-- <div id="loader" v-if="loading" class="text-center">
-            <img :src="'/images/loading.gif'" alt="" height="60">
-            <p class="text-uppercase text-primary mt-3">Aguarde...</p>
-        </div> -->
 
 
         <!-- The Modal -->
@@ -366,7 +324,8 @@
                 axios
                     .patch('/carrinho/details', {cart: this.cart})
                     .then(response => {
-                        this.cart = response.data.cart
+                        console.log(response);
+                        this.cart = response.data
                     })
 
                 this.loading = false;

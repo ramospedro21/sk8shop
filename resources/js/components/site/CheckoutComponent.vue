@@ -420,8 +420,8 @@
 
     import moment from 'moment';
 
-    import { MoipCreditCard, MoipValidator } from 'moip-sdk-js'
-    // import jsencrypt from 'jsencrypt';
+    import { MoipCreditCard, MoipValidator } from 'moip-sdk-js';
+    import jsencrypt from 'jsencrypt';
 
     export default {
 
@@ -721,7 +721,6 @@
                             })
                             .hash()
                             .then(hash => {
-
                                 axios
                                     .post('/payments', {
                                         cart: this.cart,
@@ -738,11 +737,13 @@
                                         this.success = response.data.payment;
                                     })
                                     .catch(err => {
-                                        $(".botao_cartao").prop("disabled", false);
-                                        $(".botao_cartao").text("Realizar Pagamento");
-                                        this.error = 1;
+                                        // $(".botao_cartao").prop("disabled", false);
+                                        // $(".botao_cartao").text("Realizar Pagamento");
+                                        // this.error = 1;
                                     });
 
+                            }).catch(err =>{
+                                console.log(err);
                             });
 
 

@@ -14,7 +14,7 @@
 
         <div v-if="buyProduct.variant">
 
-            <button class="btn btn-lg btn-primary text-uppercase font-weight-bold my-3" @click="buy()">
+            <button :disabled="loading.product == true" class="btn btn-lg btn-primary text-uppercase font-weight-bold my-3" @click="buy()">
                 <i class="fas fa-plus mr-2"></i> Comprar Produto
             </button>
 
@@ -117,7 +117,10 @@
                     variant: false,
                     optionsValues: []
                 },
-                cart:{}
+                cart:{},
+                loading: {
+                    product: false,
+                }
             }
         },
         methods: {
@@ -217,6 +220,8 @@
 
             buy: async function(){
 
+                this.loading.product = true;
+
                 try{
 
                     const {data} = await axios.post('/carrinho', {
@@ -227,8 +232,11 @@
 
                     $("#buyModal").modal('show');
 
+                    this.loading.product = false;
+
                 }catch(e){
 
+                    this.loading.product = false;
                 }
 
 
