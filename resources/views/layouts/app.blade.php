@@ -9,7 +9,7 @@
         <title>{{ env('APP_NAME') }}</title>
 
         <!-- Fonts -->
-        <link rel="stylesheet" type="text/css" href="{{ mix('css/all.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}" />
 
     </head>
     <body>

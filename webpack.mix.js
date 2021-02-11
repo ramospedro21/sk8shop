@@ -18,7 +18,6 @@ mix.js('resources/js/app.js', 'public/js')
    .options({
       processCssUrls: false
    })
-   .copy('node_modules/font-awesome/fonts', 'public/fonts')
-   .combine(['public/css/app.css', 'node_modules/font-awesome/css/font-awesome.min.css'], 'public/css/all.css');
+   .copy('node_modules/font-awesome/fonts', 'public/fonts');
 
 mix.version();
