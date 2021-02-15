@@ -57,6 +57,7 @@ Route::prefix('/painel')->group(function(){
     // ROTA DE PRODUTOS
     Route::get('/products', 'Painel\ProductsController@view')->middleware('auth');
     Route::get('/product/new', 'Painel\ProductsController@create');
+    Route::post('/product/delete', 'Painel\ProductsController@destroy');
     Route::resource('/product', 'Painel\ProductsController');
 
     // ROTA DE EMBALAGENS

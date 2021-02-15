@@ -438,8 +438,36 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        try{
+
+            if($request->productsToDelete){
+                foreach($request->productsToDelete as $productToDelete){
+
+                    Product::find($productToDelete)->delete();
+
+                }
+            } else {
+
+                Product::find($request->id)->delete();
+
+            }
+
+            return response()->json([
+                'success' => true,
+            ], 200);
+
+        }catch(\Exception $error){
+
+            return response()->json([
+                'message' => 'Não foi possivel apagar o produto.',
+                'errors' => [
+                    'message' => $error->getMessage(),
+                    'line' => $error->getLine(),
+                ],
+            ], 500);
+
+        }
     }
 }
