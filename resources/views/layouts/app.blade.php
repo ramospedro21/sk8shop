@@ -73,11 +73,10 @@
                                                 @foreach ($category['children'] as $child)
                                                 <div class="col-md-3">
                                                     <a href="{{ url( '/c/' . $child['slug']) }}" class="h5 dropdown-item">
-                                                        <small>{{ $child['title'] }}</small>
+                                                        <small class="font-weight-bold">{{ $child['title'] }}</small>
                                                     </a>
-                                                    <div class="dropdown-divider"></div>
                                                     @foreach ($child['children'] as $lastChild)
-                                                        <a href="{{ url( '/c/' . $lastChild['slug']) }}" class="h6 dropdown-item mb-0">
+                                                        <a href="{{ url( '/c/' . $lastChild['slug']) }}" class="h6 dropdown-item">
                                                             <small>{{ $lastChild['title'] }}</small>
                                                         </a>
                                                     @endforeach
