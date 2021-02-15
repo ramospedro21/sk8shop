@@ -218,7 +218,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success btn-lg btn-block">Salvar</button>
+                        <button type="submit" class="btn btn-success btn-lg btn-block" :disabled="loading.buttonSuccess == true">Salvar</button>
                     </div>
                 </div>
             </form>
@@ -571,6 +571,10 @@ export default {
             },
             errorImage: null,
             image: null,
+
+            loading:{
+                buttonSuccess: false
+            }
         }
     },
 
@@ -885,23 +889,37 @@ export default {
 		},
 
         store: async function(){
+
+            this.loading.buttonSuccess = true;
+
             try{
 
                 const {data} = await axios.post('/painel/product', {
                     product: this.product
                 });
 
+                this.loading.buttonSuccess = false;
+
+                showSuccessToast('Produto cadastrado com sucesso.');
+
             }catch(e){
-                console.log(e);
+
+                showErrorToast('Não foi possivel cadastrar o produto.');
+
             }
         },
 
         update: async function(){
+
+            this.loading.buttonSuccess = true;
+
             try{
 
                 const {data} = await axios.patch(`/painel/product/${this.product.id}`, {
                     product: this.product
                 });
+
+                this.loading.buttonSuccess = false;
 
                 showSuccessToast('Produto salvo com sucesso.');
 
