@@ -9,11 +9,6 @@
                 <h2 class="h6 my-3 mb-5">
                     {{ $category['description'] }}
                 </h2>
-                @foreach ($category['parents'] as $parents)
-                <a href="{{ url( '/c/' . $parents['slug']) }}">
-                    <h3 class="text-primary font-price">| {{ $parents['title'] }}</h3>
-                </a>
-                @endforeach
                 <form>
                     @foreach($filters as $filter)
                         <h5 class="font-weight-bold mt-3 text-primary mt-5">{{ $filter['title'] }}</h5>
@@ -22,9 +17,7 @@
                                 <label class="form-check-label text-primary">
                                     <filter-option id="{{ $value['id'] }}"></filter-option>
                                     {{$value['title']}}
-                                    <span class="form-check-sign">
-                                        <span class="check"></span>
-                                    </span>
+                                    <label class="form-check-label"></label>
                                 </label>
                             </div>
                         @endforeach
