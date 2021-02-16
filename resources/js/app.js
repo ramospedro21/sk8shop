@@ -31,6 +31,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('buy-product-component', require('./components/site/ButtonBuyProduct.vue').default);
 Vue.component('my-cart', require('./components/site/MyCart.vue').default);
 Vue.component('checkout-component', require('./components/site/CheckoutComponent.vue').default);
+Vue.component('filter-component', require('./components/site/FilterOption.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

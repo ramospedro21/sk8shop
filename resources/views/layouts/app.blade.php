@@ -64,7 +64,7 @@
                             <ul class="list-inline mb-0 pb-0 text-uppercase">
                                 @foreach ($categories as $category)
                                 <li class="list-inline-item dropdown custom-dropdown mb-2" data-target="#category{{ $category['id'] }}">
-                                    <a class="nav-link dropdown-toggle text-category" href="{{ url( '/c/' . $category['slug']) }}">
+                                    <a class="nav-link dropdown-toggle text-category" href="{{ url( '/category/' . $category['slug']) }}">
                                         {{ $category['title'] }}
                                     </a>
                                     <div class="dropdown-menu custom-dropdown-menu my-0 py-4 shadow-sm" aria-labelledby="category{{ $category['id'] }}" id="category{{ $category['id'] }}">
@@ -72,11 +72,11 @@
                                             <div class="row">
                                                 @foreach ($category['children'] as $child)
                                                 <div class="col-md-3">
-                                                    <a href="{{ url( '/c/' . $child['slug']) }}" class="h5 dropdown-item">
+                                                    <a href="{{ url( '/category/' . $child['slug']) }}" class="h5 dropdown-item">
                                                         <small class="font-weight-bold">{{ $child['title'] }}</small>
                                                     </a>
                                                     @foreach ($child['children'] as $lastChild)
-                                                        <a href="{{ url( '/c/' . $lastChild['slug']) }}" class="h6 dropdown-item">
+                                                        <a href="{{ url( '/category/' . $lastChild['slug']) }}" class="h6 dropdown-item">
                                                             <small>{{ $lastChild['title'] }}</small>
                                                         </a>
                                                     @endforeach
