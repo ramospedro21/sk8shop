@@ -46,22 +46,22 @@
                 <div class="carousel-item active">
                     <div class="row ml-3">
                         <div class="col">
-                            <a href="{{url('/c/espumantesoJS')}}">
+                            <a href="{{url('/category/adidas')}}">
                                 <img src="{{ url('images/logoAdidas.png') }}" class="w-50" alt="">
                             </a>
                         </div>
                         <div class="col">
-                            <a href="{{url('/c/espumantesoJS')}}">
+                            <a href="{{url('/category/nike')}}">
                                 <img src="{{ url('images/logoNike.png') }}" class="w-50" alt="">
                             </a>
                         </div>
                         <div class="col">
-                            <a href="{{url('/c/espumantesoJS')}}">
+                            <a href="{{url('/category/primitive')}}">
                                 <img src="{{ url('images/logoPrimitive.png') }}" class="w-50" alt="">
                             </a>
                         </div>
                         <div class="col">
-                            <a href="{{url('/c/espumantesoJS')}}">
+                            <a href="{{url('/category/vans')}}">
                                 <img src="{{ url('images/logoVans.png') }}" class="w-50" alt="">
                             </a>
                         </div>
@@ -82,7 +82,7 @@
 <div class="container">
     <div class="row">
         @foreach ($products as $product)
-            
+
             @include('components.product', ['product' => $product, 'cols' => 4])
 
         @endforeach
