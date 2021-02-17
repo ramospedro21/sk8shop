@@ -2,7 +2,7 @@
 
 @section('content')
 
-<my-cart :user="{{ json_encode(Auth::user()) }}">
+<my-cart :user="{{ json_encode(Auth::user()) }}" id="cartPage">
 </my-cart>
 
 @endsection

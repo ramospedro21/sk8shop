@@ -21,7 +21,7 @@
             </p>
         @else
             <h6 class="font-weight-bold text-danger h6 pb-0 mb-0">
-                R$ {{ number_format($product['stocks'][0]['promote_price'], 2, ',', '.') }} 
+                R$ {{ number_format($product['stocks'][0]['promote_price'], 2, ',', '.') }}
             </h6>
             <h6 class="font-weight-bold text-primary h4 pb-0 mb-0">
                 <strike>R$ {{ number_format($product['stocks'][0]['price'], 2, ',', '.') }}</strike>

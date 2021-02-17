@@ -1,7 +1,7 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
 
-// @import "node_modules/font-awesome/scss/font-awesome";
+// @import "site/fontawesome";
 
 // Variables
 @import 'variables';
@@ -43,4 +43,16 @@ body{
 a.text-category{
     font-family: 'Montserrat', sans-serif !important;
     font-weight: 600;
+}
+
+#categoryContainer{
+    max-height: 130px !important;
+}
+
+#productPage{
+    margin-top: 100px !important;
+}
+
+#cartPage{
+    margin-top: 200px !important;
 }

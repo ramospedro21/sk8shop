@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container my-md-5">
+    <div class="container my-md-5"  id="cartPage">
         <div class="row mt-5">
             <div class="col-md-3 d-md-block d-none">
                 <h2 class="text-primary font-price">

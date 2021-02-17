@@ -32,8 +32,8 @@
 @endsection
 
 @section('content')
-    <div class="container pt-5">
-        <div class="row mt-5 mt-md-0 mb-5 align-items-center">
+    <div class="container pt-5 mt-5">
+        <div class="row mt-5 mt-md-0 mb-5 align-items-center" id="productPage">
             @if ($product['images'])
                 <div class="col-md-1 d-none d-md-block">
                     @if($product['images']->count() > 0)

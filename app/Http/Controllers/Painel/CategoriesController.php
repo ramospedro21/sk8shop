@@ -14,7 +14,7 @@ Use App\Models\Category;
 Use App\Models\ErrorsLog;
 
 class CategoriesController extends Controller
-{   
+{
 
     public function view(){
 
@@ -34,21 +34,21 @@ class CategoriesController extends Controller
     public function index()
     {
         try{
-            
+
             $categories = CategoryHelper::getCategories(null);
 
             foreach($categories as $category){
-    
+
                 $category->children = CategoryHelper::getCategories($category->id);
-    
+
                 if($category->children->count() > 0){
-    
+
                     foreach($category->children as $child){
                         $child->children = CategoryHelper::getCategories($child->id);
                     }
-    
+
                 }
-    
+
             }
             return response()->json($categories, 200);
 
@@ -67,10 +67,10 @@ class CategoriesController extends Controller
             ], 500);
 
         }
-        
+
 
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -88,7 +88,7 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         try{
 
             DB::beginTransaction();
@@ -98,7 +98,7 @@ class CategoriesController extends Controller
             $hasSlug = Category::where('slug', $slug)->first();
 
             if($hasSlug) $slug = $slug . Str::random(3);
-            
+
 
             // Se enviar categoria pai
             if($request->input('category.parent_id')){
@@ -125,6 +125,7 @@ class CategoriesController extends Controller
                 'description' => $request->input('category.description'),
                 'parent_id' => $request->input('category.parent_id'),
                 'slug' => $slug,
+                'showing' => $request->input('category.showing'),
             ]);
 
             DB::commit();
@@ -179,7 +180,7 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
+    {
         try{
 
             DB::beginTransaction();
@@ -188,6 +189,7 @@ class CategoriesController extends Controller
                     'title' => $request->input('category.title'),
                     'description' => $request->input('category.description'),
                     'parent_id' => $request->input('category.parent_id'),
+                    'showing' => $request->input('category.showing'),
                 ]);
 
             DB::commit();

@@ -28,7 +28,7 @@
                                 <div class="col-4 text-right">
                                     <i class="pointer fas fa-sort-down"
                                         style="color: #000;"
-                                        data-toggle="collapse" 
+                                        data-toggle="collapse"
                                         v-if="category.children.length > 0"
                                         :href="'#category' + category.id"
                                     >
@@ -46,13 +46,13 @@
                                                 <i class="pointer fas fa-trash ml-3" v-on:click="openDeleteModal(child)"></i>
                                             </div>
                                             <div class="col-4 pr-0 text-right">
-                                                <i class="pointer fas fa-sort-down" 
-                                                    data-toggle="collapse" 
-                                                    :href="'#child' + child.id" 
-                                                    role="button" 
-                                                    aria-expanded="false" 
-                                                    :aria-controls="'child' + child.id" 
-                                                    v-if="child.children.length > 0" 
+                                                <i class="pointer fas fa-sort-down"
+                                                    data-toggle="collapse"
+                                                    :href="'#child' + child.id"
+                                                    role="button"
+                                                    aria-expanded="false"
+                                                    :aria-controls="'child' + child.id"
+                                                    v-if="child.children.length > 0"
                                                     style="color: #000;"></i>
                                             </div>
                                         </div>
@@ -78,7 +78,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- MODAL DE CADASTRO E EXCLUSÃO -->
     <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -105,6 +105,14 @@
                                     <label class="form-control-label" for="input-name">Descrição:</label>
                                     <input type="text" id="input-name" class="form-control" v-model="category.description" required>
                                 </div>
+                                <div class="form-group focused">
+                                    <label class="form-control-label" for="input-name">Deseja mostrar no site?</label>
+                                    <select class="form-control" v-model="category.showing">
+                                        <option :value="null">-Selecione-</option>
+                                        <option :value="0">Não</option>
+                                        <option :value="1">Sim</option>
+                                    </select>
+                                </div>
                                 <!-- <div class="form-group">
                                     <label class="form-control-label" for="input-name">Vincular Cupom de Desconto:</label>
                                     <select name="select-coupon" id="select-coupon" class="form-control" v-model="category.coupon_id">
@@ -123,7 +131,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- MODAL DE EXCLUSÃO -->
     <div class="modal fade bd-example-modal-sm" id="deleteCategory" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -150,7 +158,7 @@
             </div>
         </div>
     </div>
-</div>  
+</div>
 </template>
 
 <script>
@@ -165,7 +173,7 @@ export default {
             category:{
                 cupom_id: null
             },
-          
+
             loading:{
                 page: true,
                 buttonCategories: false,
@@ -175,7 +183,7 @@ export default {
             errors:{
 
             },
-            
+
             filters:{
                 per_page: 16
             }
@@ -183,9 +191,9 @@ export default {
     },
 
     methods: {
-        
+
         index: async function(page){
-            
+
             try{
 
                 const {data} = await axios.get(`/painel/category`);
@@ -204,7 +212,7 @@ export default {
         },
 
         create: function(parent){
-            
+
             this.category = {
                 cupom_id: null
             }
@@ -220,9 +228,9 @@ export default {
         },
 
         store: async function(){
-            
+
             this.loading.buttonCategories = true;
-            
+
             try{
 
                 const {data} = await axios.post(`/painel/category`, {category: this.category})
@@ -259,7 +267,7 @@ export default {
         },
 
         update: async function(){
-            
+
             this.loading.buttonCategories = false;
 
             try{

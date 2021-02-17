@@ -10,57 +10,23 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" crossorigin="anonymous">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url('images/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="96x96" href="{{ url('images/favicon-96x96.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url('images/favicon-16x16.png') }}">
 
     </head>
     <body>
         <div id="app">
-            <div class="border-bottom w-100" id="menu">
-                <div class="container d-none d-md-block">
+            <div class="border-bottom fixed-top bg-white shadow-sm d-none d-md-block" id="menu">
+                <div class="container d-none d-md-block" id="categoryContainer">
                     <div class="row align-items-center">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <a href="{{ url('/') }}">
                                 <img src="{{ url('images/logo.png') }}" height="150">
                             </a>
                         </div>
-                        <div class="col-md-8 text-center">
-                            <div class="input-group">
-                                <input type="text" class="form-control" aria-label="Busca" placeholder="Busca">
-                                <span class="input-group-text mr-1">
-                                    <i class="fas fa-search"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            @if(Session::get('token'))
-                                <li class="list-inline-item dropdown-account custom-dropdown" data-target="#dropdownMenuButton">
-                                    <button class="btn btn-outline dropdown-toggle text-white" type="button">
-                                            <i class="fas fa-user mr-2 "></i> <b>Olá, {{ Str::before(Session::get('user.user.name'), ' ') }}</b>
-                                    </button>
-                                    <div class="dropdown-menu custom-dropdown-menu " id="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{ url('/minha-conta') }}">Minha Conta</a>
-                                        <a class="dropdown-item" href="{{ url('/logout') }}">Sair</a>
-                                    </div>
-                                </li>
-                            @else
-                                <li class="list-inline-item px-2">
-                                    <a class="h6 mx-2 py-3" href="#" data-target="#accountModal" data-toggle="modal">
-                                        <i class="fas fa-user"></i>
-                                    </a>
-                                </li>
-                            @endauth
-                            <li class="list-inline-item">
-                                <a class="nav-link" :href="'/carrinho'">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    <span class="py-3 font-weight-bold">
-                                        {{ Session::get('cart.cartCount') ? Session::get('cart.cartCount') : 0 }}
-                                    </span>
-                                </a>
-                            </li>
-                        </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <div class="col-2"></div>
-                        <div class="col-8 text-center">
+                        <div class="col-md-6 text-center">
                             <ul class="list-inline mb-0 pb-0 text-uppercase">
                                 @foreach ($categories as $category)
                                 <li class="list-inline-item dropdown custom-dropdown mb-2" data-target="#category{{ $category['id'] }}">
@@ -89,6 +55,41 @@
                                 @endforeach
                             </ul>
                         </div>
+                        <div class="col-md-3">
+                            @if(Session::get('token'))
+                                <li class="list-inline-item dropdown-account custom-dropdown" data-target="#dropdownMenuButton">
+                                    <button class="btn btn-outline dropdown-toggle text-white" type="button">
+                                            <i class="fas fa-user mr-2 "></i> <b>Olá, {{ Str::before(Session::get('user.user.name'), ' ') }}</b>
+                                    </button>
+                                    <div class="dropdown-menu custom-dropdown-menu " id="dropdownMenuButton">
+                                        <a class="dropdown-item" href="{{ url('/minha-conta') }}">Minha Conta</a>
+                                        <a class="dropdown-item" href="{{ url('/logout') }}">Sair</a>
+                                    </div>
+                                </li>
+                            @else
+                                <li class="list-inline-item">
+                                    <a class="h6 mx-2 py-3" href="#" data-target="#accountModal" data-toggle="modal">
+                                        <i class="fas fa-user"></i>
+                                    </a>
+                                </li>
+                            @endauth
+                            <li class="list-inline-item">
+                                <a class="nav-link" :href="'/carrinho'">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="py-3 font-weight-bold">
+                                        {{ Session::get('cart.cartCount') ? Session::get('cart.cartCount') : 0 }}
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link">
+                                    <i class="fas fa-search"></i>
+                                </a>
+                            </li>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-2"></div>
                         <div class="col-2"></div>
                     </div>
                 </div>

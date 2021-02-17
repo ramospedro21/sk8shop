@@ -53,7 +53,7 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show(Request $request, $slug)
     {
         try{
 
@@ -100,7 +100,57 @@ class CategoriesController extends Controller
                                })
                                ->whereHas('product.categories', function ($query) use ($categoriesIds) {
                                     $query->whereIn('category_id', $categoriesIds);
-                                })->get();
+                                });
+
+            // dd($request->all());
+            if ($request->query('ids', null)) {
+
+                $ids = explode(',', $request->ids);
+                $ids = str_replace('[', '', $ids);
+                $ids = str_replace(']', '', $ids);
+                $ids = str_replace('"', '', $ids);
+                $ids = str_replace('"', '', $ids);
+
+                $options = OptionValue::query()->whereIn('id', $ids)->get()->groupBy('option_id');
+
+                // adiciona um where na consulta de produtos
+                $products->where(function ($query) use ($options) {
+
+                    // passa em cada opcao
+                    foreach ($options as $option) {
+
+                        // faz com que dentro desse where sempre considere AND
+                        $query->where(function ($query) use ($option) {
+
+                            foreach ($option as $key => $value) {
+
+                                // se for o primeiro value usa where
+                                if ($key == 0) {
+
+                                    $query->whereHas('values', function ($query) use ($value) {
+                                        $query->where('option_values.id', $value->id);
+                                    });
+
+                                    // se for depois da primeira usa OR WHERE
+                                } else {
+
+                                    $query->orWhereHas('values', function ($query) use ($value) {
+                                        $query->where('option_values.id', $value->id);
+                                    });
+
+                                }
+
+                            }
+
+                        });
+
+                    }
+
+                });
+
+            }
+
+            $products = $products->orderBy('created_at', 'desc')->get();
 
             $variants = [];
 

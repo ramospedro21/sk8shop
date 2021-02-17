@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Product;
+use App\Models\Variant;
 use App\Models\Category;
 use App\Models\Option;
 
@@ -82,7 +83,6 @@ class ProductsController extends Controller
 
             $options = $data[0];
             $variants = $data[1];
-
 
             return view('product', [
                 'product' => $product,
@@ -162,27 +162,32 @@ class ProductsController extends Controller
 
         $categoriesIds = $categories->pluck('category_id');
 
-        $products = Product::with([
-            'images',
-            'variants.stocks' => function ($query){
-                $query->where(function($query) {
-                    $query->where('price', '>', 0);
-                    $query->orWhere('promote_price', '>', 0);
-                });
-            },
-            'coupons'
-        ])
-        ->whereHas('categories', function ($query) use ($categoriesIds) {
-            $query->whereIn('category_id', $categoriesIds);
-        })
-        ->limit(4)
-        ->where('id', '!=',$product_id)
-        ->where('enabled', 1)
-        ->orderBy('created_at', 'desc')
-        ->whereHas('stocks', function ($query){
-            $query->where('price', '>', 0);
-            $query->orWhere('promote_price', '>', 0);
-        })->get();
+        $products = Variant::with(['images',
+                                   'product' => function($query){
+                                       $query->where('enabled', 1);
+                                   },
+                                   'stocks' => function ($query){
+                                        $query->where(function($query) {
+                                            $query->where('price', '>', 0);
+                                            $query->orWhere('promote_price', '>', 0);
+                                        });
+                                    }])
+                           ->whereHas('stocks', function($query){
+                               $query->where(function($query){
+                                   $query->where('price', '>', 0);
+                                   $query->orWhere('promote_price', '>', 0);
+                               });
+                           })
+                           ->whereHas('product.categories', function ($query) use ($categoriesIds) {
+                               $query->whereIn('category_id', $categoriesIds);
+                           })
+                           ->limit(4)
+                           ->where('product_id', '!=', $product_id)
+                           ->orderBy('created_at', 'desc')
+                           ->whereHas('stocks', function ($query){
+                               $query->where('price', '>', 0);
+                               $query->orWhere('promote_price', '>', 0);
+                           })->get();
 
         return $products;
     }
