@@ -14,8 +14,8 @@
                                 </div>
                                 <div class="col">
                                     <p class="font-weight-bold mb-0">{{ product.product.title }}</p>
-                                    <p class="text-info d-none d-md-block mb-2">{{ product.product.short_description }}</p>
-                                    <p class="text-info d-none d-md-block mb-0" v-for="value in product.values" :key="value.id">
+                                    <p class=" d-none d-md-block mb-2">{{ product.product.short_description }}</p>
+                                    <p class=" d-none d-md-block mb-0" v-for="value in product.values" :key="value.id">
                                         <small class="text-dark font-weight-bold">{{ value.title }}, </small>
                                     </p>
                                 </div>
@@ -23,7 +23,7 @@
                         </div>
                         <div class="col-2 text-right">
                             <button data-toggle="modal" data-target="#confirmModal" class="btn btn-link btn-sm" @click="confirmRemoveFromCart(i, product)">
-                                <i class="fas fa-trash text-info"></i>
+                                <i class="fas fa-trash "></i>
                             </button>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                     <div class="row align-items-center">
                         <div class="col col-md-1 text-center px-0">
                             <button class="btn btn-link" @click="subQuantity(product, i)">
-                                <i class="fas fa-minus-circle text-info"></i>
+                                <i class="fas fa-minus-circle"></i>
                             </button>
                         </div>
                         <div class="col col-md-2 text-left px-2">
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col col-md-1 text-center px-0">
                             <button  class="btn btn-link" @click="addQuantity(product)">
-                                <i class="fas fa-plus-circle text-info"></i>
+                                <i class="fas fa-plus-circle"></i>
                             </button>
                         </div>
                         <div class="col text-right">

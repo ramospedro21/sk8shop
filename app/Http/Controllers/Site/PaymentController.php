@@ -211,6 +211,11 @@ class PaymentController extends Controller
                     ]);
 
                 } else {throw new \Exception('Payment Method is not valid (' . $request['payment']['type'] . ')');}
+
+                return response()->json([
+                    "order" => $order,
+                    "payment" => $orderPayment,
+                ], 200);
             }
             catch (\Moip\Exceptions\UnautorizedException $e)
             {

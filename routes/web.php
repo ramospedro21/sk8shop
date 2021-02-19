@@ -85,3 +85,5 @@ Route::get('/checkout', 'Site\PaymentController@index');
 Route::post('/calculo-frete', 'Site\ShippingsController@calculate');
 Route::post('/payments', 'Site\PaymentController@store');
 Route::get('/category/{slug}', 'Site\CategoriesController@show');
+Route::get('/pesquisa', 'Site\SearchController@index');
+Route::get('/minha-conta', 'Site\ProfileController@index');

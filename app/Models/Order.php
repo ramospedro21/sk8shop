@@ -54,4 +54,9 @@ class Order extends Model
     {
         return $this->hasOne('App\Models\OrderPayment', 'order_id', 'id');
     }
+
+    public function products()
+    {
+        return $this->hasMany('App\Models\OrderProduct', 'order_id', 'id');
+    }
 }

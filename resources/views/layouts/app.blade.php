@@ -56,10 +56,10 @@
                             </ul>
                         </div>
                         <div class="col-md-3">
-                            @if(Session::get('token'))
+                            @if(Auth::user()->id)
                                 <li class="list-inline-item dropdown-account custom-dropdown" data-target="#dropdownMenuButton">
-                                    <button class="btn btn-outline dropdown-toggle text-white" type="button">
-                                            <i class="fas fa-user mr-2 "></i> <b>Olá, {{ Str::before(Session::get('user.user.name'), ' ') }}</b>
+                                    <button class="btn btn-outline dropdown-toggle" type="button">
+                                            <i class="fas fa-user mr-2 "></i>
                                     </button>
                                     <div class="dropdown-menu custom-dropdown-menu " id="dropdownMenuButton">
                                         <a class="dropdown-item" href="{{ url('/minha-conta') }}">Minha Conta</a>
@@ -72,7 +72,7 @@
                                         <i class="fas fa-user"></i>
                                     </a>
                                 </li>
-                            @endauth
+                            @endif
                             <li class="list-inline-item">
                                 <a class="nav-link" :href="'/carrinho'">
                                     <i class="fas fa-shopping-cart"></i>
@@ -82,8 +82,8 @@
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="nav-link">
-                                    <i class="fas fa-search"></i>
+                                <a class="nav-link" href="#" data-target="#searchModal" data-toggle="modal">
+                                    <i class="fas fa-search mr-2"></i> Buscar
                                 </a>
                             </li>
                         </div>
@@ -155,8 +155,8 @@
             </div>
 
             @include('components.account-modal')
-            {{-- @include('components.search-modal')
-            @include('components.menu-modal')
+            @include('components.search-modal')
+            {{-- @include('components.menu-modal')
             @include('components.cupom-modal') --}}
 
         </div>

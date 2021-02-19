@@ -1,7 +1,7 @@
 <template>
 
     <div class="container mt-5 pt-md-0 py-5">
-        <div class="row">
+        <div class="row" v-if="success == 0 && error == 0">
             <div class="col-8">
                 <h1 class="font-weight-bolder h5 mt-5">Frete e Prazo de Entrega</h1>
                 <form @submit.prevent="calculateDelivery()" v-if="cart.shippings.length == 0">
@@ -342,13 +342,13 @@
         </div>
 
 
-<!--
+
         <div class="row" v-if="success != 0 && error == 0">
             <div class="col-md-8">
                 <h2 class="font-weight-bolder h5">Pedido realizado</h2>
                 <div class="card py-5 px-4 my-4">
                     <h2 class="font-weight-bolder h4">O seu pedido foi gerado com sucesso.</h2>
-                    <p>Você pode acompanhar os detalhes do pagamento pelo e-mail ou pelo nosso painel: <a href="" class="text-secondary">Minha Conta</a>.</p>
+                    <p>Você pode acompanhar os detalhes do pagamento pela sua conta: <a href="/minha-conta" class="text-secondary">Minha Conta</a>.</p>
                     <p class="my-4 h5 font-weight-bolder" v-if="success.barcode_number">{{ success.barcode_number }}</p>
                     <a class="btn btn-success btn-lg w-50" :href="success.barcode_url" v-if="success.barcode_url" target="_blank">
                         <i class="fas fa-print mr-3"></i>Imprimir Boleto
@@ -410,7 +410,7 @@
                     <p>O seu pedido não pode ser concluido. Pedimos que tente novamente em instantes e caso o erro persista, entre com nossa equipe de <a href="" class="text-secondary">suporte</a>.</p>
                 </div>
             </div>
-        </div> -->
+        </div>
 
     </div>
 
@@ -707,8 +707,8 @@
                 if(this.validations()){
                     if(this.userPayment.type == 'credit-card'){
 
-                        // $(".botao_cartao").prop("disabled", true);
-                        // $(".botao_cartao").text("Realizando pagamento...");
+                        $(".botao_cartao").prop("disabled", true);
+                        $(".botao_cartao").text("Realizando pagamento...");
 
                         MoipCreditCard
                             .setEncrypter(jsencrypt, 'ionic')
@@ -737,9 +737,9 @@
                                         this.success = response.data.payment;
                                     })
                                     .catch(err => {
-                                        // $(".botao_cartao").prop("disabled", false);
-                                        // $(".botao_cartao").text("Realizar Pagamento");
-                                        // this.error = 1;
+                                        $(".botao_cartao").prop("disabled", false);
+                                        $(".botao_cartao").text("Realizar Pagamento");
+                                        this.error = 1;
                                     });
 
                             }).catch(err =>{
@@ -750,8 +750,8 @@
                     } else if(this.userPayment.type == 'barcode'){
 
 
-                        // $(".botao_boleto").prop("disabled", true);
-                        // $(".botao_boleto").text("Gerando boleto...");
+                        $(".botao_boleto").prop("disabled", true);
+                        $(".botao_boleto").text("Gerando boleto...");
 
                         axios
                             .post('/payments', {
@@ -769,8 +769,8 @@
 
                                 this.error = 1;
 
-                                // $(".botao_boleto").prop("disabled", false);
-                                // $(".botao_boleto").text("Gerar Boleto");
+                                $(".botao_boleto").prop("disabled", false);
+                                $(".botao_boleto").text("Gerar Boleto");
 
                             });
 
