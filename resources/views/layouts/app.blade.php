@@ -56,7 +56,7 @@
                             </ul>
                         </div>
                         <div class="col-md-3">
-                            @if(Auth::user()->id)
+                            @if(Auth::user())
                                 <li class="list-inline-item dropdown-account custom-dropdown" data-target="#dropdownMenuButton">
                                     <button class="btn btn-outline dropdown-toggle" type="button">
                                             <i class="fas fa-user mr-2 "></i>

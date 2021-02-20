@@ -87,3 +87,4 @@ Route::post('/payments', 'Site\PaymentController@store');
 Route::get('/category/{slug}', 'Site\CategoriesController@show');
 Route::get('/pesquisa', 'Site\SearchController@index');
 Route::get('/minha-conta', 'Site\ProfileController@index');
+Route::get('/pedidos/{id}', 'Site\ProfileController@show');

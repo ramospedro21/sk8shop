@@ -60,7 +60,13 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $order = Order::with(['products.variant.images', 'payment'])
+            ->where('user_id', Auth::user()->id)
+            ->where('id', $id)
+            ->first();
+
+        return view('order', ['order' => $order]);
     }
 
     /**

@@ -34,6 +34,6 @@ class OrderProduct extends Model
 
     public function variant()
     {
-        return $this->belongsTo('App\Models\Variants', 'variant_id', 'id');
+        return $this->belongsTo('App\Models\Variant', 'variant_id', 'id');
     }
 }
