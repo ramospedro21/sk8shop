@@ -28,6 +28,17 @@ class Order extends Model
      * @property int $status
     */
 
+    public const PER_PAGE = 16;
+
+    public const STATUS = [
+        'WAITING_PAYMENT' => 1,
+        'IN_ANALYSIS' => 2,
+        'APROVED' => 3,
+        'IN_ROUTE' => 4,
+        'DELIVERED' => 5,
+        'CANCELLED' => 6,
+    ];
+
     protected $fillable = [
         'id',
         'user_id',
@@ -58,5 +69,10 @@ class Order extends Model
     public function products()
     {
         return $this->hasMany('App\Models\OrderProduct', 'order_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 }

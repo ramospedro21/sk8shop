@@ -62,11 +62,11 @@ Vue.component('stocks-index-component', require('./components/painel/stocks/Stoc
 Vue.component('providers-index-component', require('./components/painel/providers/ProvidersComponent.vue').default);
 
 //COMPONENT DE COMPRAS
-Vue.component('purchases-index-component', require('./components/painel/purchases/PurchasesComponent.vue').default); 
+Vue.component('purchases-index-component', require('./components/painel/purchases/PurchasesComponent.vue').default);
 
 //COMPONENTS DE USUARIOS
-Vue.component('users-index-component', require('./components/painel/users/UsersComponent.vue').default); 
-Vue.component('users-show-component', require('./components/painel/users/ShowUserComponent.vue').default); 
+Vue.component('users-index-component', require('./components/painel/users/UsersComponent.vue').default);
+Vue.component('users-show-component', require('./components/painel/users/ShowUserComponent.vue').default);
 
 //COMPONENT DE TIPO DE USUÁRIOS
 Vue.component('user-type-index-component', require('./components/painel/user_types/UserTypeComponent.vue').default);
@@ -90,6 +90,10 @@ Vue.component('coupons-index-component', require('./components/painel/coupons/Co
 // COMPONENT DE CLIENTS
 Vue.component('clients-index-component', require('./components/painel/clients/ClientsComponent.vue').default);
 Vue.component('client-show-component', require('./components/painel/clients/ClientComponent.vue').default);
+
+// COMPONENT DE PEDIDOS
+Vue.component('orders-index-component', require('./components/painel/orders/OrdersComponent.vue').default);
+Vue.component('order-index-component', require('./components/painel/orders/OrderComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

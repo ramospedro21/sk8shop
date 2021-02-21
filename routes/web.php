@@ -72,6 +72,10 @@ Route::prefix('/painel')->group(function(){
     Route::get('/clients', 'Painel\ClientsController@view')->middleware('auth');
     Route::resource('/client', 'Painel\ClientsController');
 
+    // ROTA DE PEDIDOS
+    Route::get('/orders', 'Painel\OrdersController@view')->middleware('auth');
+    Route::resource('/order', 'Painel\OrdersController');
+
 });
 
 // ROTAS DA LOJA
