@@ -18,7 +18,7 @@
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 
-                        <form method="POST" action="{{ url('login') }}">
+                        <form class="form" method="POST" action="{{ url('/login/site') }}">
                             @csrf
 
                             <p class="font-weight-bold h5"><i class="fas fa-user mr-3 text-primary"></i>Login</p>

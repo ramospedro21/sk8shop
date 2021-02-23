@@ -95,3 +95,4 @@ Route::get('/pesquisa', 'Site\SearchController@index');
 Route::get('/minha-conta', 'Site\ProfileController@index');
 Route::get('/pedidos/{id}', 'Site\ProfileController@show');
 Route::post('/allowed-coupons', 'Site\CouponsController@index');
+Route::post('/login/site', 'Site\LoginController@login');
