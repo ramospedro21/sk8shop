@@ -2745,14 +2745,9 @@ __webpack_require__.r(__webpack_exports__);
     getCoupon: function getCoupon() {
       var _this = this;
 
-      Http.post('/allowed-coupons', {
+      axios.post('/allowed-coupons', {
         cart: this.cart,
-        coupon: this.userCoupon,
-        stock: null
-      }, {
-        headers: {
-          'Authorization': "Bearer " + this.token
-        }
+        coupon: this.userCoupon
       }).then(function (response) {
         var coupon = response.data.coupon; //VERIFICAR SE O CUPOM DE DESCONTO EH EM CIMA DO FRETE OU EM CIMA DO DINHEIRO
 
@@ -3174,7 +3169,6 @@ __webpack_require__.r(__webpack_exports__);
     var _this6 = this;
 
     axios.get('/carrinho/details').then(function (response) {
-      console.log(response);
       _this6.cart = response.data;
 
       if (_this6.cart.products.length == 0) {
@@ -3619,7 +3613,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       axios.patch('/carrinho/details', {
         cart: this.cart
       }).then(function (response) {
-        console.log(response);
         _this2.cart = response.data;
       });
       this.loading = false;
@@ -67332,7 +67325,9 @@ var render = function() {
                               _c("img", {
                                 staticClass: "d-block w-100",
                                 attrs: {
-                                  src: _vm.buyProduct.variant.images[0].url,
+                                  src: _vm.buyProduct.variant.images[0]
+                                    ? _vm.buyProduct.variant.images[0].url
+                                    : "/images/no_product.png",
                                   alt: _vm.product.short_description,
                                   title: _vm.product.title
                                 }
@@ -69451,7 +69446,7 @@ var render = function() {
                         _c("img", {
                           staticClass: "w-100",
                           attrs: {
-                            src: product.images
+                            src: product.images[0]
                               ? product.images[0].url
                               : "/images/no_product.png",
                             alt: ""

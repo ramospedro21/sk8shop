@@ -481,15 +481,13 @@
 
             getCoupon: function()
             {
-                Http
+                axios
                     .post('/allowed-coupons', {
-                                cart: this.cart,
-                                coupon: this.userCoupon,
-                                stock: null
-                            },{
-                                headers: {'Authorization': "Bearer " + this.token}
-                            })
+                            cart: this.cart,
+                            coupon: this.userCoupon,
+                        })
                     .then(response => {
+
                         let coupon = response.data.coupon;
 
                         //VERIFICAR SE O CUPOM DE DESCONTO EH EM CIMA DO FRETE OU EM CIMA DO DINHEIRO
@@ -968,7 +966,7 @@
             axios
                 .get('/carrinho/details')
                 .then(response => {
-                    console.log(response);
+
                     this.cart = response.data
 
                     if(this.cart.products.length == 0){

@@ -22,9 +22,9 @@ class Coupon extends Model
      * @property boolean $first_buy_only
      * @property boolean $status
      */
-    
+
     public const PER_PAGE = 16;
-    
+
     public const TYPE = [
         'PERCENT' => 0,
         'MONEY' => 1
@@ -61,10 +61,11 @@ class Coupon extends Model
         'first_buy_only',
         'status',
     ];
-    
+
     public function products()
     {
-        return $this->hasMany('App\Models\ProductCoupons', 'coupon_id', 'id');
+        return $this->hasMany('App\Models\ProductCoupon', 'coupon_id', 'id');
     }
-    
+
+
 }

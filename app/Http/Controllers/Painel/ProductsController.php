@@ -13,6 +13,7 @@ use App\Models\ErrorsLog;
 use App\Models\Product;
 use App\Models\ProductStock;
 use App\Models\ProductCategory;
+use App\Models\ProductCoupon;
 use App\Models\Variant;
 use App\Models\VariantValue;
 use App\Models\VariantImage;
@@ -215,6 +216,10 @@ class ProductsController extends Controller
                     }
                 }
 
+                if(count($request->input('product.coupons')) == 0){
+                    ProductCoupon::where('product_id', $id)->delete();
+                }
+
             DB::commit();
 
             return response()->json([
@@ -251,7 +256,8 @@ class ProductsController extends Controller
                                       'coupons',
                                       'variants.values.option',
                                       'variants.stocks.stock',
-                                      'variants.images'
+                                      'variants.images',
+                                      'coupons.coupon'
                                     ])->find($id);
 
             $product->variants->map(function($variant){
@@ -262,6 +268,13 @@ class ProductsController extends Controller
                 });
 
                 return $variant;
+            });
+
+            $product->coupons->map(function($coupon){
+
+                $coupon->title = $coupon->coupon->title;
+
+                return $coupon;
             });
 
             return view('products.show', ['product' => $product]);
@@ -407,6 +420,11 @@ class ProductsController extends Controller
                         ]);
 
                     }
+                }
+
+
+                if(count($request->input('product.coupons')) == 0){
+                    ProductCoupon::where('product_id', $id)->delete();
                 }
 
 

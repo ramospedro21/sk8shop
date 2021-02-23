@@ -37,7 +37,7 @@
                                     <div class="row">
                                         <div class="col-7">
                                             <img class="d-block w-100"
-                                                 :src="buyProduct.variant.images[0].url"
+                                                 :src="buyProduct.variant.images[0] ? buyProduct.variant.images[0].url : '/images/no_product.png' "
                                                  :alt="product.short_description"
                                                  :title="product.title">
                                         </div>

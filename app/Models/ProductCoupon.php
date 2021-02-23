@@ -12,7 +12,7 @@ class ProductCoupon extends Model
      * @property int $coupon_id
      */
 
-    protected $fillable = [ 
+    protected $fillable = [
         'id',
         'product_id',
         'coupon_id',
@@ -25,6 +25,6 @@ class ProductCoupon extends Model
 
     public function coupon()
     {
-        return $this->belongsTo('App\Models\Coupon', 'coupon', 'id');
+        return $this->belongsTo('App\Models\Coupon', 'coupon_id', 'id');
     }
 }

@@ -208,12 +208,12 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
-                                        <!-- <tr v-for="(category, i) in product.categories" :key="'category' + category.id">
-                                            <td>{{ !category.title ? category.category.title : category.title }}</td>
+                                        <tr v-for="(coupon, i) in product.coupons" :key="'coupon' + coupon.id">
+                                            <td>{{ coupon.title }}</td>
                                             <td>
-                                                <i class="fas fa-trash pointer" @click="product.categories.splice(i, 1)"></i>
+                                                <i class="fas fa-trash pointer" @click="product.coupons.splice(i, 1)"></i>
                                             </td>
-                                        </tr>    -->
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -515,13 +515,45 @@
             </div>
         </div>
     </div>
+
+    <!-- MODAL DE CUPONS -->
+   <div class="modal fade" id="couponsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Adicionar Cupom de Desconto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row my-3" v-for="coupon in coupons" :key="coupon.id">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" v-model="allowedCoupons" :value="coupon" name="inputs"> {{ coupon.description }}
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-round" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-success btn-round" @click="addCouponToProduct()">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </template>
 
 <script>
 
 import { showSuccessToast, showErrorToast, showInfoToast } from '../../../helpers/animations';
-import Vue from 'vue';
 import { Money } from 'v-money';
 import { Cropper } from 'vue-advanced-cropper';
 
@@ -539,6 +571,7 @@ export default {
                 self_delivery: null,
                 variants: [],
                 categories: [],
+                coupons: [],
             },
 
             variant:{
@@ -574,7 +607,10 @@ export default {
 
             loading:{
                 buttonSuccess: false
-            }
+            },
+
+            coupons: [],
+            allowedCoupons: [],
         }
     },
 
@@ -927,7 +963,42 @@ export default {
             }catch(e){
                 showErrorToast('Não foi possivel salvar o produto.');
             }
-        }
+        },
+
+        openCouponsModal: async function(){
+
+            try{
+
+                const {data} = await axios.get(`/painel/coupon/all`);
+
+                this.coupons = data;
+
+                $("#couponsModal").modal('show');
+
+            }catch(e){
+                console.log(e);
+            }
+
+        },
+
+        addCouponToProduct: async function(){
+
+            try{
+
+                const {data} = await axios.post(`/painel/coupon/addToProduct/${this.product.id}`, {
+                    coupons: this.allowedCoupons,
+                });
+
+                this.product.coupons = data;
+
+                $("#couponsModal").modal('hide');
+
+
+            }catch(e){
+                console.log(e);
+            }
+
+        },
 
 
     },

@@ -3471,15 +3471,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     update: function () {
       var _update = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var _yield$axios$patch, data;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                this.loading.buttonCoupon = true;
+                _context3.prev = 1;
+                _context3.next = 4;
+                return axios.patch("/painel/coupon/".concat(this.coupon.id), {
+                  coupon: this.coupon
+                });
+
+              case 4:
+                _yield$axios$patch = _context3.sent;
+                data = _yield$axios$patch.data;
+                this.coupon = {};
+                this.index();
+                this.loading.buttonCoupon = false;
+                Object(_helpers_animations__WEBPACK_IMPORTED_MODULE_1__["showSuccessToast"])('Cupom editado com sucesso.');
+                $("#couponsModal").modal('hide');
+                _context3.next = 16;
+                break;
+
+              case 13:
+                _context3.prev = 13;
+                _context3.t0 = _context3["catch"](1);
+                console.log(_context3.t0);
+
+              case 16:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3);
+        }, _callee3, this, [[1, 13]]);
       }));
 
       function update() {
@@ -3488,18 +3514,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return update;
     }(),
-    openDeleteModal: function openDeleteModal() {},
+    openDeleteModal: function openDeleteModal(coupon) {
+      this.coupon = _objectSpread({}, coupon);
+      $("#deleteCouponModal").modal('show');
+    },
     "delete": function () {
       var _delete2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
+                _context4.prev = 0;
+                _context4.next = 3;
+                return axios["delete"]("/painel/coupon/".concat(id));
+
+              case 3:
+                this.index();
+                Object(_helpers_animations__WEBPACK_IMPORTED_MODULE_1__["showSuccessToast"])('Cupom deletado com sucesso');
+                $("#deleteCouponModal").modal('hide');
+                _context4.next = 11;
+                break;
+
+              case 8:
+                _context4.prev = 8;
+                _context4.t0 = _context4["catch"](0);
+                Object(_helpers_animations__WEBPACK_IMPORTED_MODULE_1__["showErrorToast"])('Não foi possivel apagar o cupom');
+
+              case 11:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4);
+        }, _callee4, this, [[0, 8]]);
       }));
 
       function _delete() {
@@ -4352,11 +4398,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _helpers_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../helpers/animations */ "./resources/js/helpers/animations.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var v_money__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! v-money */ "./node_modules/v-money/dist/v-money.js");
-/* harmony import */ var v_money__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(v_money__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var vue_advanced_cropper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-advanced-cropper */ "./node_modules/vue-advanced-cropper/dist/index.es.js");
+/* harmony import */ var v_money__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! v-money */ "./node_modules/v-money/dist/v-money.js");
+/* harmony import */ var v_money__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(v_money__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_advanced_cropper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-advanced-cropper */ "./node_modules/vue-advanced-cropper/dist/index.es.js");
 
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -4889,13 +4933,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Cropper: vue_advanced_cropper__WEBPACK_IMPORTED_MODULE_4__["Cropper"]
+    Cropper: vue_advanced_cropper__WEBPACK_IMPORTED_MODULE_3__["Cropper"]
   },
   props: ['_product'],
   data: function data() {
@@ -4904,7 +4980,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         enabled: null,
         self_delivery: null,
         variants: [],
-        categories: []
+        categories: [],
+        coupons: []
       },
       variant: {
         options: [],
@@ -4937,7 +5014,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       image: null,
       loading: {
         buttonSuccess: false
-      }
+      },
+      coupons: [],
+      allowedCoupons: []
     };
   },
   methods: {
@@ -5436,6 +5515,86 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return update;
+    }(),
+    openCouponsModal: function () {
+      var _openCouponsModal = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9() {
+        var _yield$axios$get4, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+                _context9.prev = 0;
+                _context9.next = 3;
+                return axios.get("/painel/coupon/all");
+
+              case 3:
+                _yield$axios$get4 = _context9.sent;
+                data = _yield$axios$get4.data;
+                this.coupons = data;
+                $("#couponsModal").modal('show');
+                _context9.next = 12;
+                break;
+
+              case 9:
+                _context9.prev = 9;
+                _context9.t0 = _context9["catch"](0);
+                console.log(_context9.t0);
+
+              case 12:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee9, this, [[0, 9]]);
+      }));
+
+      function openCouponsModal() {
+        return _openCouponsModal.apply(this, arguments);
+      }
+
+      return openCouponsModal;
+    }(),
+    addCouponToProduct: function () {
+      var _addCouponToProduct = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee10() {
+        var _yield$axios$post2, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee10$(_context10) {
+          while (1) {
+            switch (_context10.prev = _context10.next) {
+              case 0:
+                _context10.prev = 0;
+                _context10.next = 3;
+                return axios.post("/painel/coupon/addToProduct/".concat(this.product.id), {
+                  coupons: this.allowedCoupons
+                });
+
+              case 3:
+                _yield$axios$post2 = _context10.sent;
+                data = _yield$axios$post2.data;
+                this.product.coupons = data;
+                $("#couponsModal").modal('hide');
+                _context10.next = 12;
+                break;
+
+              case 9:
+                _context10.prev = 9;
+                _context10.t0 = _context10["catch"](0);
+                console.log(_context10.t0);
+
+              case 12:
+              case "end":
+                return _context10.stop();
+            }
+          }
+        }, _callee10, this, [[0, 9]]);
+      }));
+
+      function addCouponToProduct() {
+        return _addCouponToProduct.apply(this, arguments);
+      }
+
+      return addCouponToProduct;
     }()
   },
   mounted: function mounted() {
@@ -71607,7 +71766,31 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(6)
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "table-responsive" }, [
+                      _c(
+                        "table",
+                        { staticClass: "table" },
+                        _vm._l(_vm.product.coupons, function(coupon, i) {
+                          return _c("tr", { key: "coupon" + coupon.id }, [
+                            _c("td", [_vm._v(_vm._s(coupon.title))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("i", {
+                                staticClass: "fas fa-trash pointer",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.product.coupons.splice(i, 1)
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  ])
                 ]),
                 _vm._v(" "),
                 _c(
@@ -71658,7 +71841,7 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(7)
+              _vm._m(6)
             ]),
             _vm._v(" "),
             _c(
@@ -71680,7 +71863,7 @@ var render = function() {
                       _c("div", { staticClass: "card-shadow" }, [
                         _c("div", { staticClass: "card-header" }, [
                           _c("div", { staticClass: "row align-items-center" }, [
-                            _vm._m(8),
+                            _vm._m(7),
                             _vm._v(" "),
                             _c("div", { staticClass: "col text-right" }, [
                               _c(
@@ -71708,7 +71891,7 @@ var render = function() {
                         _c("div", { staticClass: "card-body" }, [
                           _c("div", { staticClass: "table-responsive" }, [
                             _c("table", { staticClass: "table" }, [
-                              _vm._m(9),
+                              _vm._m(8),
                               _vm._v(" "),
                               _c(
                                 "tbody",
@@ -71894,7 +72077,7 @@ var render = function() {
                   _c("div", { staticClass: "row" }, [
                     _c("div", { staticClass: "col" }, [
                       _c("div", { staticClass: "card-shadow" }, [
-                        _vm._m(10),
+                        _vm._m(9),
                         _vm._v(" "),
                         _c("div", { staticClass: "card-body" }, [
                           _c("div", { staticClass: "row" }, [
@@ -72080,7 +72263,7 @@ var render = function() {
                   _c("div", { staticClass: "row" }, [
                     _c("div", { staticClass: "col" }, [
                       _c("div", { staticClass: "card-shadow" }, [
-                        _vm._m(11),
+                        _vm._m(10),
                         _vm._v(" "),
                         _c("div", { staticClass: "card-body" }, [
                           _c("div", { staticClass: "row" }, [
@@ -72166,7 +72349,7 @@ var render = function() {
                       _c("div", { staticClass: "card-shadow" }, [
                         _c("div", { staticClass: "card-header" }, [
                           _c("div", { staticClass: "row align-items-center" }, [
-                            _vm._m(12),
+                            _vm._m(11),
                             _vm._v(" "),
                             _c("div", { staticClass: "col text-right" }, [
                               _c("div", { staticClass: "button-wrapper" }, [
@@ -72276,9 +72459,9 @@ var render = function() {
                                     0
                                   ),
                                   _vm._v(" "),
-                                  _vm._m(13),
+                                  _vm._m(12),
                                   _vm._v(" "),
-                                  _vm._m(14)
+                                  _vm._m(13)
                                 ]
                               )
                             ]),
@@ -72291,7 +72474,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(15)
+                _vm._m(14)
               ]
             )
           ])
@@ -72317,7 +72500,7 @@ var render = function() {
           { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(16),
+              _vm._m(15),
               _vm._v(" "),
               _c(
                 "div",
@@ -72402,7 +72585,7 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(17),
+              _vm._m(16),
               _vm._v(" "),
               _c(
                 "form",
@@ -72611,9 +72794,125 @@ var render = function() {
                       : _vm._e()
                   ]),
                   _vm._v(" "),
-                  _vm._m(18)
+                  _vm._m(17)
                 ]
               )
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "couponsModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(18),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-body" },
+                _vm._l(_vm.coupons, function(coupon) {
+                  return _c(
+                    "div",
+                    { key: coupon.id, staticClass: "row my-3" },
+                    [
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _c("div", { staticClass: "form-check" }, [
+                          _c("label", { staticClass: "form-check-label" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.allowedCoupons,
+                                  expression: "allowedCoupons"
+                                }
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: { type: "checkbox", name: "inputs" },
+                              domProps: {
+                                value: coupon,
+                                checked: Array.isArray(_vm.allowedCoupons)
+                                  ? _vm._i(_vm.allowedCoupons, coupon) > -1
+                                  : _vm.allowedCoupons
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.allowedCoupons,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = coupon,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.allowedCoupons = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.allowedCoupons = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.allowedCoupons = $$c
+                                  }
+                                }
+                              }
+                            }),
+                            _vm._v(
+                              " " +
+                                _vm._s(coupon.description) +
+                                "\n                                    "
+                            ),
+                            _vm._m(19, true)
+                          ])
+                        ])
+                      ])
+                    ]
+                  )
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-danger btn-round",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Fechar")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success btn-round",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.addCouponToProduct()
+                      }
+                    }
+                  },
+                  [_vm._v("Adicionar")]
+                )
+              ])
             ])
           ]
         )
@@ -72684,16 +72983,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-md-8" }, [
       _c("h4", { staticClass: "mb-0" }, [_vm._v("Cupons de desconto")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c("div", { staticClass: "table-responsive" }, [
-        _c("table", { staticClass: "table" })
-      ])
     ])
   },
   function() {
@@ -72905,6 +73194,39 @@ var staticRenderFns = [
         { staticClass: "btn btn-success", attrs: { type: "submit" } },
         [_vm._v("Salvar")]
       )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Adicionar Cupom de Desconto")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Fechar"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "form-check-sign" }, [
+      _c("span", { staticClass: "check" })
     ])
   }
 ]

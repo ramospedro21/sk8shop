@@ -66,6 +66,8 @@ Route::prefix('/painel')->group(function(){
 
     // ROTA DE CUPONS DE DESCONTO
     Route::get('/coupons', 'Painel\CouponsController@view')->middleware('auth');
+    Route::get('/coupon/all', 'Painel\CouponsController@all');
+    Route::post('/coupon/addToProduct/{id}', 'Painel\CouponsController@addToProduct');
     Route::resource('/coupon', 'Painel\CouponsController');
 
     // ROTA DE CLIENTES
@@ -92,3 +94,4 @@ Route::get('/category/{slug}', 'Site\CategoriesController@show');
 Route::get('/pesquisa', 'Site\SearchController@index');
 Route::get('/minha-conta', 'Site\ProfileController@index');
 Route::get('/pedidos/{id}', 'Site\ProfileController@show');
+Route::post('/allowed-coupons', 'Site\CouponsController@index');

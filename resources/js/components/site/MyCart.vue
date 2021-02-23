@@ -10,7 +10,7 @@
                         <div class="col">
                             <div class="row align-items-center">
                                 <div class="col-3 col-md-4">
-                                    <img :src="product.images ? product.images[0].url : '/images/no_product.png'" class="w-100" alt="">
+                                    <img :src="product.images[0] ? product.images[0].url : '/images/no_product.png'" class="w-100" alt="">
                                 </div>
                                 <div class="col">
                                     <p class="font-weight-bold mb-0">{{ product.product.title }}</p>
@@ -324,7 +324,7 @@
                 axios
                     .patch('/carrinho/details', {cart: this.cart})
                     .then(response => {
-                        console.log(response);
+
                         this.cart = response.data
                     })
 

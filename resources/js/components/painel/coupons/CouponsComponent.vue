@@ -227,7 +227,7 @@ export default {
             let url = '/painel/coupon?';
             url += '&page=' + ((page) ? page : this.coupons.current_page);
             if (this.filters.per_page !== 16) url += '&per_page=' + this.filters.per_page;
-            
+
             try{
 
                 const {data} = await axios.get(url);
@@ -295,7 +295,7 @@ export default {
         },
 
         edit: function(coupon){
-            
+
             this.coupon = {
                 ...coupon
             }
@@ -305,14 +305,57 @@ export default {
 
         update: async function(){
 
+            this.loading.buttonCoupon = true;
+
+            try{
+
+                const {data} = await axios.patch(`/painel/coupon/${this.coupon.id}`, {
+                    coupon: this.coupon
+                });
+
+                this.coupon = {}
+
+                this.index();
+
+                this.loading.buttonCoupon = false;
+
+                showSuccessToast('Cupom editado com sucesso.');
+
+                $("#couponsModal").modal('hide');
+
+            }catch(e){
+
+                console.log(e);
+
+            }
         },
 
-        openDeleteModal: function(){
+        openDeleteModal: function(coupon){
+
+            this.coupon = {
+                ...coupon
+            }
+
+            $("#deleteCouponModal").modal('show');
 
         },
 
         delete: async function(){
+            try{
 
+                await axios.delete(`/painel/coupon/${id}`);
+
+                this.index();
+
+                showSuccessToast('Cupom deletado com sucesso');
+
+                $("#deleteCouponModal").modal('hide');
+
+            }catch(e){
+
+                showErrorToast('Não foi possivel apagar o cupom');
+
+            }
         }
     },
 
