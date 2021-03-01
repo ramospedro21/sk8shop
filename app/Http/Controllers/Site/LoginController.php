@@ -22,7 +22,15 @@ class LoginController extends Controller
 
                 return redirect()->back();
 
+            } else {
+
+                return redirect()->back()->with('error', 'Senha incorreta.');
+
             }
+
+        } else {
+
+            return redirect()->back()->with('error', 'Email incorreto.');
 
         }
     }

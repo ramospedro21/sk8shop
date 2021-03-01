@@ -547,6 +547,34 @@
             </div>
         </div>
     </div>
+    <div class="modal fade bd-example-modal-sm" id="deleteVariantModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userTypeModalLabel">Exclusão de variação</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form @submit.prevent="deleteVariant()">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="text-primary h4">Deseja realmente excluir a variação "{{ this.variant.sku }}"?</p>
+                            </div>
+                            <div class="col-12">
+                                <p class="text-primary h4">Com isso todas as configurações e imagens da variação serão excluidas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-success" :disabled="loading.buttonDeleteVariant == true">Sim, apagar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </div>
 </template>
@@ -606,7 +634,8 @@ export default {
             image: null,
 
             loading:{
-                buttonSuccess: false
+                buttonSuccess: false,
+                buttonDeleteVariant: false,
             },
 
             coupons: [],
@@ -710,6 +739,23 @@ export default {
             }
         },
 
+        openDeleteVariant: function(variant, i){
+            this.variant = {
+                ...variant,
+                index: i
+            },
+
+            $("#deleteVariantModal").modal('show');
+        },
+
+        deleteVariant: async function(){
+
+            await this.product.variants.splice(this.variant.index, 1);
+
+            $("#deleteVariantModal").modal('hide');
+
+        },
+
         openCategoriesModal: async function(){
 
             await this.getCategories();
@@ -799,9 +845,9 @@ export default {
 
         },
 
-        editVariant: function(){
+        editVariant: async function(){
 
-            this.product.variants.splice(this.variant.index, 0);
+            await this.product.variants.splice(this.variant.index, 1);
 
             this.variant.options.map(option => {
                 option.id = option.option_father.id;

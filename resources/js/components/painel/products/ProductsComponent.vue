@@ -55,6 +55,7 @@
                                     </td>
                                 </tr>
                             </table>
+                            <pagination :data="products" :limit="3" @pagination-change-page="index"></pagination>
                         </div>
                     </div>
 				</div>

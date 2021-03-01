@@ -52,10 +52,10 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-primary btn-lg mb-1" v-if="user" href="/checkout">
+                <a class="btn btn-primary btn-lg mb-1 d-none d-md-block" v-if="user" href="/checkout">
                     Continuar
                 </a>
-                <button class="btn btn-primary btn-lg mb-1" v-if="!user" data-target="#accountModal" data-toggle="modal">
+                <button class="btn btn-primary btn-lg mb-1 d-none d-md-block" v-if="!user" data-target="#accountModal" data-toggle="modal">
                     Continuar
                 </button>
             </div>

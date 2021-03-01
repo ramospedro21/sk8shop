@@ -100,7 +100,7 @@
                     <div class="row">
                         <div class="col px-5">
                             <a class="my-0" href="{{ url('/') }}">
-                                <img src="{{ url('images/logo_mobile.png') }}" height="35" alt="">
+                                <img src="{{ url('images/logo.png') }}" height="35" alt="">
                             </a>
                         </div>
                         <div class="col px-5 text-right">
@@ -115,33 +115,29 @@
             <div class="py-5 py-md-0">
 
                 @yield('content')
+
             </div>
 
             <div class="fixed-bottom d-md-none bg-white" id="menu-mobile">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
-                            <ul class="nav align-items-center">
+                        <div class="col text-center">
+                            <ul class="nav align-items-center justify-content-center">
                                 <li class="nav-item">
                                     <a class="nav-link px-4 py-4 h4 my-0 text-dark ml-2" href="{{ url('/') }}">
                                         <i class="fas fa-home"></i>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    @if(Session::get('token'))
-                                    <a class="nav-link px-4 py-4 h4 my-0 text-dark" href="{{ url('/minha-conta') }}">
-                                        <i class="fas fa-user"></i>
-                                    </a>
+                                    @if(Auth::user())
+                                        <a class="nav-link px-4 py-4 h4 my-0 text-dark" href="{{ url('/minha-conta') }}">
+                                            <i class="fas fa-user"></i>
+                                        </a>
                                     @else
-                                    <a class="nav-link px-4 py-4 h4 my-0 text-dark" href="#" data-target="#accountModal" data-toggle="modal">
-                                        <i class="fas fa-user"></i>
-                                    </a>
+                                        <a class="nav-link px-4 py-4 h4 my-0 text-dark" href="#" data-target="#accountModal" data-toggle="modal">
+                                            <i class="fas fa-user"></i>
+                                        </a>
                                     @endauth
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link px-4 py-4 h4 my-0 text-secondary" data-toggle="modal" data-target="#exampleModalLong" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                        <i class="fas fa-bars"></i>
-                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link px-4 py-3 h4 my-0 text-dark" href="{{ url('/carrinho') }}">
