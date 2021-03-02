@@ -1029,13 +1029,25 @@ export default {
 
         addCouponToProduct: async function(){
 
+
             try{
 
-                const {data} = await axios.post(`/painel/coupon/addToProduct/${this.product.id}`, {
-                    coupons: this.allowedCoupons,
-                });
+                if(this.product.id){
 
-                this.product.coupons = data;
+                    const {data} = await axios.post(`/painel/coupon/addToProduct/${this.product.id}`, {
+                        coupons: this.allowedCoupons,
+                    });
+
+                    this.product.coupons = data;
+
+                } else {
+
+
+                    this.allowedCoupons.forEach(coupon =>{
+                        this.product.coupons.push(coupon);
+                    });
+
+                }
 
                 $("#couponsModal").modal('hide');
 

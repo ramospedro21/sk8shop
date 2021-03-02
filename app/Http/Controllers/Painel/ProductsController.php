@@ -217,7 +217,20 @@ class ProductsController extends Controller
                 }
 
                 if(count($request->input('product.coupons')) == 0){
+
                     ProductCoupon::where('product_id', $product->id)->delete();
+
+                } else {
+
+                    foreach($request->input('product.coupons') as $coupon){
+
+                        ProductCoupon::create([
+                            'product_id' => $product->id,
+                            'coupon_id' => $coupon['id']
+                        ]);
+
+                    }
+
                 }
 
             DB::commit();
