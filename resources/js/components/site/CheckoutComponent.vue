@@ -4,33 +4,35 @@
         <div class="row" v-if="success == 0 && error == 0">
             <div class="col-8">
                 <h1 class="font-weight-bolder h5 mt-5">Frete e Prazo de Entrega</h1>
-                <form @submit.prevent="calculateDelivery()" v-if="cart.shippings.length == 0">
-                    <div class="row mt-3 mb-5 mb-md-3 align-items-center">
-                        <div class="col-md-4 col-8">
-                            <input type="text" class="form-control" placeholder="Digite seu CEP aqui.." v-model="cart.zipcodeTo" id="zipcodeInput" required>
+                <div class="card pt-4 pb-3 px-4 my-4">
+                    <form @submit.prevent="calculateDelivery()" v-if="cart.shippings.length == 0">
+                        <div class="row mt-3 mb-5 mb-md-3 align-items-center">
+                            <div class="col-md-4 col-8">
+                                <input type="text" class="form-control" placeholder="Digite seu CEP aqui.." v-model="cart.zipcodeTo" id="zipcodeInput" required>
+                            </div>
+                            <div class="col-md-2 col-4">
+                                <button class="btn btn-light btn-block" type="submit">
+                                    Calcular
+                                </button>
+                            </div>
+                            <div class="col d-none d-md-block">
+                                <a href="http://www.buscacep.correios.com.br/sistemas/buscacep/buscaCepEndereco.cfm" target="_blank" class="text-info">
+                                    <small>Não sei meu CEP</small>
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-md-2 col-4">
-                            <button class="btn btn-light btn-block" type="submit">
-                                Calcular
-                            </button>
-                        </div>
-                        <div class="col d-none d-md-block">
-                            <a href="http://www.buscacep.correios.com.br/sistemas/buscacep/buscaCepEndereco.cfm" target="_blank" class="text-info">
-                                <small>Não sei meu CEP</small>
-                            </a>
-                        </div>
+                    </form>
+                    <div v-else class="form-check form-check-radio mt-4 col-md-12 pl-5" v-for="shipping in cart.shippings" :key="shipping.code">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" v-model="cart.shipping" :id="'exampleRadios' + shipping.code" :value="shipping" v-on:change="selectShipping()">
+                            <p class="mb-0 pb-0">{{ shipping.title }}</p>
+                            <input v-model.lazy="shipping.price" readonly type="hidden"/>
+                            <p class="mb-0 pb-0">{{ shipping.price | money}} - {{ shipping.deadline }}</p>
+                            <span class="circle">
+                                <span class="check"></span>
+                            </span>
+                        </label>
                     </div>
-                </form>
-                <div v-else class="form-check form-check-radio mt-4 col-md-12 pl-5" v-for="shipping in cart.shippings" :key="shipping.code">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" v-model="cart.shipping" :id="'exampleRadios' + shipping.code" :value="shipping" v-on:change="selectShipping()">
-                        <p class="mb-0 pb-0">{{ shipping.title }}</p>
-                        <input v-model.lazy="shipping.price" readonly type="hidden"/>
-                        <p class="mb-0 pb-0">{{ shipping.price | money}} - {{ shipping.deadline }}</p>
-                        <span class="circle">
-                            <span class="check"></span>
-                        </span>
-                    </label>
                 </div>
             </div>
         </div>
@@ -220,8 +222,32 @@
                                 </div>
                                 <div class="form-group mt-4">
                                     <label for="" class="control-label">Número no cartão:</label>
-                                    <input type="text" class="form-control py-4" placeholder="Digite impresso.." v-mask="'999999999999999[9]'" v-model="userPayment.card_number">
+                                    <input type="text" class="form-control py-4" placeholder="Digite o numero impresso.." v-mask="'999999999999999[9]'" v-model="userPayment.card_number">
                                     <small class="text-danger" v-if="errors.card_number">{{ errors.card_number }}</small>
+                                </div>
+                                <div class="row my-0 py-0">
+                                    <div class="form-group mt-4 col">
+                                        <label for="" class="control-label">CPF do portador do cartão:</label>
+                                        <input type="text" class="form-control py-4" placeholder="Digite o CPF do portador.." v-mask="'999.999.999-99'" v-model="userPayment.cardTaxNumber">
+                                        <small class="text-danger" v-if="errors.cardTaxNumber">{{ errors.cardTaxNumber }}</small>
+                                    </div>
+                                    <div class="form-group mt-4 col">
+                                        <label for="" class="control-label">Nome do portador do cartão:</label>
+                                        <input type="text" class="form-control py-4" placeholder="Digite nome do portador.." v-model="userPayment.cardFullName">
+                                        <small class="text-danger" v-if="errors.cardFullName">{{ errors.cardFullName }}</small>
+                                    </div>
+                                </div>
+                                <div class="row my-0 py-0">
+                                    <div class="form-group mt-4 col">
+                                        <label for="" class="control-label">Nascimento do portador do cartão:</label>
+                                        <input type="text" class="form-control py-4" placeholder="Digite o nascimento do portador.." v-mask="'99/99/9999'" v-model="userPayment.cardBirthdate">
+                                        <small class="text-danger" v-if="errors.cardBirthdate">{{ errors.cardBirthdate }}</small>
+                                    </div>
+                                    <div class="form-group mt-4 col">
+                                        <label for="" class="control-label">Telefone do portador do cartão:</label>
+                                        <input type="text" class="form-control py-4" placeholder="Digite telefone do portador.." v-mask="'(99)99999-9999'" v-model="userPayment.cardPhoneNumber">
+                                        <small class="text-danger" v-if="errors.cardPhoneNumber">{{ errors.cardPhoneNumber }}</small>
+                                    </div>
                                 </div>
                                 <div class="row my-0 py-0">
                                     <div class="form-group mt-1 col-6">
@@ -266,7 +292,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 mt-5">
                 <div>
                     <h2 class="font-weight-bolder h5">Resumo da Compra</h2>
                     <div class="card py-5 px-4 my-4 bg-light">
@@ -447,6 +473,10 @@
                 userPayment: {
                     type : null,
                     installment : 1,
+                    cardTaxNumber: null,
+                    cardFullName: null,
+                    cardBirthdate: null,
+                    cardPhoneNumber: null,
                 },
                 userCoupon: {
                     title: ''
@@ -470,7 +500,11 @@
                     card_number: null,
                     validate_month: null,
                     validate_year: null,
-                    cvc: null
+                    cvc: null,
+                    cardTaxNumber: null,
+                    cardFullName: null,
+                    cardBirthdate: null,
+                    cardPhoneNumber: null,
                 },
                 loading: false,
 
@@ -727,9 +761,12 @@
                                         payment: {
                                             type: this.userPayment.type,
                                             installment: this.userPayment.installment,
+                                            cardTaxNumber: this.userPayment.cardTaxNumber,
+                                            cardFullName: this.userPayment.cardFullName,
+                                            cardBirthdate: this.userPayment.cardBirthdate,
+                                            cardPhoneNumber: this.userPayment.cardPhoneNumber,
                                             hash: hash,
                                         },
-                                        stock: null
                                     })
                                     .then(response => {
                                         this.success = response.data.payment;
@@ -875,6 +912,34 @@
                         return false;
                     } else {this.errors.card_number = null}
 
+                    if(!this.userPayment.cardTaxNumber){
+
+                        this.errors.cardTaxNumber = 'Por favor informe o CPF do portador do cartão'
+                        return false;
+
+                    } else {this.errors.cardTaxNumber = null}
+
+                    if(!this.userPayment.cardFullName){
+
+                        this.errors.cardFullName = 'Por favor informe o nome do portador do cartão'
+                        return false;
+
+                    } else {this.errors.cardFullName = null}
+
+                    if(!this.userPayment.cardBirthdate){
+
+                        this.errors.cardBirthdate = 'Por favor informe o nascimento do portador do cartão'
+                        return false;
+
+                    } else {this.errors.cardBirthdate = null}
+
+                    if(!this.userPayment.cardPhoneNumber){
+
+                        this.errors.cardPhoneNumber = 'Por favor informe o telefone do portador do cartão'
+                        return false;
+
+                    } else {this.errors.cardPhoneNumber = null}
+
                     if(!this.userPayment.validate_month || this.userPayment.validate_month < 1 || this.userPayment.validate_month > 12 ){
                         this.errors.validate_month = 'Por favor informe uma data de validade válida';
                         return false;
@@ -889,6 +954,8 @@
                         this.errors.cvc = 'Por favor informe o códico de segurança';
                         return false;
                     } else {this.errors.cvc = null}
+
+
 
 
                 }

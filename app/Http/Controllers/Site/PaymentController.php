@@ -165,10 +165,18 @@ class PaymentController extends Controller
 
                     $user = User::with(['details'])->find(Auth::user()->id);
 
+                    $paymentPhone = str_replace('(', '', $request->input('payment.cardPhoneNumber'));
+                    $paymentPhone = str_replace(')', '', $paymentPhone);
+                    $paymentPhone = str_replace(' ', '', $paymentPhone);
+                    $paymentPhone = str_replace('-', '', $paymentPhone);
+
+                    $paymentBirthdate = date('Y-m-d', strtotime($request['payment']['cardBirthdate']));
+
                     $holder = $moip->holders()
-                        ->setFullname($user->name)
-                        ->setTaxDocument($user->details->tax_document_number, 'CPF')
-                        ->setPhone($user->details->phone_area_code, $user->details->phone_number, 55);
+                        ->setFullname($request['payment']['cardFullName'])
+                        ->setTaxDocument($request['payment']['cardTaxNumber'], 'CPF')
+                        ->setPhone(substr($phone, 0, 2), substr($phone, 2), 55)
+                        ->setBirthdate($paymentBirthdate);
 
                     $payment = $orderMoip->payments()
                         ->setCreditCardHash($request['payment']['hash'], $holder)
