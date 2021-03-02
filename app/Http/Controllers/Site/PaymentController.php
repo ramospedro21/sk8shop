@@ -172,9 +172,12 @@ class PaymentController extends Controller
 
                     $paymentBirthdate = date('Y-m-d', strtotime($request['payment']['cardBirthdate']));
 
+                    $paymentDocument = str_replace('.', '', $request['payment']['cardTaxNumber']);
+                    $paymentDocument = str_replace('-', '', $request['payment']['cardTaxNumber']);
+
                     $holder = $moip->holders()
                         ->setFullname($request['payment']['cardFullName'])
-                        ->setTaxDocument($request['payment']['cardTaxNumber'], 'CPF')
+                        ->setTaxDocument($paymentDocument, 'CPF')
                         ->setPhone(substr($phone, 0, 2), substr($phone, 2), 55)
                         ->setBirthdate($paymentBirthdate);
 
