@@ -201,10 +201,11 @@ class ProductsController extends Controller
         foreach($product->options as $optionId){
 
             $option = Option::select(['id', 'title'])->find($optionId);
-            $option->values = $optionsValues->where('option_id',$optionId)->flatten()->unique('option_value_id');
+            $option->values = $optionsValues->where('option_id', $optionId)->flatten();
             $options->push($option);
 
         }
+
 
         $variants = collect();
 

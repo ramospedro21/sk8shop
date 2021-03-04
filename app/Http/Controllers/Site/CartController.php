@@ -217,11 +217,13 @@ class CartController extends Controller
         //
     }
 
-    private function getVariant($id){
+    private function getVariant($item){
 
         return $variant = Variant::with([
                                     'images',
-                                    'values',
+                                    'values' => function($query) use ($item){
+                                        $query->where('option_value_id', $item['optionsValues'][0]['value_id']);
+                                    },
                                     'product' => function($query){
                                         $query->with('categories');
                                     },
@@ -236,7 +238,7 @@ class CartController extends Controller
                                         $query->where('price', '>', 0);
                                         $query->orWhere('promote_price', '>', 0);
                                     });
-                                })->find($id);
+                                })->find($item['variant']['id']);
 
     }
 }

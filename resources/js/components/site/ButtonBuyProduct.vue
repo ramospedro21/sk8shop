@@ -225,7 +225,7 @@
                 try{
 
                     const {data} = await axios.post('/carrinho', {
-                        item: this.buyProduct.variant.id
+                        item: this.buyProduct
                     });
 
                     this.cart = data.cart;
