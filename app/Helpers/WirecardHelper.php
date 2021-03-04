@@ -39,7 +39,7 @@ class WirecardHelper
                                     ->setEmail($user->email)
                                     ->setBirthDate($user->details->birthdate)
                                     ->setTaxDocument($user->details->tax_document_number)
-                                    ->setPhone(55, $user->details->phone_area_code, $user->details->phone_number)
+                                    ->setPhone($user->details->phone_area_code, $user->details->phone_number, 55)
                                     ->addAddress(
                                         "SHIPPING",
                                         $user->address->street,
@@ -51,7 +51,7 @@ class WirecardHelper
                                         $user->address->complement
                                     )
                                     ->create();
-                return $customer;
+
                 # ARMAZENA O GATEWAY RETORNADO
                 $gateway_id = $customer->getId();
                 $user->details->gateway_id = $gateway_id;

@@ -19,6 +19,8 @@ use App\Models\ProductStock;
 use App\Models\ErrorsLog;
 use App\Models\OrderPayment;
 
+use Illuminate\Support\Facades\DB;
+
 use Auth;
 
 class PaymentController extends Controller
@@ -53,6 +55,8 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         try{
+
+            DB::beginTransaction();
 
             // FORMATAÇÃO DO ANIVERSÁRIO
             $birthdate = str_replace('/', '-', $request->input('details.birthdate'));
@@ -170,15 +174,19 @@ class PaymentController extends Controller
                     $paymentPhone = str_replace(' ', '', $paymentPhone);
                     $paymentPhone = str_replace('-', '', $paymentPhone);
 
-                    $paymentBirthdate = date('Y-m-d', strtotime($request['payment']['cardBirthdate']));
+                    // dd($request['payment']['cardBirthdate']);
+
+                    $explodeBirthdate = explode('/', $request['payment']['cardBirthdate']);
+
+                    $paymentBirthdate = $explodeBirthdate[2].'-'.$explodeBirthdate[1].'-'.$explodeBirthdate[0];
 
                     $paymentDocument = str_replace('.', '', $request['payment']['cardTaxNumber']);
-                    $paymentDocument = str_replace('-', '', $request['payment']['cardTaxNumber']);
+                    $paymentDocument = str_replace('-', '', $paymentDocument);
 
                     $holder = $moip->holders()
                         ->setFullname($request['payment']['cardFullName'])
                         ->setTaxDocument($paymentDocument, 'CPF')
-                        ->setPhone(substr($phone, 0, 2), substr($phone, 2), 55)
+                        ->setPhone(substr($paymentPhone, 0, 2), substr($paymentPhone, 2), 55)
                         ->setBirthdate($paymentBirthdate);
 
                     $payment = $orderMoip->payments()
@@ -223,6 +231,8 @@ class PaymentController extends Controller
 
                 } else {throw new \Exception('Payment Method is not valid (' . $request['payment']['type'] . ')');}
 
+                DB::commit();
+
                 return response()->json([
                     "order" => $order,
                     "payment" => $orderPayment,
@@ -230,7 +240,6 @@ class PaymentController extends Controller
             }
             catch (\Moip\Exceptions\UnautorizedException $e)
             {
-                dd($e);
                 $error_log = new ErrorsLog;
                 $error_log->description = date("d/m/Y H:i:s") . " Erro: " . $e->getMessage();
                 $error_log->save();
@@ -246,7 +255,6 @@ class PaymentController extends Controller
             }
             catch (\Moip\Exceptions\ValidationException $e)
             {
-                dd($e);
                 $error_log = new ErrorsLog;
                 $error_log->description = date("d/m/Y H:i:s") . " Erro: " . $e->__toString();
                 $error_log->save();
@@ -262,7 +270,6 @@ class PaymentController extends Controller
             }
             catch (\Moip\Exceptions\UnexpectedException $e)
             {
-                dd($e);
                 $error_log = new ErrorsLog;
                 $error_log->description = date("d/m/Y H:i:s") . " Erro: " . $e->getMessage();
                 $error_log->save();
@@ -277,7 +284,7 @@ class PaymentController extends Controller
 
             }
             catch (\Exception $e) {
-                dd($e);
+
                 $error_log = new ErrorsLog;
                 $error_log->description = date("d/m/Y H:i:s") . " Erro: " . $e->getMessage();
                 $error_log->save();
