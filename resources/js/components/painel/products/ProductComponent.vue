@@ -388,7 +388,7 @@
                                             <div class="col text-right">
                                                 <div class="button-wrapper">
                                                     <span class="btn btn-sm btn-success button" @click="$refs.file.click()">
-                                                        <input type="file" ref="file" @change="uploadImage($event)" accept="image/*">
+                                                        <input type="file" ref="file" multiple @change="uploadImage($event)" accept="image/*">
                                                         <i class="fas fa-plus mr-2" /> Adicionar
                                                     </span>
                                                 </div>
@@ -910,26 +910,34 @@ export default {
         },
 
         uploadImage(event) {
-			// Reference to the DOM input element
-            var input = event.target;
+            let selectedFiles = event.target.files;
 
-			// Ensure that you have a file before attempting to read it
-			if (input.files && input.files[0]) {
+            if(!selectedFiles.length){
 
-					// create a new FileReader to read this image and convert to base64 format
-                    var reader = new FileReader();
+                return false;
 
-					// Define a callback function to run, when FileReader finishes its job
-					reader.onload = (e) => {
-
-							// Read image as base64 and set to imageData
-							this.image = e.target.result;
-                    }
-
-					// Start the reader job - read file as a data url (base64 format)
-					reader.readAsDataURL(input.files[0]);
             }
-            $("#addImage").modal({ backdrop: 'static', keyboard: false });
+
+            for(let i=0;i<selectedFiles.length;i++){
+                this.image = null;
+
+                // create a new FileReader to read this image and convert to base64 format
+                var reader = new FileReader();
+
+                // Define a callback function to run, when FileReader finishes its job
+                reader.onload = (e) => {
+                    console.log(e);
+                    this.variant.images.push({
+                        id: Math.random(),
+                        url: e.target.result
+                    })
+                }
+
+                // Start the reader job - read file as a data url (base64 format)
+                reader.readAsDataURL(selectedFiles[i]);
+
+                console.log(reader);
+            }
         },
 
 		pixelsRestriction({minWidth, minHeight, maxWidth, maxHeight, imageWidth, imageHeight}) {
