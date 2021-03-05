@@ -183,8 +183,9 @@ class ProductsController extends Controller
                         if($variant['images']){
 
                             foreach($variant['images'] as $image){
+                                $randNumber = rand();
 
-                                $name = $slug;
+                                $name = $slug.$randNumber;
 
                                 $path = public_path('images/variants/'.$v->id.'/');
 
@@ -350,11 +351,12 @@ class ProductsController extends Controller
 
                     foreach($request->input('product.variants') as $variant){
 
-                        $v = Variant::create([
-                            'product_id' => $id,
-                            "sku" => $variant['sku'],
-                            "weight" => $variant['weight'],
-                        ]);
+                        $v = new Variant;
+                        $v->product_id = $id;
+                        $v->sku = $variant['sku'];
+                        $v->weight = $variant['weight'];
+                        $v->save();
+
 
                         foreach($variant['values'] as $variantValue){
                             $value = VariantValue::create([
@@ -366,9 +368,14 @@ class ProductsController extends Controller
 
                         foreach($variant['stocks'] as $stock){
 
-                            ProductStock::where('product_id', $id)->delete();
+                            if(isset($stock['created_at'])){
+
+                                ProductStock::where('product_id', $id)->where('variant_id', $stock['variant_id'])->delete();
+
+                            }
 
                             if($stock['quantity'] > 0){
+
 
                                 $variantStock = ProductStock::create([
                                     'stock_id' => isset($stock['stock_id']) ? $stock['stock_id'] : $stock['id'],
@@ -402,8 +409,9 @@ class ProductsController extends Controller
 
                                     continue;
                                 }
+                                $randNumber = rand();
 
-                                $name = $request->input('product.slug');
+                                $name = $request->input('product.slug') . $randNumber;
 
                                 $path = public_path('images/products/'.$id.'/');
 
