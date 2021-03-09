@@ -92,7 +92,9 @@ class ProductsController extends Controller
             ]);
 
         }catch(\Exception $error){
-            dd($error);
+
+            return view('components.404');
+
         }
 
     }

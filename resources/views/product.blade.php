@@ -4,7 +4,7 @@
 @section('seo')
     <title>{{ env('APP_NAME') }} - {{ $product['title'] }}</title>
     <meta name="description" content="{{ $product['short_description'] }}">
-    <meta name="keywords" content="vinho, uvas, boteco do vinho">
+    <meta name="keywords" content="Sk8Shop">
 @endsection
 
 @section('open-graph-products')

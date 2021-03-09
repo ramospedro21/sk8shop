@@ -66,7 +66,15 @@ class ProfileController extends Controller
             ->where('id', $id)
             ->first();
 
-        return view('order', ['order' => $order]);
+        if($order){
+
+            return view('order', ['order' => $order]);
+
+        } else {
+
+            return view('components.404');
+
+        }
     }
 
     /**

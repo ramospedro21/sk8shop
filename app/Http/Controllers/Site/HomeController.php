@@ -38,7 +38,9 @@ class HomeController extends Controller
             ]);
 
         }catch(\Exception $e){
-            dd($e);
+
+            return view('components.404');
+
         }
     }
 

@@ -175,7 +175,9 @@ class CategoriesController extends Controller
             return view('categories', ['products' => $products, 'filters' => $options_bd, 'category' => $category]);
 
         }catch(\Exception $error){
-            dd($error);
+
+            return view('components.404');
+
         }
     }
 

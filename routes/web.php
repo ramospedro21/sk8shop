@@ -81,6 +81,13 @@ Route::prefix('/painel')->group(function(){
 });
 
 // ROTAS DA LOJA
+Route::get('/logout', function ()
+{
+    auth()->logout();
+    Session()->flush();
+
+    return Redirect::to('/');
+})->name('logout');
 Route::post('/register', 'Site\RegisterController@create');
 Route::get('/p/{slug}', 'Site\ProductsController@show');
 Route::post('/carrinho', 'Site\CartController@store');

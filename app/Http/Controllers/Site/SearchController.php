@@ -36,12 +36,19 @@ class SearchController extends Controller
                                })
                                ->get();
 
-            if($products->count() == 0) $products = [];
+            if($products->count() == 0) {
 
-            return view('search', ['products' => $products, 'search' => $request->search]);
+                return view('components.404');
+
+            } else {
+
+                return view('search', ['products' => $products, 'search' => $request->search]);
+
+            }
+
 
         }catch(\Exception $e){
-            dd($e->getMessage());
+            return view('components.404');
         }
     }
 
