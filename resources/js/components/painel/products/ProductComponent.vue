@@ -62,6 +62,7 @@
                                             <th>VARIAÇÕES</th>
                                             <th>QTD. DISPONIVEL</th>
                                             <th>PREÇO</th>
+                                            <th>PREÇO PROMOCIONAL</th>
                                             <th></th>
                                         </tr>
                                         <tr v-for="(variant, i) in product.variants" :key="'variant' + variant.id">
@@ -81,7 +82,15 @@
                                             </td>
                                             <td>
                                                 <span v-if="variant.stocks.length > 0">
-                                                    {{ variant.stocks[0].price }}
+                                                    {{ variant.stocks[0].price | money }}
+                                                </span>
+                                                <span v-else>
+                                                    0
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span v-if="variant.stocks.length > 0">
+                                                    {{ variant.stocks[0].promote_price | money }}
                                                 </span>
                                                 <span v-else>
                                                     0
@@ -93,6 +102,36 @@
                                             </td>
                                         </tr>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow mt-1">
+                            <div class="card-header border-0">
+                                <div class="row align-items-center">
+                                    <div class="col-md-9">
+                                        <h4 class="mb-0">Imagens</h4>
+                                    </div>
+                                    <div class="col text-right">
+                                        <div class="button-wrapper">
+                                            <span class="btn btn-sm btn-success button" @click="$refs.file.click()">
+                                                <input type="file" ref="file" multiple @change="uploadImage($event)" accept="image/*">
+                                                <i class="fas fa-plus mr-2" /> Adicionar
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3" v-for="(image, i) in product.images" :key="image.id">
+                                        <div class="img-wrap">
+                                            <span class="close" @click="product.images.splice(i, 1)">
+                                                <i class="fa-times-circle fas text-danger" />
+                                            </span>
+                                            <img :src="image.url" class="img-fluid" alt="">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -377,53 +416,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="card-shadow">
-                                    <div class="card-header">
-                                        <div class="row align-items-center">
-                                            <div class="col">
-                                                <h4 class="mb-0 font-weight-bold">Imagens</h4>
-                                            </div>
-                                            <div class="col text-right">
-                                                <div class="button-wrapper">
-                                                    <span class="btn btn-sm btn-success button" @click="$refs.file.click()">
-                                                        <input type="file" ref="file" multiple @change="uploadImage($event)" accept="image/*">
-                                                        <i class="fas fa-plus mr-2" /> Adicionar
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4 div-images"></div>
-                                            <div class="col-md-4 div-images">
-                                                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                                                    <div class="carousel-inner">
-                                                        <div :class="[i == 0 ? 'active' : '', 'carousel-item', 'text-center']" v-for="(image, i) in variant.images" :key="image.id">
-                                                            <img class="d-block img-variant" :src="image.url" alt="First slide">
-                                                            <button type="button" class="btn btn-outline-danger excluir"  @click="variant.images.splice(i, 1)">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                        <span class="sr-only">Previous</span>
-                                                    </a>
-                                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                        <span class="sr-only">Next</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 div-images"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="modal-footer ">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -690,18 +682,17 @@ export default {
 
                 let self = this;
 
-                variant.values.forEach(value => {
+                variant.values.forEach(option_value => {
 
-                    let id = value.option ? value.option.id : value.option_father.id;
 
-                    let option = self.options.find(option => option.id === id)
+                    let option = self.options.find(option => option.id === option_value.option_id);
 
                     if(option){
 
-                        let value = option.values.find(value => value.id === value.id)
+                        let value = option.values.find(value => value.id === option_value.id)
 
                         self.variant.options.push({
-                            id: Date.now() + value.id,
+                            id: Math.random() + value.id,
                             option_father: option,
                             value: value
                         });
@@ -847,6 +838,7 @@ export default {
 
         editVariant: async function(){
 
+            console.log(this.variant.index);
             await this.product.variants.splice(this.variant.index, 1);
 
             this.variant.options.map(option => {
@@ -857,12 +849,11 @@ export default {
                 return option;
             });
 
-            this.product.variants.push({
+            await this.product.variants.push({
                 sku: this.variant.sku,
                 weight: this.variant.weight > 0 ? this.variant.weight : parseFloat(0.5),
                 values: this.variant.options,
                 stocks: this.variant.stocks,
-                images: this.variant.images,
             });
 
             $("#variantModal").modal("hide");
@@ -870,7 +861,6 @@ export default {
             this.variant = {
                 options: [],
                 stocks: [],
-                images: [],
             };
 
         },
@@ -910,6 +900,7 @@ export default {
         },
 
         uploadImage(event) {
+
             let selectedFiles = event.target.files;
 
             if(!selectedFiles.length){
@@ -922,12 +913,12 @@ export default {
                 this.image = null;
 
                 // create a new FileReader to read this image and convert to base64 format
-                var reader = new FileReader();
+                let reader = new FileReader();
 
                 // Define a callback function to run, when FileReader finishes its job
                 reader.onload = (e) => {
                     console.log(e);
-                    this.variant.images.push({
+                    this.product.images.push({
                         id: Math.random(),
                         url: e.target.result
                     })
@@ -1015,6 +1006,9 @@ export default {
 
 
             }catch(e){
+
+                this.loading.buttonSuccess = false;
+
                 showErrorToast('Não foi possivel salvar o produto.');
             }
         },
@@ -1092,16 +1086,6 @@ export default {
         top: 3px;
         left: 3px;
         z-index: 100;
-    }
-    .div-images .img-variant{
-        max-height: 200px;
-    }
-    .modal-image{
-        overflow-y: scroll !important
-    }
-    .modal-body-image{
-        max-height: calc(100vh - 200px);
-        overflow-y: auto;
     }
 </style>
 

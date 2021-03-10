@@ -46,7 +46,7 @@
                                         {{ product.quantity }}
                                     </td>
                                     <td>
-                                        {{ product.enabled }}
+                                        {{ product.translatedEnabled }}
                                     </td>
                                     <td>
 

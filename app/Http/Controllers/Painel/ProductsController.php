@@ -49,7 +49,7 @@ class ProductsController extends Controller
         try{
 
             $products = Product::with(['stocks.stock' => function($query){
-                $query->where('title', 'like' . '%Ecommerce%');
+                $query->where('title', 'like' . '%' . 'Ecommerce' . '%');
             }])->paginate(Product::PER_PAGE);
 
 
@@ -62,8 +62,8 @@ class ProductsController extends Controller
                 }
 
                 # DEFINICAO DE STATUS
-                if($product->enabled == Product::ENABLED) $product->enabled = "Sim";
-                if($product->enabled == Product::NOT_ENABLED) $product->enabled = "Não";
+                if($product->enabled == Product::ENABLED) $product->translatedEnabled = "Sim";
+                if($product->enabled == Product::NOT_ENABLED) $product->translatedEnabled = "Não";
 
             }
 
@@ -270,7 +270,7 @@ class ProductsController extends Controller
                                       'coupons',
                                       'variants.values.option',
                                       'variants.stocks.stock',
-                                      'variants.images',
+                                      'images',
                                       'coupons.coupon'
                                     ])->find($id);
 
@@ -359,9 +359,10 @@ class ProductsController extends Controller
 
 
                         foreach($variant['values'] as $variantValue){
+
                             $value = VariantValue::create([
                                 'variant_id' => $v->id,
-                                'option_value_id' => $variantValue['id']
+                                'option_value_id' => isset($variantValue['value_id']) ? $variantValue['value_id'] : $variantValue['pivot']['option_value_id'],
                             ]);
 
                         }
@@ -390,42 +391,6 @@ class ProductsController extends Controller
 
                             }
                         }
-
-                        if(isset($variant['images'])){
-
-                            $variantImages = VariantImage::where('product_id', $id)->get();
-
-                            foreach($variant['images'] as $image){
-
-                                if (isset($image['product_id'])) {
-
-                                    $image_id = $image['id'];
-
-                                    $variantIndex = $variantImages->search(function ($variantImage) use ($image_id) {
-                                        return $variantImage->id === $image_id;
-                                    });
-
-                                    if ($variantIndex !== false) $variantImages->splice($variantIndex, 1);
-
-                                    continue;
-                                }
-                                $randNumber = rand();
-
-                                $name = $request->input('product.slug') . $randNumber;
-
-                                $path = public_path('images/products/'.$id.'/');
-
-                                if(!File::exists($path)) File::makeDirectory($path, $mode = 0777, true, true);
-
-                                $img = Image::make($image['url'])->save($path.$name);
-
-                                $variantImage = VariantImage::create([
-                                    'variant_id' => $v->id,
-                                    'product_id' => $id,
-                                    'url' => url('images/products/'.$id.'/'.$name),
-                                ]);
-                            }
-                        }
                     }
                 }
 
@@ -440,6 +405,42 @@ class ProductsController extends Controller
                             'category_id' => isset($category['category_id']) ? $category['category_id'] : $category['id'],
                         ]);
 
+                    }
+                }
+
+                if($request->input('product.images')){
+
+                    $variantImages = VariantImage::where('product_id', $id)->get();
+
+                    foreach($request->input('product.images') as $image){
+
+                        if (isset($image['product_id'])) {
+
+                            $image_id = $image['id'];
+
+                            $variantIndex = $variantImages->search(function ($variantImage) use ($image_id) {
+                                return $variantImage->id === $image_id;
+                            });
+
+                            if ($variantIndex !== false) $variantImages->splice($variantIndex, 1);
+
+                            continue;
+                        }
+
+                        $randNumber = rand();
+
+                        $name = $request->input('product.slug') . $randNumber;
+
+                        $path = public_path('images/products/'.$id.'/');
+
+                        if(!File::exists($path)) File::makeDirectory($path, $mode = 0777, true, true);
+
+                        $img = Image::make($image['url'])->save($path.$name);
+
+                        $variantImage = VariantImage::create([
+                            'product_id' => $id,
+                            'url' => url('images/products/'.$id.'/'.$name),
+                        ]);
                     }
                 }
 
