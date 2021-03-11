@@ -408,9 +408,17 @@ class ProductsController extends Controller
                     }
                 }
 
+                $productImages = VariantImage::where('product_id', $id)->get();
+
                 if($request->input('product.images')){
 
-                    $variantImages = VariantImage::where('product_id', $id)->get();
+                    $imagesId = collect();
+
+                    foreach($request->input('product.images') as $data){
+                        $imagesId->push($data['id']);
+                    }
+
+                    $deleteImage = VariantImage::whereNotIn('id', $imagesId)->delete();
 
                     foreach($request->input('product.images') as $image){
 
@@ -418,11 +426,11 @@ class ProductsController extends Controller
 
                             $image_id = $image['id'];
 
-                            $variantIndex = $variantImages->search(function ($variantImage) use ($image_id) {
-                                return $variantImage->id === $image_id;
+                            $prouctIndex = $productImages->search(function ($productImage) use ($image_id) {
+                                return $productImage->id === $image_id;
                             });
 
-                            if ($variantIndex !== false) $variantImages->splice($variantIndex, 1);
+                            if ($prouctIndex !== true) $productImages->splice($prouctIndex, 1);
 
                             continue;
                         }
