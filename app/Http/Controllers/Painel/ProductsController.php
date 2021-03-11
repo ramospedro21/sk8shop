@@ -418,7 +418,7 @@ class ProductsController extends Controller
                         $imagesId->push($data['id']);
                     }
 
-                    $deleteImage = VariantImage::whereNotIn('id', $imagesId)->where('product_id', $id)->delete();
+                    $deleteImage = VariantImage::where('product_id', $id)->whereNotIn('id', $imagesId)->delete();
 
                     foreach($request->input('product.images') as $image){
 
