@@ -65,7 +65,7 @@
                                             <th>PREÇO PROMOCIONAL</th>
                                             <th></th>
                                         </tr>
-                                        <tr v-for="(variant, i) in product.variants" :key="'variant' + variant.id">
+                                        <tr v-for="(variant, i) in product.variants" :key="'variant' + variant.sku">
                                             <td>{{ variant.sku }}</td>
                                             <td>
                                                 <span v-for="option in variant.values" :key="option.id">
@@ -269,12 +269,12 @@
         <div class="modal-dialog modal-image modal-lg">
             <div class="modal-content">
                 <div class="modal-header ">
-                    <h5 class="modal-title" id="variantModalLabel">{{ variant.id ? 'Editar' : 'Adicionar' }} Variação</h5>
+                    <h5 class="modal-title" id="variantModalLabel">{{ variant.edit == true ? 'Editar' : 'Adicionar' }} Variação</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form @submit.prevent="variant.id ? editVariant(variant.index) : addVariant()">
+                <form @submit.prevent="variant.edit == true ? editVariant(variant.index) : addVariant()">
                     <div class="modal-body-image">
                         <div class="row">
                             <div class="col">
@@ -598,6 +598,7 @@ export default {
                 options: [],
                 stocks: [],
                 images: [],
+                edit: false
             },
 
             category: {
@@ -646,6 +647,13 @@ export default {
                 await this.getOptions();
                 await this.getStocks();
 
+                this.variant = {
+                    options: [],
+                    stocks: [],
+                    images: [],
+                    edit: false
+                },
+
                 this.stocks.map(stock => {
                     this.variant.stocks.push({
                         id: stock.id,
@@ -675,15 +683,14 @@ export default {
                     ...variant,
                     options: [],
                     index: i,
+                    edit: true,
                 }
 
                 $("#variantModal").modal('show');
 
-
                 let self = this;
 
                 variant.values.forEach(option_value => {
-
 
                     let option = self.options.find(option => option.id === option_value.option_id);
 
@@ -810,20 +817,29 @@ export default {
 
         addVariant: function(){
 
-            this.variant.options.map(option => {
-                option.id = option.option_father.id;
-                option.title = option.option_father.title;
-                option.value_id = option.value.id;
-                delete option.option_father.values;
-                return option;
+            let values = [];
+
+            this.variant.options.forEach(option => {
+                values.push({
+                    color: null,
+                    id: option.value.id,
+                    option: {
+                        title: option.option_father.title,
+                        type: "droplist",
+                    },
+                    option_id: option.option_father.id,
+                    title: option.value.title,
+                    value_id: option.value.id
+                });
             });
 
             this.product.variants.push({
                 sku: this.variant.sku,
                 weight: this.variant.weight > 0 ? this.variant.weight : parseFloat(0.5),
-                values: this.variant.options,
+                values: values,
                 stocks: this.variant.stocks,
                 images: this.variant.images,
+                id: Math.random()
             });
 
             $("#variantModal").modal("hide");
@@ -838,22 +854,30 @@ export default {
 
         editVariant: async function(){
 
-            console.log(this.variant.index);
             await this.product.variants.splice(this.variant.index, 1);
 
-            this.variant.options.map(option => {
-                option.id = option.option_father.id;
-                option.title = option.option_father.title;
-                option.value_id = option.value.id;
-                delete option.option_father.values;
-                return option;
+            let values = [];
+
+            this.variant.options.forEach(option => {
+                values.push({
+                    color: null,
+                    id: option.value.id,
+                    option: {
+                        title: option.option_father.title,
+                        type: "droplist",
+                    },
+                    option_id: option.option_father.id,
+                    title: option.value.title,
+                    value_id: option.value.id
+                });
             });
 
             await this.product.variants.push({
                 sku: this.variant.sku,
                 weight: this.variant.weight > 0 ? this.variant.weight : parseFloat(0.5),
-                values: this.variant.options,
+                values: values,
                 stocks: this.variant.stocks,
+                id: Math.random()
             });
 
             $("#variantModal").modal("hide");
@@ -1059,6 +1083,11 @@ export default {
             }
 
         },
+
+        deleteVariantOption: function(i){
+            this.variant.options.splice(i, 1);
+            return this.variant.options;
+        }
 
 
     },
