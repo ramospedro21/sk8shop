@@ -84,8 +84,7 @@ class CategoriesController extends Controller
             $categoriesIds = $categoriesIds->unique();
 
             // Procura os produtos que tenham os Ids das categorias
-            $products = Variant::with(['images',
-                                       'product',
+            $products = Product::with(['images',
                                        'stocks' => function ($query){
                                             $query->where(function($query) {
                                                 $query->where('price', '>', 0);
@@ -98,7 +97,7 @@ class CategoriesController extends Controller
                                        $query->orWhere('promote_price', '>', 0);
                                    });
                                })
-                               ->whereHas('product.categories', function ($query) use ($categoriesIds) {
+                               ->whereHas('categories', function ($query) use ($categoriesIds) {
                                     $query->whereIn('category_id', $categoriesIds);
                                 });
 

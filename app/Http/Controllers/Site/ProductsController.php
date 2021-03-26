@@ -92,7 +92,7 @@ class ProductsController extends Controller
             ]);
 
         }catch(\Exception $error){
-
+            dd($error, $error->getLine());
             return view('components.404');
 
         }
@@ -164,32 +164,25 @@ class ProductsController extends Controller
 
         $categoriesIds = $categories->pluck('category_id');
 
-        $products = Variant::with(['images',
-                                   'product' => function($query){
-                                       $query->where('enabled', 1);
-                                   },
-                                   'stocks' => function ($query){
-                                        $query->where(function($query) {
-                                            $query->where('price', '>', 0);
-                                            $query->orWhere('promote_price', '>', 0);
-                                        });
-                                    }])
-                           ->whereHas('stocks', function($query){
-                               $query->where(function($query){
-                                   $query->where('price', '>', 0);
-                                   $query->orWhere('promote_price', '>', 0);
-                               });
-                           })
-                           ->whereHas('product.categories', function ($query) use ($categoriesIds) {
-                               $query->whereIn('category_id', $categoriesIds);
-                           })
-                           ->limit(4)
-                           ->where('product_id', '!=', $product_id)
-                           ->orderBy('created_at', 'desc')
-                           ->whereHas('stocks', function ($query){
-                               $query->where('price', '>', 0);
-                               $query->orWhere('promote_price', '>', 0);
-                           })->get();
+        $products = Product::with(['images',
+                                'stocks' => function ($query){
+                                    $query->where(function($query) {
+                                        $query->where('price', '>', 0);
+                                        $query->orWhere('promote_price', '>', 0);
+                                    });
+                                },
+                            ])
+                            ->whereHas('categories', function ($query) use ($categoriesIds) {
+                                $query->whereIn('category_id', $categoriesIds);
+                            })
+                            ->limit(4)
+                            ->where('id', '!=', $product_id)
+                            ->where('enabled', 1)
+                            ->orderBy('created_at', 'desc')
+                            ->whereHas('stocks', function ($query){
+                                $query->where('price', '>', 0);
+                                $query->orWhere('promote_price', '>', 0);
+                            })->get();
 
         return $products;
     }

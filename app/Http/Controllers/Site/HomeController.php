@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Variant;
+use App\Models\Product;
 
 class HomeController extends Controller
 {
@@ -18,14 +19,14 @@ class HomeController extends Controller
     {
         try{
 
-            $products = Variant::with(['images',
-                                       'product',
+            $products = Product::with(['images',
                                        'stocks' => function ($query){
                                             $query->where(function($query) {
                                                 $query->where('price', '>', 0);
                                                 $query->orWhere('promote_price', '>', 0);
                                             });
                                         }])
+                               ->where('enabled', 1)
                                ->whereHas('stocks', function($query){
                                    $query->where(function($query){
                                        $query->where('price', '>', 0);
