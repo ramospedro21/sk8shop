@@ -29,16 +29,17 @@
                     </div>
                     <hr>
                     <div class="row align-items-center">
-                        <div class="col col-md-1 text-center px-0">
-                            <button class="btn btn-link" @click="subQuantity(product, i)">
+                        <div class=" col col-md-1 text-center px-0">
+                            <button :id="'btnRemove' + i" class="btn btn-link" @click="subQuantity(product, i)">
                                 <i class="fas fa-minus-circle"></i>
                             </button>
                         </div>
                         <div class="col col-md-2 text-left px-2">
-                            <input type="number" class="form-control" placeholder="1" v-model="product.quantity" @blur="updateCart()">
+                            <input type="number" class="form-control" placeholder="1" v-model="product.quantity" @blur="updateCart()" readonly>
+                                <small class="text-danger" v-if="product.stockError">{{ product.stockError }}</small>
                         </div>
                         <div class="col col-md-1 text-center px-0">
-                            <button  class="btn btn-link" @click="addQuantity(product)">
+                            <button :id='"btnAdd" + i'  class="btn btn-link" @click="addQuantity(product, i)">
                                 <i class="fas fa-plus-circle"></i>
                             </button>
                         </div>
@@ -52,18 +53,18 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-primary btn-lg mb-1 d-none d-md-block" v-if="user" href="/checkout">
+                <button class="btn btn-primary btn-lg mb-1 d-none d-md-block" id="btnCheckout" v-if="user" href="/checkout">
                     Continuar
-                </a>
-                <button class="btn btn-primary btn-lg mb-1 d-none d-md-block" v-if="!user" data-target="#accountModal" data-toggle="modal">
+                </button>
+                <button class="btn btn-primary btn-lg mb-1 d-none d-md-block" v-if="!user" id="btnCheckout" data-target="#accountModal" data-toggle="modal">
                     Continuar
                 </button>
             </div>
             <div class="col-md-4">
-                <a class="btn btn-primary btn-block btn-lg mb-1" v-if="user" href="/checkout">
+                <button class="btn btn-primary btn-block btn-lg mb-1" v-if="user" href="/checkout" id="btnCheckout">
                     Continuar
-                </a>
-                <button class="btn btn-primary btn-block btn-lg mb-1" v-if="!user" data-target="#accountModal" data-toggle="modal">
+                </button>
+                <button class="btn btn-primary btn-block btn-lg mb-1" v-if="!user" data-target="#accountModal" id="btnCheckout" data-toggle="modal">
                     Continuar
                 </button>
                 <div class="card py-5 px-4 my-4 mt-4 bg-light">
@@ -190,6 +191,12 @@
                         this.getCep();
                     }
 
+                    this.cart.products.forEach(product =>{
+
+                        product.stockError = null;
+
+                    });
+
                     this.updateCart();
 
                 }catch(e){
@@ -270,6 +277,8 @@
 
             subQuantity: function(product, index){
 
+                $("#btnRemove" + index).attr('disabled', true);
+
                 product.quantity--;
 
                 if(product.quantity <= 0){
@@ -279,21 +288,44 @@
                 if(this.stocks.length == 0){
                     this.calculateDelivery();
                 }
-                this.updateCart();
+
+                if(product.stocks[0].quantity <= product.quantity){
+
+                    product.stockError = null;
+
+                    $("#btnCheckout").attr('disabled', false);
+                }
+                this.updateCart(index);
 
             },
 
-            addQuantity: function(product){
+            addQuantity: function(product, i){
+
+                $("#btnAdd" + i).attr('disabled', true);
 
                 product.quantity++;
+
                 if(this.stocks.length == 0){
                     this.calculateDelivery();
                 }
-                this.updateCart();
+
+                if(product.stocks[0].quantity < product.quantity){
+
+                    product.stockError = 'A quantidade desejada não está disponivel';
+                    $("#btnCheckout").attr('disabled', true);
+
+                } else {
+                    product.stockError = null;
+
+                    $("#btnCheckout").attr('disabled', false);
+
+                    this.updateCart(i);
+                }
+
 
             },
 
-            updateCart: function() {
+            updateCart: function(index) {
                 this.loading = true;
 
                 let count = 0;
@@ -325,7 +357,10 @@
                     .patch('/carrinho/details', {cart: this.cart})
                     .then(response => {
 
-                        this.cart = response.data
+                        this.cart = response.data;
+                        $("#btnAdd" + index).attr('disabled', false);
+                        $("#btnRemove" + index).attr('disabled', false);
+
                     })
 
                 this.loading = false;

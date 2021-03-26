@@ -37,13 +37,13 @@
                                     <div class="row">
                                         <div class="col-7">
                                             <img class="d-block w-100"
-                                                 :src="buyProduct.variant.images[0] ? buyProduct.variant.images[0].url : '/images/no_product.png' "
+                                                 :src="product.images[0] ? product.images[0].url : '/images/no_product.png' "
                                                  :alt="product.short_description"
                                                  :title="product.title">
                                         </div>
                                         <div class="col-5 text-left">
                                             <p class="h5 mt-1">{{ product.title }}</p>
-                                            <p class="h5">{{ buyProduct.variant.promote_price ? buyProduct.variant.promote_price : buyProduct.variant.price  | money }}</p>
+                                            <p class="h5">{{ buyProduct.variant.promote_price != "0.00" ? buyProduct.variant.promote_price : buyProduct.variant.price  | money }}</p>
                                             <p class="h6" v-for="value in buyProduct.optionsValues" :key="value.id">
                                                 {{ value.option_title }}: {{ value.value_title }}
                                             </p>
@@ -115,7 +115,7 @@
                 problemStock: false,
                 buyProduct: {
                     variant: false,
-                    optionsValues: []
+                    optionsValues: [],
                 },
                 cart:{},
                 loading: {

@@ -80,9 +80,11 @@ class CartController extends Controller
                 $discount = 0;
             }
 
+            $cartAmount = $request->session()->get('cart.amount');
+
             $newCart = collect();
             $found = 0;
-            $amount = 0;
+            $amount = $cartAmount != null ? $cartAmount : 0;
 
             // Passa por toda a lista existente
             foreach($products as $productCart){
@@ -104,19 +106,18 @@ class CartController extends Controller
                     // Calcula o subtotal do produto
                     if($productCart->stocks[0]->promote_price !== '0.00'){
 
-                        $productCart->subTotal = number_format( $productCart->stocks[0]->promote_price * $productCart->quantity, 2, '.', '');
+                        $productCart->subTotal = number_format( $productCart->stocks[0]->promote_price, 2, '.', '');
 
                     }else{
 
-                        $productCart->subTotal = number_format( $productCart->stocks[0]->price * $productCart->quantity, 2, '.', '');
+                        $productCart->subTotal = number_format( $productCart->stocks[0]->price, 2, '.', '');
 
                     }
 
                     $found = 1;
 
+                    $amount += $productCart->subTotal;
                 }
-
-                $amount += $productCart->subTotal;
 
                 // Adiciona o produto da vez no novo cart
                 $newCart->push($productCart);
@@ -139,7 +140,7 @@ class CartController extends Controller
                     $product->discount = 0;
                 }
 
-                $amount += $product['stocks'][0]['promote_price'] ? $product['stocks'][0]['promote_price'] : $product['stocks'][0]['price'];
+                $amount += $product['stocks'][0]['promote_price'] != '0.00' ? $product['stocks'][0]['promote_price'] : $product['stocks'][0]['price'];
 
                 $newCart->push($product);
             }
