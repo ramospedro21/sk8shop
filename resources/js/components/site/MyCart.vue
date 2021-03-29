@@ -53,17 +53,17 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary btn-lg mb-1 d-none d-md-block" id="btnCheckout" v-if="user" href="/checkout">
+                <a class="btn btn-primary btn-lg mb-1 d-none d-md-block" id="btnCheckout" v-if="user" href="/checkout">
                     Continuar
-                </button>
+                </a>
                 <button class="btn btn-primary btn-lg mb-1 d-none d-md-block" v-if="!user" id="btnCheckout" data-target="#accountModal" data-toggle="modal">
                     Continuar
                 </button>
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary btn-block btn-lg mb-1" v-if="user" href="/checkout" id="btnCheckout">
+                <a class="btn btn-primary btn-block btn-lg mb-1" v-if="user" href="/checkout" id="btnCheckout">
                     Continuar
-                </button>
+                </a>
                 <button class="btn btn-primary btn-block btn-lg mb-1" v-if="!user" data-target="#accountModal" id="btnCheckout" data-toggle="modal">
                     Continuar
                 </button>
@@ -99,6 +99,11 @@
             </div>
         </div>
 
+
+        <div id="loader" v-if="loading == true" class="text-center">
+            <img :src="'/images/loading.gif'" alt="" height="60">
+            <p class="text-uppercase text-primary mt-3">Aguarde...</p>
+        </div>
 
         <!-- The Modal -->
         <div class="modal fade" id="confirmModal">

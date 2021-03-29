@@ -22,9 +22,9 @@
                             </div>
                         </div>
                     </form>
-                    <div v-else class="form-check form-check-radio mt-4 col-md-12 pl-5" v-for="shipping in cart.shippings" :key="shipping.code">
+                    <div v-else class="form-check form-check-radio mt-2 col-md-12 pl-5" v-for="(shipping, i) in cart.shippings" :key="i">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="radio" v-model="cart.shipping" :id="'exampleRadios' + shipping.code" :value="shipping" v-on:change="selectShipping()">
+                            <input class="form-check-input" type="radio" v-model="cart.shipping" :id="'shipping' + i" :value="shipping" v-on:change="selectShipping()">
                             <p class="mb-0 pb-0">{{ shipping.title }}</p>
                             <input v-model.lazy="shipping.price" readonly type="hidden"/>
                             <p class="mb-0 pb-0">{{ shipping.price | money}} - {{ shipping.deadline }}</p>
@@ -820,6 +820,7 @@
 
                 this.cart.cartStatus = true;
                 this.cart.cartShipping = this.cart.shipping.price
+
                 this.updateCart();
 
             },
@@ -833,10 +834,12 @@
                 axios
                     .patch('/carrinho/details', {cart: this.cart})
                     .then(response => {
-                        this.cart = response.data.cart
+
+                        this.cart = response.data
 
                         this.loading = false;
-                    })
+
+                    });
 
             },
 
@@ -990,13 +993,11 @@
                     })
                 });
 
-                this.getAddress(this.cart.zipcodeTo);
-
                 axios
                     .post('/calculo-frete',{ products: productsToCalculate, zipcode_to: this.cart.zipcodeTo })
                     .then(response => {
                         this.cart.shippings = response.data.shippings;
-                        this.cart.shipping = response.data.shippings.shippings[0];
+
                         this.loading = false;
                         this.selectShipping();
                     })
@@ -1045,19 +1046,21 @@
                         this.userAddress.zipcode = this.cart.zipcodeTo;
                         this.getAddress(this.userAddress.zipcode);
 
-                        self = this;
-                        this.user.addresses.forEach(address => {
-                            if(address.zipcode == this.cart.zipcodeTo){
-                                self.userAddress.street_number = address.street_number;
-                                self.userAddress.complement = address.complement;
-                            }
-                        })
-
                     }
 
                     if(this.cart.couponDescription){
                         this.userCoupon.title = this.cart.couponDescription;
                         this.getCoupon();
+                    }
+
+                    if(!this.cart.shippings){
+
+                        this.cart.shippings = [];
+
+                    } else {
+
+                        this.calculateDelivery();
+
                     }
 
                 })

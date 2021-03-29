@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div id="cartPage">
+<div>
     <checkout-component :user="{{ $user }}" :moip_pub_key="{{ json_encode(env('MOIP_PUBLIC_KEY')) }}"></checkout-component>
 </div>
 
