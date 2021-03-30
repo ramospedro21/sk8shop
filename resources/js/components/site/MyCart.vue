@@ -10,7 +10,7 @@
                         <div class="col">
                             <div class="row align-items-center">
                                 <div class="col-3 col-md-4">
-                                    <img :src="product.images[0] ? product.images[0].url : '/images/no_product.png'" class="w-100" alt="">
+                                    <img :src="product.product.images[0] ? product.product.images[0].url : '/images/no_product.png'" class="w-100" alt="">
                                 </div>
                                 <div class="col">
                                     <p class="font-weight-bold mb-0">{{ product.product.title }}</p>
@@ -75,6 +75,16 @@
                         </div>
                         <div class="col text-right">
                             <p class="mb-0 font-weight-bold" v-if="cart.cartSubtotal > 0">{{ cart.cartSubtotal | money }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <p class="mb-0">Frete:</p>
+                            <small>O frete é calculado na tela de pagamento</small>
+                        </div>
+                        <div class="col text-right">
+                            <p class="mb-0 font-weight-bold">{{ cart.cartShipping | money}}</p>
                         </div>
                     </div>
                     <hr>

@@ -221,7 +221,7 @@ class CartController extends Controller
     private function getVariant($item){
 
         return $variant = Variant::with([
-                                    'images',
+                                    'product.images',
                                     'values' => function($query) use ($item){
                                         $query->where('option_value_id', $item['optionsValues'][0]['value_id']);
                                     },

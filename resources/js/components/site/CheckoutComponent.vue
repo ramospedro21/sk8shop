@@ -92,12 +92,9 @@
                         <div class="col-8 col-md-4">
                             <div class="form-group mt-3">
                                 <label for="" class="control-label">CEP:</label>
-                                <input type="text" class="form-control py-4" placeholder="Digite seu CEP.." v-model="userAddress.zipcode" v-mask="'99999-999'" @change="getAddress(userAddress.zipcode)">
+                                <input type="text" class="form-control py-4" placeholder="Digite seu CEP.." v-model="userAddress.zipcode" v-mask="'99999-999'" v-on:blur="getAddress(userAddress.zipcode)">
                                 <small class="text-danger" v-if="errors.zipcode">{{ errors.zipcode }}</small>
                             </div>
-                        </div>
-                        <div class="col-4 pt-4">
-                            <a :href="'/carrinho'" class="text-info"><small>Alterar Endereço</small></a>
                         </div>
                     </div>
                     <div class="row">
@@ -302,7 +299,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <p class="mb-0">Subtotal: ({{ cart.cartCount }} itens)</p>
-                                <a href="" class="text-info">
+                                <a href="/carrinho" class="text-info">
                                     <small>
                                         Ver produtos
                                     </small>
@@ -723,19 +720,17 @@
 
             },
 
-            getAddress: function(cep)
-            {
-                axios
-                    .get("https://viacep.com.br/ws/" + cep + "/json/?callback=?")
-                    .then(response => {
+            getAddress(cep){
+                self = this;
 
-                        let data =  JSON.parse(response.data.slice(2,-2));
-                        this.userAddress.street = data.logradouro;
-                        this.userAddress.district = data.bairro;
-                        this.userAddress.city = data.localidade;
-                        this.userAddress.state = data.uf;
+                $.getJSON("https://viacep.com.br/ws/" + cep + "/json/", function(address){
 
-                    })
+                    self.userAddress.street = address.logradouro;
+                    self.userAddress.district = address.bairro;
+                    self.userAddress.city = address.localidade;
+                    self.userAddress.state = address.uf;
+
+                });
             },
 
             toPay: function()
