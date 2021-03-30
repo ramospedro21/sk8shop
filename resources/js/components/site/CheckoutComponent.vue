@@ -1040,7 +1040,7 @@
                 .then(response => {
 
                     this.cart = response.data
-                    this.cart.cartShipping = 0;
+
 
                     if(this.cart.products.length == 0){
                         window.location = "/"
@@ -1058,7 +1058,7 @@
                         this.getCoupon();
                     }
 
-                    if(!this.cart.shippings){
+                    if(this.cart.shippings.length == 0 || this.cart.shippings == 'undefined'){
 
                         this.cart.shippings = [];
 
