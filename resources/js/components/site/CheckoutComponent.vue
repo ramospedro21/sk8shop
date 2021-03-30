@@ -5,7 +5,7 @@
             <div class="col-8">
                 <h1 class="font-weight-bolder h5 mt-5">Frete e Prazo de Entrega</h1>
                 <div class="card pt-4 pb-3 px-4 my-4">
-                    <form @submit.prevent="calculateDelivery()" v-if="cart.shippings.length == 0">
+                    <form @submit.prevent="calculateDelivery()" v-if="cart.shippings.length == 0 && this.calculating == false">
                         <div class="row mt-3 mb-5 mb-md-3 align-items-center">
                             <div class="col-md-4 col-8">
                                 <input type="text" class="form-control" placeholder="Digite seu CEP aqui.." v-model="cart.zipcodeTo" id="zipcodeInput" required>
@@ -22,7 +22,7 @@
                             </div>
                         </div>
                     </form>
-                    <div v-else class="form-check form-check-radio mt-2 col-md-12 pl-5" v-for="(shipping, i) in cart.shippings" :key="i">
+                    <div v-else-if="cart.shippings.length > 0 && this.calculating == false" class="form-check form-check-radio mt-2 col-md-12 pl-5" v-for="(shipping, i) in cart.shippings" :key="i">
                         <label class="form-check-label">
                             <input class="form-check-input" type="radio" v-model="cart.shipping" :id="'shipping' + i" :value="shipping" v-on:change="selectShipping()">
                             <p class="mb-0 pb-0">{{ shipping.title }}</p>
@@ -32,6 +32,9 @@
                                 <span class="check"></span>
                             </span>
                         </label>
+                    </div>
+                    <div v-else-if="this.calculating == true">
+                        Calculando...
                     </div>
                 </div>
             </div>
@@ -507,6 +510,7 @@
                     cardPhoneNumber: null,
                 },
                 loading: false,
+                calculating: false,
 
             }
         },
@@ -819,6 +823,7 @@
             selectShipping: function(){
 
                 this.cart.cartStatus = true;
+
                 this.cart.cartShipping = this.cart.shipping.price
 
                 this.updateCart();
@@ -971,7 +976,7 @@
 
             calculateDelivery: function(){
 
-                this.loading = true;
+                this.calculating = true;
 
                 var productsToCalculate = [];
 
@@ -998,11 +1003,15 @@
                     .then(response => {
                         this.cart.shippings = response.data.shippings;
 
-                        this.loading = false;
+                        this.cart.shipping = this.cart.shippings[0];
+
+                        this.calculating = false;
                         this.selectShipping();
                     })
                     .catch(err => {
-                        this.loading = false;
+
+                        this.calculating = false;
+
                     })
 
             },
@@ -1036,6 +1045,7 @@
                 .then(response => {
 
                     this.cart = response.data
+                    this.cart.cartShipping = 0;
 
                     if(this.cart.products.length == 0){
                         window.location = "/"
