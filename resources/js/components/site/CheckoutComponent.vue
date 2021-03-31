@@ -46,13 +46,15 @@
                 <h2 class="font-weight-bolder h5">Informações para entrega</h2>
                 <div class="card pt-4 pb-3 px-4 my-4">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="form-group mt-3">
                                 <label for="" class="control-label">Nome:</label>
                                 <input type="text" class="form-control py-4" placeholder="Digite seu nome.." v-model="user.name">
                                 <small class="text-danger" v-if="errors.name">{{ errors.name }}</small>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group mt-3">
                                 <label for="" class="control-label">CPF.:</label>
@@ -60,8 +62,6 @@
                                 <small class="text-danger" v-if="errors.tax_document_number">{{ errors.tax_document_number }}</small>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group mt-3">
                                 <label for="" class="control-label">Nascimento:</label>
@@ -74,17 +74,6 @@
                                 <label for="" class="control-label">Celular:</label>
                                 <input type="text" class="form-control py-4" placeholder="Digite seu celular.." v-model="userDetails.cellphone" v-mask="'(99) [9]9999-9999'">
                                 <small class="text-danger" v-if="errors.cellphone">{{ errors.cellphone }}</small>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group mt-3">
-                                <label for="" class="control-label">Sexo:</label>
-                                <select v-model="userDetails.gender" id="" class="form-control">
-                                    <option :value="null">- Selecione -</option>
-                                    <option :value="'Feminino'">Feminino</option>
-                                    <option :value="'Masculino'">Masculino</option>
-                                </select>
-                                <small class="text-danger" v-if="errors.gender">{{ errors.gender }}</small>
                             </div>
                         </div>
                     </div>
@@ -276,10 +265,11 @@
                                         <label for="" class="control-label">Parcelamento:</label>
                                         <select v-model="userPayment.installment" class="form-control">
                                             <option :value="1">1 x {{ (cart.cartAmount / 1) | money }}</option>
-                                            <option :value="2" v-if="cart.cartAmount >= 100">2 x {{ (cart.cartAmount / 2) | money }}</option>
-                                            <option :value="3" v-if="cart.cartAmount >= 350">3 x {{ (cart.cartAmount / 3) | money }}</option>
-                                            <option :value="4" v-if="cart.cartAmount >= 600">4 x {{ (cart.cartAmount / 4) | money }}</option>
-                                            <option :value="5" v-if="cart.cartAmount >= 1000">5 x {{ (cart.cartAmount / 5) | money }}</option>
+                                            <option :value="2">2 x {{ (cart.cartAmount / 2) | money }}</option>
+                                            <option :value="3">3 x {{ (cart.cartAmount / 3) | money }}</option>
+                                            <option :value="4">4 x {{ (cart.cartAmount / 4) | money }}</option>
+                                            <option :value="5">5 x {{ (cart.cartAmount / 5) | money }}</option>
+                                            <option :value="6">6 x {{ (cart.cartAmount / 6) | money }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -462,7 +452,7 @@
                 },
 
                 userDetails: {
-                    gender: null
+
                 },
                 userAddress: {
                     street: null,
@@ -489,7 +479,6 @@
                     tax_document_number: null,
                     birthdate: null,
                     cellphone: null,
-                    gender: null,
                     zipcode: null,
                     street: null,
                     street_number: null,
@@ -865,11 +854,6 @@
                     this.errors.cellphone = 'Por favor informe seu celular';
                     return false;
                 } else {this.errors.cellphone = null}
-
-                if(!this.userDetails.gender){
-                    this.errors.gender = 'Por favor informe seu sexo';
-                    return false;
-                } else {this.errors.gender = null}
 
 
                 if(!this.userAddress.zipcode){

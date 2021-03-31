@@ -14,20 +14,20 @@ use App\Models\UserAddress;
 use App\Models\UserDetail;
 
 class UsersController extends Controller
-{   
+{
     public function view(){
 
         $access = UserAccessHelper::getAccess();
-        
-        if($access == true) 
+
+        if($access == true)
 
             return view('users.index');
 
         else
-        
+
             abort('404');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -46,7 +46,7 @@ class UsersController extends Controller
             $errorLog = ErrorsLog::create([
                 'description' => $e->getMessage(),
             ]);
-            
+
             return response()->json([
                 'message' => 'Não foi possivel listar os usuários.',
                 'errors' => [
@@ -110,7 +110,7 @@ class UsersController extends Controller
             $errorLog = ErrorsLog::create([
                 'description' => $e->getMessage(),
             ]);
-            
+
             return response()->json([
                 'message' => 'Não foi possivel cadastrar o usuário.',
                 'errors' => [
@@ -142,7 +142,7 @@ class UsersController extends Controller
             $errorLog = ErrorsLog::create([
                 'description' => $e->getMessage(),
             ]);
-            
+
             return response()->json([
                 'message' => 'Não foi possivel buscar o usuário.',
                 'errors' => [
@@ -201,7 +201,7 @@ class UsersController extends Controller
                         "country" => 'BRA',
                     ]);
                 }
-                
+
                 $phone = str_replace('(', '', $request->input('user.details.phone'));
                 $phone = str_replace(')', '', $phone);
                 $phone = str_replace(' ', '', $phone);
@@ -223,7 +223,6 @@ class UsersController extends Controller
                         "phone_country_code" => '+55',
                         "phone_area_code" => $phone_area_code,
                         "phone_number" => $phone_number,
-                        "gender" => $request->input('user.details.gender'),
                     ]
                 );
 
@@ -235,11 +234,11 @@ class UsersController extends Controller
 
 
         }catch(\Exception $e){
-            
+
             $errorLog = ErrorsLog::create([
                 'description' => $e->getMessage(),
             ]);
-            
+
             return response()->json([
                 'message' => 'Não foi possivel editar o usuário.',
                 'errors' => [

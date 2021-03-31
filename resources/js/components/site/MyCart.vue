@@ -109,12 +109,6 @@
             </div>
         </div>
 
-
-        <div id="loader" v-if="loading == true" class="text-center">
-            <img :src="'/images/loading.gif'" alt="" height="60">
-            <p class="text-uppercase text-primary mt-3">Aguarde...</p>
-        </div>
-
         <!-- The Modal -->
         <div class="modal fade" id="confirmModal">
             <div class="modal-dialog modal-dialog-centered modal-sm">

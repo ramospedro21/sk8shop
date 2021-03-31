@@ -108,7 +108,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="input-title" class="form-control-label">CPF: </label>
-                                            <input type="text" class="form-control" 
+                                            <input type="text" class="form-control"
                                                 v-mask="'999.999.999-99'"
                                                 v-model="user.details.tax_document_number" required
                                             >
@@ -119,7 +119,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="input-title" class="form-control-label">RG: </label>
-                                            <input type="text" class="form-control" 
+                                            <input type="text" class="form-control"
                                                 v-mask="'99.999.999-9'"
                                                 v-model="user.details.identity_document_number" required
                                             >
@@ -129,22 +129,10 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
-                                            <label for="input-title" class="form-control-label">Genêro: </label>
-                                            <select name="" id="" class="form-control" v-model="user.details.gender" required>
-                                                <option :value="null">-Selecione-</option>
-                                                <option :value="0">Masculino</option>
-                                                <option :value="1">Feminino</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
                                             <label for="input-title" class="form-control-label">Telefone: </label>
-                                            <input type="text" class="form-control" 
-                                                v-model="user.details.phone" 
-                                                v-mask="'(99)99999-9999'" 
+                                            <input type="text" class="form-control"
+                                                v-model="user.details.phone"
+                                                v-mask="'(99)99999-9999'"
                                                 required
                                             >
                                         </div>
@@ -158,7 +146,7 @@
             </form>
         </div>
     </div>
-    
+
     <!-- MODAL DE CADASTRO DE ENDEREÇO -->
     <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -214,7 +202,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- MODAL DE EXCLUSÃO DE ENDEREÇO -->
     <div class="modal fade bd-example-modal-sm" id="deleteAddressModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -262,7 +250,6 @@ export default {
                     identity_document_number: '',
                     identity_document_type: '',
                     phone: '',
-                    gender: null,
                 },
                 address: []
             },
@@ -291,7 +278,7 @@ export default {
 
     methods: {
         update: async function(){
-            
+
 
             this.loading.buttonUser = true;
 
@@ -302,7 +289,7 @@ export default {
                 this.loading.buttonUser = true;
 
                 showSuccessToast('Usuário editado com sucesso');
-                
+
                 // setTimeout(function () {
                 //     location.href = '/painel/users/';
                 // }, 800)
@@ -327,7 +314,7 @@ export default {
             }catch(e){
 
                 showErrorToast('Não foi possivel listar os tipos de usuário.');
-                
+
             }
         },
 
@@ -357,23 +344,23 @@ export default {
 
             $("#addressModal").modal('show');
         },
-        
+
         getAddress(cep){
             try{
                 self = this;
-    
+
                 $.getJSON("https://viacep.com.br/ws/" + cep + "/json/", function(address){
 
                     if(address.erro){
                         $("#inputLogradouro").focus();
                         return;
                     }
-    
+
                     self.address.street = address.logradouro;
                     self.address.district = address.bairro;
                     self.address.city = address.localidade;
                     self.address.state = address.uf;
-    
+
                 });
             }catch(e){
                 showErrorToast('Não foi possivel buscar o cep.');
@@ -419,7 +406,7 @@ export default {
                 showSuccessToast('Endereço apagado com sucesso.');
 
                 this.loading.buttonDeleteAddress = false;
-                
+
                 $("#deleteAddressModal").modal('hide');
 
             }catch(e){
@@ -432,7 +419,7 @@ export default {
     },
 
     mounted(){
-        
+
         this.user = this._user;
 
         if(this._user.details == null){
@@ -443,7 +430,6 @@ export default {
                 identity_document_number: '',
                 identity_document_type: '',
                 phone: '',
-                gender: null,
             }
         }else{
             this.user.details.birthdate = moment(this.user.details.birthdate).format('DD-MM-YYYY');

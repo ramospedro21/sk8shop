@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class UserDetail extends Model
-{   
+{
     /**
      * @property int $id
      * @property int $user_id
@@ -17,7 +17,6 @@ class UserDetail extends Model
      * @property int $phone_country_code
      * @property string $phone_area_code
      * @property string $phone_number
-     * @property string $gender
      * @property string $gateway_id
      */
 
@@ -31,7 +30,6 @@ class UserDetail extends Model
         'phone_country_code',
         'phone_area_code',
         'phone_number',
-        'gender',
         'gateway_id',
     ];
 

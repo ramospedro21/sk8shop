@@ -362,7 +362,6 @@ class PaymentController extends Controller
                 "phone_country_code" => '55',
                 "phone_area_code" => $phone_area_code,
                 "phone_number" => $phone_number,
-                "gender" => $request->input('details.gender'),
             ]
         );
 
