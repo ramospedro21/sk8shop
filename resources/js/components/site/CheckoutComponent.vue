@@ -21,6 +21,11 @@
                                 </a>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col">
+                                <small class="text-danger text-left" v-if="errors.zipcodeTo">{{ errors.zipcodeTo }}</small>
+                            </div>
+                        </div>
                     </form>
                     <div v-else-if="cart.shippings.length > 0 && this.calculating == false" class="form-check form-check-radio mt-2 col-md-12 pl-5" v-for="(shipping, i) in cart.shippings" :key="i">
                         <label class="form-check-label">
@@ -58,7 +63,7 @@
                         <div class="col-md-4">
                             <div class="form-group mt-3">
                                 <label for="" class="control-label">CPF.:</label>
-                                <input type="text" class="form-control py-4" placeholder="Digite seu CPF.." v-model="userDetails.tax_document_number" v-mask="'999.999.999-99'">
+                                <input type="text" class="form-control py-4" placeholder="Digite seu CPF.." v-model="userDetails.tax_document_number" v-mask="'999.999.999-99'" @change="validateInfoCPF(userDetails.tax_document_number)">
                                 <small class="text-danger" v-if="errors.tax_document_number">{{ errors.tax_document_number }}</small>
                             </div>
                         </div>
@@ -191,6 +196,7 @@
                                 <button class="btn btn-success btn-block btn-lg botao_boleto" @click="toPay()">
                                     Finalizar pedido
                                 </button>
+                                <small class="text-danger" v-if="errors.finish">{{errors.finish}}</small>
                             </div>
                         </div>
                     </div>
@@ -217,7 +223,7 @@
                                 <div class="row my-0 py-0">
                                     <div class="form-group mt-4 col">
                                         <label for="" class="control-label">CPF do portador do cartão:</label>
-                                        <input type="text" class="form-control py-4" placeholder="Digite o CPF do portador.." v-mask="'999.999.999-99'" v-model="userPayment.cardTaxNumber">
+                                        <input type="text" class="form-control py-4" placeholder="Digite o CPF do portador.." v-mask="'999.999.999-99'" v-model="userPayment.cardTaxNumber" @change="validateCardCPF(userPayment.cardTaxNumber)">
                                         <small class="text-danger" v-if="errors.cardTaxNumber">{{ errors.cardTaxNumber }}</small>
                                     </div>
                                     <div class="form-group mt-4 col">
@@ -277,6 +283,8 @@
                                 <button class="btn btn-success btn-block btn-lg botao_cartao" @click="toPay()">
                                     Finalizar pedido
                                 </button>
+
+                                <small class="text-danger" v-if="errors.finish">{{errors.finish}}</small>
                             </div>
                         </div>
                     </div>
@@ -438,6 +446,7 @@
 
     import { MoipCreditCard, MoipValidator } from 'moip-sdk-js';
     import jsencrypt from 'jsencrypt';
+    import { validateCPF }  from '../../helpers/validations';
 
     export default {
 
@@ -475,6 +484,7 @@
                 success: 0,
                 error: 0,
                 errors: {
+                    zipcodeTo: null,
                     name: null,
                     tax_document_number: null,
                     birthdate: null,
@@ -494,6 +504,7 @@
                     cardFullName: null,
                     cardBirthdate: null,
                     cardPhoneNumber: null,
+                    finish: null
                 },
                 loading: false,
                 calculating: false,
@@ -832,59 +843,150 @@
 
             },
 
+            validateInfoCPF: function(cpf){
+                let validation = validateCPF(cpf);
+
+                if(validation == false) this.errors.tax_document_number = 'Por favor informe um CPF valido';
+                else this.errors.tax_document_number = false;
+            },
+
+            validateCardCPF: function(cpf){
+                let validation = validateCPF(cpf);
+
+                if(validation == false) this.errors.cardTaxNumber = 'Por favor informe um CPF valido';
+                else this.errors.cardTaxNumber = false;
+            },
+
             validations: function() {
+
+                if(!this.cart.zipcodeTo){
+                    this.errors.zipcodeTo = 'Por favor informe um CEP para o calculo do frete.';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
+
+                    return false;
+
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.zipcodeTo = null
+                }
 
                 if(!this.user.name){
                     this.errors.name = 'Por favor informe seu nome';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
 
                     return false;
-                } else {this.errors.name = null}
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.name = null
+                }
 
                 if(!this.userDetails.tax_document_number){
                     this.errors.tax_document_number = 'Por favor informe seu CPF';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
                     return false;
-                } else {this.errors.tax_document_number = null}
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.tax_document_number = null
+                }
 
                 if(!this.userDetails.birthdate || moment(this.userDetails.birthdate, "DD/MM/YYYY").format("DD/MM/YYYY") == "Invalid date"){
+
                     this.errors.birthdate = 'Por favor informe sua data de nascimento';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
+
                     return false;
-                } else {this.errors.birthdate = null}
+
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.birthdate = null
+
+                }
 
                 if(!this.userDetails.cellphone){
-                    this.errors.cellphone = 'Por favor informe seu celular';
-                    return false;
-                } else {this.errors.cellphone = null}
 
+                    this.errors.cellphone = 'Por favor informe seu celular';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
+
+                    return false;
+
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.cellphone = null
+
+                }
 
                 if(!this.userAddress.zipcode){
+
                     this.errors.zipcode = 'Por favor informe seu CEP';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
+
                     return false;
-                } else {this.errors.zipcode = null}
+
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.zipcode = null
+
+                }
 
                 if(!this.userAddress.street){
+
                     this.errors.street = 'Por favor informe sua rua';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
+
                     return false;
-                } else {this.errors.street = null}
+
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.street = null
+
+                }
 
                 if(!this.userAddress.street_number){
                     this.errors.street_number = 'Por favor informe o número';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
                     return false;
-                } else {this.errors.street_number = null}
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.street_number = null
+                }
 
                 if(!this.userAddress.district){
                     this.errors.district = 'Por favor informe seu bairro';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
                     return false;
-                } else {this.errors.district = null}
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.district = null
+                }
 
                 if(!this.userAddress.city){
                     this.errors.city = 'Por favor informe sua cidade';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
                     return false;
-                } else {this.errors.city = null}
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.city = null
+                }
 
                 if(!this.userAddress.state){
                     this.errors.state = 'Por favor informe seu estado';
+                    this.errors.finish = 'Erros foram encontrados. por favor verifique os campos';
                     return false;
-                } else {this.errors.state = null}
+                } else {
+
+                    this.errors.finish = null;
+                    this.errors.state = null
+                }
 
 
                 if(this.userPayment.type == 'credit-card'){
@@ -894,8 +996,8 @@
                         return false;
                     } else {this.errors.cardName = null}
 
-                    if(!this.userPayment.card_number || (this.userPayment.card_number.length < 13 || this.userPayment.card_number.length > 19)){
-                        this.errors.card_number = 'Por favor informe o número do cartão';
+                    if(!this.userPayment.card_number || !MoipValidator.isValidNumber(this.userPayment.card_number)){
+                        this.errors.card_number = 'Por favor informe o número do cartão ou verifique o mesmo';
                         return false;
                     } else {this.errors.card_number = null}
 
@@ -937,13 +1039,10 @@
                         return false;
                     } else {this.errors.validate_year = null}
 
-                    if(!this.userPayment.cvc || this.userPayment.cvc.length < 1 || this.userPayment.cvc.length > 4){
-                        this.errors.cvc = 'Por favor informe o códico de segurança';
+                    if(!this.userPayment.cvc || MoipValidator.isSecurityCodeValid(this.userPayment.card_number, this.userPayment.cvc)){
+                        this.errors.cvc = 'Por favor informe o código de segurança ou verifique o mesmo';
                         return false;
                     } else {this.errors.cvc = null}
-
-
-
 
                 }
 
