@@ -11,7 +11,7 @@
                     <input type="text" placeholder="Digite aqui o que procura..." class="form-control py-3 px-4 my-0" name="search">
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-block">
+                    <button type="submit" class="btn btn-primary btn-block">
                         <i class="fas fa-search mr-2"></i> Buscar
                     </button>
                 </div>

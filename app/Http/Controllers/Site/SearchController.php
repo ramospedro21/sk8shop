@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Variant;
+use App\Models\Product;
 
 class SearchController extends Controller
 {
@@ -18,22 +18,16 @@ class SearchController extends Controller
     {
         try{
 
-            $products = Variant::with(['images',
+            $products = Product::with(['images',
                                        'stocks' => function($query){
                                             $query->where(function($query){
                                                 $query->where('price', '>', 0);
                                                 $query->orWhere('promote_price', '>', 0);
                                             });
                                        },
-                                       'product' => function($query) use ($request){
-                                           $query->where('title', 'like', '%' . $request->search . '%');
-                                           $query->where('enabled', 1);
-                                       }
                                      ])
-                               ->whereHas('product', function($query) use ($request){
-                                   $query->where('title', 'like', '%' . $request->search . '%');
-                                   $query->where('enabled', 1);
-                               })
+                               ->where('title', 'like', '%' . $request->search . '%')
+                               ->where('enabled', 1)
                                ->get();
 
             if($products->count() == 0) {
