@@ -28,6 +28,12 @@ class SearchController extends Controller
                                      ])
                                ->where('title', 'like', '%' . $request->search . '%')
                                ->where('enabled', 1)
+                               ->whereHas('stocks', function($query){
+                                    $query->where(function($query){
+                                        $query->where('price', '>', 0);
+                                        $query->orWhere('promote_price', '>', 0);
+                                    });
+                               })
                                ->get();
 
             if($products->count() == 0) {
@@ -42,6 +48,8 @@ class SearchController extends Controller
 
 
         }catch(\Exception $e){
+
+            dd($e);
             return view('components.404');
         }
     }
