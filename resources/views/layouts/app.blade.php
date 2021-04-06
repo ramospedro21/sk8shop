@@ -96,7 +96,7 @@
                 <div class="row align-items-center px-5">
                     <div class="col-md-3 text-right">
                         <a href="{{ url('/') }}">
-                            <img src="{{ url('images/logo.png') }}" class="img-banner">
+                            <img src="{{ url('images/logo_sk8shop_correta.jpg') }}" class="">
                         </a>
                     </div>
                     <div class="col-md-6 text-center mt-2">
