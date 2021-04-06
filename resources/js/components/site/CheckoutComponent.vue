@@ -5,7 +5,7 @@
             <div class="col-8">
                 <h1 class="font-weight-bolder h5 mt-5">Frete e Prazo de Entrega</h1>
                 <div class="card pt-4 pb-3 px-4 my-4">
-                    <form @submit.prevent="calculateDelivery()" v-if="cart.shippings.length == 0 && this.calculating == false">
+                    <form @submit.prevent="calculateDelivery()" v-if="cart.shippings.length == 0 || cart.shippings == undefined && this.calculating == false ">
                         <div class="row mt-3 mb-5 mb-md-3 align-items-center">
                             <div class="col-md-4 col-8">
                                 <input type="text" class="form-control" placeholder="Digite seu CEP aqui.." v-model="cart.zipcodeTo" id="zipcodeInput" required>
@@ -342,10 +342,11 @@
                                 <input type="text" class="form-control py-4" placeholder="Digite seu Cupom.." v-model="userCoupon.title">
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-primary text-white btn-sn" @click="getCoupon()">
+                                <button class="btn btn-primary text-white btn-sn" id="btnCoupon" @click="getCoupon()">
                                     <i></i>Adicionar a compra
                                 </button>
                             </div>
+                            <small class="text-danger ml-3 mt-3" v-if="errors.coupon">{{ errors.coupon }}</small>
                         </div>
 
                         <div class="row align-items-center" v-else>
@@ -508,7 +509,8 @@
                     cardFullName: null,
                     cardBirthdate: null,
                     cardPhoneNumber: null,
-                    finish: null
+                    coupon: null,
+                    finish: null,
                 },
                 loading: false,
                 calculating: false,
@@ -520,6 +522,8 @@
 
             getCoupon: function()
             {
+                $("#btnCoupon").attr('disabled', true);
+
                 axios
                     .post('/allowed-coupons', {
                             cart: this.cart,
@@ -527,188 +531,69 @@
                         })
                     .then(response => {
 
-                        let coupon = response.data.coupon;
+                        $("#btnCoupon").attr('disabled', false);
 
-                        //VERIFICAR SE O CUPOM DE DESCONTO EH EM CIMA DO FRETE OU EM CIMA DO DINHEIRO
-                        if(coupon.target == 0){
-                            //EM CIMA DO PRECO
+                        if(response.status != 203){
 
-                            //VERIFICAR SE O TIPO DE REDUCAO EH PORCENTAGEM OU DINHEIRO
-                            if(coupon.type == 0){
-                                //EM CIMA DA PORCENTAGEM
+                            let coupon = response.data.coupon;
 
-                                //VERIFICAR SE A REDUCAO EH EM CIMA DO PRECO FINAL OU DO PRODUTO
+                            //VERIFICAR SE O CUPOM DE DESCONTO EH EM CIMA DO FRETE OU EM CIMA DO DINHEIRO
+                            if(coupon.target == 0){
+                                //EM CIMA DO PRECO
 
-                                if(coupon.bond == 1){
-                                    this.cart.products.forEach(produto => {
+                                //VERIFICAR SE O TIPO DE REDUCAO EH PORCENTAGEM OU DINHEIRO
+                                if(coupon.type == 0){
+                                    //EM CIMA DA PORCENTAGEM
 
-                                        coupon.product.forEach(product => {
-                                            if(produto.product_id == product.id){
-                                                let percentage = (produto.stocks[0].price * parseFloat(coupon.reduction_amount)) / 100;
+                                    //VERIFICAR SE A REDUCAO EH EM CIMA DO PRECO FINAL OU DO PRODUTO
 
-                                                this.cart.cartDiscount += percentage;
-                                                this.cart.couponDescription = coupon.description;
-                                                this.cart.couponBenefit = "- " + coupon.reduction_amount + "% do valor do produto";
-                                                this.updateCart();
-                                            }
-                                        });
-
-                                    });
-                                }
-                                else if(coupon.bond == 2){
-                                    let products = response.data.products;
-
-                                    let self = this;
-
-                                    let total_categoria = 0;
-
-                                    self.cart.products.some(function (produto){
-
-                                        let validou = "nao";
-                                        products.some(function (product){
-                                            if(validou == "nao"){
-                                                if(produto.product_id == product.product_id){
-                                                    total_categoria += parseFloat(produto.stocks[0].price * produto.quantity);
-                                                    validou = "sim";
-                                                }
-                                            }
-                                        });
-                                    });
-
-                                    let percentage = (total_categoria * parseFloat(coupon.reduction_amount)) / 100;
-
-                                    self.cart.cartDiscount += percentage;
-                                    self.cart.couponDescription = coupon.description;
-                                    self.cart.couponBenefit = "- " + coupon.reduction_amount + "% do valor dos produtos";
-                                    self.updateCart();
-
-                                }
-                                else{
                                     let percentage = (this.cart.cartAmount * parseFloat(coupon.reduction_amount)) / 100;
 
                                     this.cart.cartDiscount += percentage;
-                                    this.cart.couponDescription = coupon.description;
+                                    this.cart.couponDescription = coupon.title;
                                     this.cart.couponBenefit = "- " + coupon.reduction_amount + "% do valor total";
                                     this.updateCart();
-                                }
 
-                            }else{
-                                //EM CIMA DO DINHEIRO
+                                }else{
+                                    //EM CIMA DO DINHEIRO
 
-                                if(coupon.bond == 1){
-                                    this.cart.products.forEach(produto => {
-
-                                        coupon.product.forEach(product => {
-                                            if(produto.product_id == product.id){
-                                                this.cart.cartDiscount += parseFloat(coupon.reduction_amount);
-                                                this.cart.couponDescription = coupon.description;
-                                                this.cart.couponBenefit = "- R$" + coupon.reduction_amount + " do valor do produto";
-                                                this.updateCart();
-                                            }
-                                        });
-
-                                    });
-
-                                }
-                                else if(coupon.bond == 2){
-                                    let products = response.data.products;
-
-                                    let self = this;
-                                    let validou = "nao";
-
-                                    self.cart.products.some(function (produto){
-
-                                        products.some(function (product){
-                                            if(produto.product_id == product.product_id){
-                                                if(validou == "nao"){
-                                                    self.cart.cartDiscount += parseFloat(coupon.reduction_amount);
-
-                                                    self.cart.couponDescription = coupon.description;
-                                                    self.cart.couponBenefit = "- R$" + coupon.reduction_amount + " do valor total";
-                                                    self.updateCart();
-                                                    validou = "sim";
-                                                }
-                                            }
-                                        });
-                                    });
-                                }
-                                else{
                                     this.cart.cartDiscount += parseFloat(coupon.reduction_amount);
-                                    this.cart.couponDescription = coupon.description;
+                                    this.cart.couponDescription = coupon.title;
                                     this.cart.couponBenefit = "- R$" + coupon.reduction_amount + " do valor total";
                                     this.updateCart();
                                 }
-                            }
-                        }else{
-                            //EM CIMA DO FRETE
+                            }else{  //EM CIMA DO FRETE
 
-                            //VERIFICAR SE O TIPO DE REDUCAO EH PORCENTAGEM OU DINHEIRO
-                            if(coupon.type == 0){
-                                //EM CIMA DA PORCENTAGEM
-
-                                if(coupon.bond == 1){
-                                    this.cart.products.forEach(produto => {
-
-                                        coupon.product.forEach(product => {
-                                            if(produto.product_id == product.id){
-                                                let percentage = (this.cart.cartShipping * parseFloat(coupon.reduction_amount)) / 100;
-
-                                                this.cart.cartDiscount += percentage;
-                                                this.cart.couponDescription = coupon.description;
-                                                this.cart.couponBenefit = "- " + coupon.reduction_amount + "% do valor do frete";
-                                                this.updateCart();
-                                            }
-                                        });
-
-                                    });
+                                if(this.cart.zipcodeTo == null){
+                                    this.errors.coupon = 'Por favor informe o cep e selecione um frete para adicionar cupons de frete';
+                                    return false;
                                 }
-                                else if(coupon.bond == 2){
+
+                                //VERIFICAR SE O TIPO DE REDUCAO EH PORCENTAGEM OU DINHEIRO
+                                if(coupon.type == 0){
 
                                     let percentage = (this.cart.cartShipping * parseFloat(coupon.reduction_amount)) / 100;
 
                                     this.cart.cartDiscount += percentage;
-                                    this.cart.couponDescription = coupon.description;
+                                    this.cart.couponDescription = coupon.title;
                                     this.cart.couponBenefit = "- " + coupon.reduction_amount + "% do valor do frete";
                                     this.updateCart();
-                                }
-                                else{
-                                    let percentage = (this.cart.cartShipping * parseFloat(coupon.reduction_amount)) / 100;
 
-                                    this.cart.cartDiscount += percentage;
-                                    this.cart.couponDescription = coupon.description;
-                                    this.cart.couponBenefit = "- " + coupon.reduction_amount + "% do valor do frete";
-                                    this.updateCart();
-                                }
+                                }else{
 
-                            }else{
-                                //EM CIMA DO DINHEIRO
-                                if(coupon.bond == 1){
-                                    this.cart.products.forEach(produto => {
-
-                                        coupon.product.forEach(product => {
-                                            if(produto.product_id == product.id){
-                                                this.cart.cartDiscount += parseFloat(coupon.reduction_amount);
-                                                this.cart.couponDescription = coupon.description;
-                                                this.cart.couponBenefit = "- R$" + coupon.reduction_amount + " do valor do frete";
-                                                this.updateCart();
-                                            }
-                                        });
-
-                                    });
-                                }
-                                else{
+                                    //EM CIMA DO DINHEIRO
                                     this.cart.cartDiscount += parseFloat(coupon.reduction_amount);
-                                    this.cart.couponDescription = coupon.description;
+                                    this.cart.couponDescription = coupon.title;
                                     this.cart.couponBenefit = "- R$" + coupon.reduction_amount + " do valor do frete";
                                     this.updateCart();
+
                                 }
+
                             }
-
+                        } else {
+                            this.errors.coupon = response.data.mensagem;
                         }
-
-                        // location.reload();
                     })
-
                     .catch(err => {
 
                     })
@@ -1150,7 +1035,7 @@
                         this.getCoupon();
                     }
 
-                    if(this.cart.shippings.length == 0 || this.cart.shippings == 'undefined'){
+                    if(this.cart.shippings.length == 0 || this.cart.shippings == undefined){
 
                         this.cart.shippings = [];
 

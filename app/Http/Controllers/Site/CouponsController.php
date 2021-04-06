@@ -22,13 +22,13 @@ class CouponsController extends Controller
     public function index(Request $request)
     {
 
-		$coupon = Coupon::with('products')->where('title', $request->input('coupon.title'))->first();
+		$coupon = Coupon::where('title', $request->input('coupon.title'))->first();
 
         //SE NAO EXISTIR O CUPOM ELE RETORNA ERRO.
         if(!$coupon){
             return response()->json([
-                "mesangem" => "Cupom não encontrado!"
-            ], 404);
+                "mensagem" => "Cupom não encontrado!"
+            ], 203);
         }
 
         $hoje = date("Y-m-d");
@@ -36,15 +36,15 @@ class CouponsController extends Controller
         //VERIFICAR SE O CUPOM ESTA ATIVO
         if($coupon->status == Coupon::STATUS['INACTIVE']){
             return response()->json([
-                "mesangem" => "Cupom inativo!"
-            ], 403);
+                "mensagem" => "Cupom inativo!"
+            ], 203);
         }
 
         //VERIFICAR SE O CUPOM ESTA NA DATA VALIDA OU SE JA ACABOU
         if($coupon->start_date > $hoje || $coupon->end_date < $hoje){
             return response()->json([
-                "mesangem" => "Esse cupom foi expirado!"
-            ], 403);
+                "mensagem" => "Esse cupom foi expirado!"
+            ], 203);
         }
 
         //VERIFICACOES QUE SAO NECESSARIAS PARA VALIDAR O CUPOM.
@@ -55,8 +55,8 @@ class CouponsController extends Controller
 
         if($userCouponMax > $coupon->max_uses){
             return response()->json([
-                "mesangem" => "Limite do cupom atingido!"
-            ], 403);
+                "mensagem" => "Limite do cupom atingido!"
+            ], 203);
         }
 
 
@@ -67,15 +67,15 @@ class CouponsController extends Controller
 
         if($userCouponlimitperuser > $coupon->limit_per_user){
             return response()->json([
-                "mesangem" => "Limite por usuário atingido!"
-            ], 403);
+                "mensagem" => "Limite por usuário atingido!"
+            ], 203);
         }
 
         //VERIFICAR A QUANTIDADE MINIMA DE PRODUTOS
         if($request->input('cart.cartCount') < $coupon->min_product_quantity){
             return response()->json([
-                "mesangem" => "Quantidade mínima de produtos para utilização do cupom não atingida!"
-            ], 403);
+                "mensagem" => "Quantidade mínima de produtos para utilização do cupom não atingida!"
+            ], 203);
         }
 
         //VERIFICAR SE O CUPOM E UTILIZADO NA PRIMEIRA COMPRA. SE SIM, VERIFICAR SE USUARIO JA COMPROU ALGUMA VEZ NO SITE.
@@ -84,38 +84,15 @@ class CouponsController extends Controller
 
             if($myOrders > 0){
                 return response()->json([
-                    "mesangem" => "Esse cupom só é válido para sua primeira compra!"
-                ], 403);
+                    "mensagem" => "Esse cupom só é válido para sua primeira compra!"
+                ], 203);
             }
         }
 
-        $product_coupon = ProductCoupon::where('coupon_id', $coupon->id)->get();
+        return response()->json([
+            "coupon" => $coupon
+        ], 200);
 
-        $valido = "nao";
-
-        foreach($request->input('cart.products') as $product){
-
-            $search = $product_coupon->where('product_id', $product['product_id']);
-
-            if($search->count() > 0){
-                $valido = "sim";
-            }
-
-        }
-
-        if($valido == "nao"){
-
-            return response()->json([
-                "message" => 'Este cupom não é valido para esse produto',
-            ], 403);
-
-        } else {
-
-            return response()->json([
-                "coupon" => $coupon
-            ], 200);
-
-        }
 
     }
 

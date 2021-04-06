@@ -231,7 +231,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card shadow">
+                        <!-- <div class="card shadow">
                             <div class="card-header border-0">
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
@@ -256,7 +256,7 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <button type="submit" class="btn btn-success btn-lg btn-block" :disabled="loading.buttonSuccess == true">Salvar</button>
                     </div>
                 </div>
