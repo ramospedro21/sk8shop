@@ -193,7 +193,7 @@
                                         </p>
                                     </div>
                                 </div>
-                                <button class="btn btn-success btn-block btn-lg botao_boleto" @click="toPay()">
+                                <button class="btn btn-success btn-block btn-lg botao_boleto" @click="toPay()" id="barcode">
                                     Finalizar pedido
                                 </button>
                                 <small class="text-danger" v-if="errors.finish">{{errors.finish}}</small>
@@ -208,7 +208,7 @@
                         </div>
                     </div>
                     <div class="row my-3" v-if="userPayment.type == 'credit-card'">
-                        <div class="col">
+                        <div class="col" id="focusCard">
                             <div class="bg-white border px-3 py-3">
                                 <div class="form-group mt-3">
                                     <label for="" class="control-label">Nome no cartão:</label>
@@ -434,6 +434,10 @@
                     <p>O seu pedido não pode ser concluido. Pedimos que tente novamente em instantes e caso o erro persista, entre com nossa equipe de <a href="" class="text-secondary">suporte</a>.</p>
                 </div>
             </div>
+        </div>
+
+        <div class="row invisible-div">
+            <div class="col"></div>
         </div>
 
     </div>
@@ -710,7 +714,7 @@
                     })
             },
 
-            setPayment: function(type)
+            setPayment: async function(type)
             {
 
                 this.userPayment = {
@@ -718,6 +722,11 @@
                     installment : 1,
                 }
 
+                window.scrollTo({
+                    top: 99999,
+                    left: 0,
+                    behavior: "smooth"
+                });
             },
 
             getAddress(cep){
@@ -1167,3 +1176,9 @@
     }
 
 </script>
+
+<style>
+    .invisible-div{
+        height: 400px;
+    }
+</style>
