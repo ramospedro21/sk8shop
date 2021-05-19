@@ -224,6 +224,46 @@
             @include('components.cupom-modal') --}}
 
         </div>
+        <footer class="fixed-bottom">
+            <div class="container">
+                <div class="row align-items-center pt-5">
+                    <div class="col-md-4 text-center">
+                        <div>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a class="h6 text-secondary" href="/quem-somos" target="_blank">Quem Somos</a></li>
+                                <li class="mb-2"><a class="h6 text-secondary" href="{{ url('/docs/POLITICA_DE_FRETE_E_TROCA.pdf') }}" target="_blank">Política de Troca e Devoluções</a></li>
+                            </ul>
+                        </div>
+                        <p>
+                            <a target="_blank" href="https://api.whatsapp.com/send?phone=5512981648239" class="mr-2">
+                                <span class="align-items-center h3 text-secondary">
+                                    <i class="fab fa-whatsapp"></i>
+                                </span>
+                            </a>
+                            <a target="_blank" href="https://www.instagram.com/sk8shop_oficial/">
+                                <span class="align-items-center h3 text-secondary">
+                                    <i class="fab fa-instagram"></i>
+                                </span>
+                            </a>
+                        </p>
+                        <p></p>
+                        {{-- <p class="text-secondary">CNPJ: 12.629.134/0001-55</p> --}}
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <h6 class="text-secondary mb-0">Fale Conosco</h6>
+                        <p class="text-secondary"><small>contato@sk8shop.com.br | (12) 98164-8239</small></p>
+                        <h6 class="text-secondary mb-0">Atendimento</h6>
+                        <p class="text-secondary"><small>das 10h às 18h Seg a Sex</small></p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <p>
+                            <img src="{{ url('images/logo_sk8shop.png') }}" alt="">
+                        </p>
+                    </div>
+                </div>
+                <div class="row"></div>
+            </div>
+        </footer>
 
         <script src="{{ mix('js/app.js')}}"></script>
 

@@ -103,3 +103,20 @@ Route::get('/minha-conta', 'Site\ProfileController@index');
 Route::get('/pedidos/{id}', 'Site\ProfileController@show');
 Route::post('/allowed-coupons', 'Site\CouponsController@index');
 Route::post('/login/site', 'Site\LoginController@login');
+Route::get('/quem-somos', function(){
+    return view('quem-somos');
+});
+
+Route::get('/testeDeEmail', function(){
+    $user = \App\Models\User::find(30);
+
+    $notify = $user->notify(new \App\Notifications\RegisterNotification($user));
+    dd($notify);
+    // Mail::send('email/register', [
+    //     'user' => $user,
+    // ], function ($m) use ($user) {
+    //     $m->to($user->email, $user->name);
+    //     $m->from('noreply@sk8shop.com.br', "Sk8Shop");
+    //     $m->subject("Conta criada com sucesso!");
+    // });
+});

@@ -165,16 +165,14 @@ class PaymentController extends Controller
 
                 $orderMoip = $orderMoip->create();
 
-                if ($request['payment']['type'] == "credit-card") {
+                $user = User::with(['details'])->find(Auth::user()->id);
 
-                    $user = User::with(['details'])->find(Auth::user()->id);
+                if ($request['payment']['type'] == "credit-card") {
 
                     $paymentPhone = str_replace('(', '', $request->input('payment.cardPhoneNumber'));
                     $paymentPhone = str_replace(')', '', $paymentPhone);
                     $paymentPhone = str_replace(' ', '', $paymentPhone);
                     $paymentPhone = str_replace('-', '', $paymentPhone);
-
-                    // dd($request['payment']['cardBirthdate']);
 
                     $explodeBirthdate = explode('/', $request['payment']['cardBirthdate']);
 
@@ -232,6 +230,8 @@ class PaymentController extends Controller
                 } else {throw new \Exception('Payment Method is not valid (' . $request['payment']['type'] . ')');}
 
                 DB::commit();
+
+                // $user->notify(new OrderStatus($order, $user, 1));
 
                 return response()->json([
                     "order" => $order,

@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use Auth;
 
 use App\Models\User;
+
+// use App\Notifications\TesteNotification;
 
 class RegisterController extends Controller
 {
@@ -28,6 +31,7 @@ class RegisterController extends Controller
      */
     public function create(Request $request)
     {
+        // DB::beginTransaction();
 
         try{
 
@@ -46,9 +50,13 @@ class RegisterController extends Controller
                 $user->user_type_id = 2;
                 $user->save();
 
+                // $user->notify(new \App\Notifications\TesteNotification());
+
                 Auth::loginUsingId($user->id);
 
                 return redirect('/checkout');
+
+
             }
 
         }catch(\Exception $error){

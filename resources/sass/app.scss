@@ -15,6 +15,10 @@ body{
 
 }
 
+footer{
+    background: #000000;
+}
+
 #login{
     background-image: url('../images/login-background.jpg') !important;
 }
@@ -24,9 +28,9 @@ body{
 
 #menu{
 
-    a {
-        color: $brand-primary !important;
-    }
+    // a {
+    //     color: $brand-primary !important;
+    // }
 
     .dropdown {
         position: inherit !important;
@@ -38,7 +42,7 @@ body{
         background: #FFFFFF !important;
     }
 
-    max-height: 70px;
+    // max-height: 70px;
 
 }
 

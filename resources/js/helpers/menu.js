@@ -12,7 +12,7 @@ $('.dropdown-menu').on('mouseout', function() {
 
 })
 
-$('#header').on('mouseout', function() {
+$('#menu').on('mouseout', function() {
 
     $('.dropdown-menu').hide()
 

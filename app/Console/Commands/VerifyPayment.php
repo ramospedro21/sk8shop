@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderPayment;
 use App\Models\OrderPaymentLog;
 use App\Models\OrderShippingLog;
+use App\Notifications\OrderStatus;
 use GuzzleHttp\Client;
 
 class VerifyPayment extends Command
@@ -47,9 +48,10 @@ class VerifyPayment extends Command
     {
 
         $order_payments = OrderPayment::query()
-			->whereIn('gateway_status', ['WAITING', 'IN_ANALYSIS'])
-            ->whereNotNull('gateway_id')
-            ->get();
+                                      ->with(['order.user'])
+                                      ->whereIn('gateway_status', ['WAITING', 'IN_ANALYSIS'])
+                                      ->whereNotNull('gateway_id')
+                                      ->get();
 
         foreach ($order_payments as $order_payment) {
 
@@ -62,11 +64,14 @@ class VerifyPayment extends Command
                 $order_payment->gateway_status = $payment->getStatus();
                 $order_payment->save();
 
+                /*
                 if ($order_payment->gateway_status == 'AUTHORIZED') {
 
-                    $order = Order::findOrFail($order_payment->order_id)->update([
+                   $order = Order::findOrFail($order_payment->order_id)->update([
                         'status' => Order::STATUS['APROVED']
                     ]);
+
+                    $order->order->user->notify(new OrderStatus($order->order, $order->order->user,2));
 
                 } else if ($order_payment->gateway_status === 'CANCELLED') {
 
@@ -74,7 +79,10 @@ class VerifyPayment extends Command
                         'status' => Order::STATUS['CANCELLED']
                     ]);
 
+                    $order->order->user->notify(new OrderStatus($order->order->user, 3));
+
                 }
+                */
 
 
 			DB::commit();
