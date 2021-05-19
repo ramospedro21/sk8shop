@@ -8,12 +8,6 @@
 @endsection
 
 @section('open-graph-products')
-    <!-- TWITTER CARD -->
-    {{-- <meta name="twitter:card" content = "summary" />
-    <meta name="twitter:site" content = "@boteco_do_vinho" />
-    <meta name="twitter:creator" content = "@boteco_do_vinho - {{ $product['title'] }}" />
-    <meta name="twitter:description" content = "{{ $product['short_description'] }}" />
-    <meta name="twitter:image" content="{{ $product['images'][0]['url'] }}"/> --}}
 
     <!-- OPEN GRAPH FACEBOOK E WHATSAPP -->
     <meta property="og:locale" content="pt_BR">
@@ -131,11 +125,10 @@
             </div>
         </div>
         <div class="row">
-            @foreach ($similars as $product)
-                @include('components.product', ['product' => $product, 'cols' => 4])
-            @endforeach
+                @foreach ($similars as $product)
+                    @include('components.product', ['product' => $product, 'cols' => 4])
+                @endforeach
         </div>
-
     </div>
 
 @endsection

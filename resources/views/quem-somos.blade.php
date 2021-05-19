@@ -21,8 +21,8 @@
 
 @section('content')
 
-<div class="container mt-5 pt-5">
-    <div class="row justify-content-center">
+<div class="container mt-5 pt-5 quem-somos">
+    <div class="row mt-5 pt-5 justify-content-center">
         <div class="col-8">
             <h3 class="h3 font-weight-bold text-center">Sobre a SK8Shop</h3>
             <p class="h4 mt-3 text-justify"> Fundada em outubro de 2013, a Sk8Shop é um sistema de lojas que atua no
