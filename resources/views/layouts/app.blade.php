@@ -224,7 +224,7 @@
             @include('components.cupom-modal') --}}
 
         </div>
-        <footer class="fixed-bottom">
+        <footer >
             <div class="container">
                 <div class="row align-items-center pt-5">
                     <div class="col-md-4 text-center">
